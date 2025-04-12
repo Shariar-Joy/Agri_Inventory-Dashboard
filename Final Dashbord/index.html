@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri Inventory Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script src="script.js"></script>
+
+  <style>
+    /* VARIABLES */
+:root {
+  --clr-primary: #7380ec;
+  --clr-danger: #c73f00;
+  --clr-success: #035200;
+  --clr-warning: #fa091e;
+  --clr-white: #fff;
+  --clr-info-dark: #7d8da1;
+  --clr-info-light: #dce1eb;
+  --clr-dark: #363949;
+  --clr-warnig: #ff4edc;
+  --clr-light: rgba(132, 139, 200, 0.18);
+  --clr-primary-variant: #111e88;
+  --clr-dark-variant: #677483;
+  --clr-color-background: #f6f6f9;
+  --clr-primary-rgb: 115, 128, 236;
+  --clr-sidebar: #ffffff;
+  
+  --card-border-radius: 2rem;
+  --border-radius-1: 0.4rem;
+  --border-radius-2: 0.8rem;
+  --border-radius-3: 1.2rem;
+  
+  --card-padding: 1.8rem;
+  --padding-1: 1.2rem;
+  --box-shadow: 0 2rem 3rem var(--clr-light);
+}
+
+/* DARK THEME */
+.dark-theme-variables {
+  --clr-sidebar: #202528;
+  --clr-color-background: #181a1e;
+  --clr-white: #202528;
+  --clr-light: rgba(0, 0, 0, 0.4);
+  --clr-dark: #edeffd;
+  --clr-dark-variant: #a3bdcc;
+  --box-shadow: 0 2rem 3rem var(--clr-light);
+  --clr-info-dark: #edeffd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  appearance: none;
+  border: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  background: var(--clr-color-background);
+  user-select: none;
+  overflow-x: hidden;
+  color: var(--clr-dark);
+}
+
+.container {
+  display: grid;
+  width: 96%;
+  margin: 0 auto;
+  gap: 1.8rem;
+  grid-template-columns: 14rem auto 23rem;
+}
+
+a {
+  color: var(--clr-dark);
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 0.87rem;
+}
+
+h4 {
+  font-size: 0.8rem;
+}
+
+h5 {
+  font-size: 0.77rem;
+}
+
+small {
+  font-size: 0.75rem;
+}
+
+.profile-photo {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.text-muted {
+  color: var(--clr-info-dark);
+}
+
+p {
+  color: var(--clr-dark-variant);
+}
+
+b {
+  color: var(--clr-dark);
+}
+
+.primary {
+  color: var(--clr-primary);
+}
+
+.danger {
+  color: var(--clr-danger);
+}
+
+.success {
+  color: var(--clr-success);
+}
+
+.warning {
+  color: var(--clr-warning);
+}
+
+/* ASIDE */
+aside {
+  height: 100vh;
+  background: var(--clr-sidebar);
+}
+
+aside .top {
+  background: var(--clr-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.4rem;
+}
+
+aside .logo {
+  display: flex;
+  gap: 0.8rem;
+}
+
+aside .logo img {
+  width: 2rem;
+  height: 2rem;
+}
+
+aside .close {
+  display: none;
+}
+
+/* SIDEBAR */
+aside .sidebar {
+  background: var(--clr-sidebar);
+  display: flex;
+  flex-direction: column;
+  height: 86vh;
+  position: relative;
+  top: 3rem;
+}
+
+aside h3 {
+  font-weight: 500;
+}
+
+aside .sidebar a {
+  display: flex;
+  color: var(--clr-info-dark);
+  margin-left: 2rem;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  height: 3.7rem;
+  transition: all 300ms ease;
+}
+
+aside .sidebar a span {
+  font-size: 1.6rem;
+  transition: all 300ms ease;
+}
+
+aside .sidebar a:last-child {
+  position: absolute;
+  bottom: 2rem;
+  width: 100%;
+}
+
+aside .sidebar a.active {
+  background: var(--clr-light);
+  color: var(--clr-primary);
+  margin-left: 0;
+}
+
+aside .sidebar a.active:before {
+  content: '';
+  width: 6px;
+  height: 100%;
+  background: var(--clr-primary);
+}
+
+aside .sidebar a.active span {
+  color: var(--clr-primary);
+  margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover {
+  color: var(--clr-primary);
+}
+
+aside .sidebar a:hover span {
+  margin-left: 1rem;
+}
+
+aside .sidebar .message-count {
+  background: var(--clr-danger);
+  color: white;
+  padding: 2px 10px;
+  font-size: 11px;
+  border-radius: var(--border-radius-1);
+}
+aside .sidebar a h3 {
+  font-weight: 700; /* Makes the text bold */
+}
+aside .sidebar a.active h3 {
+  font-weight: 800;
+}
+aside .sidebar .dropdown-btn h3 {
+  font-weight: 700;
+}
+
+
+/* DROPDOWN MENU */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
+.dropdown-content {
+  display: none;
+  padding-left: 3rem;
+  background: rgba(var(--clr-primary-rgb), 0.1);
+}
+
+.dropdown-content a {
+  height: 3rem;
+  margin-left: 0;
+}
+
+.dropdown.active .dropdown-content {
+  display: block;
+}
+
+.dropdown.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
+/* MAIN */
+main {
+  margin-top: 1.4rem;
+}
+
+main .date {
+  display: inline-block;
+  background: var(--clr-white);
+  border-radius: var(--border-radius-1);
+  margin-top: 1rem;
+  padding: 0.5rem 1.6rem;
+}
+
+main .date input[type="date"] {
+  background: transparent;
+  color: var(--clr-dark);
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-bar {
+  background: var(--clr-white);
+  border-radius: var(--border-radius-1);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+.search-bar input {
+  background: transparent;
+  width: 20rem;
+}
+
+.search-bar span {
+  color: var(--clr-info-dark);
+}
+
+/* INSIGHTS */
+.insights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+}
+
+.insights > div {
+  background: var(--clr-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  margin-top: 1rem;
+  box-shadow: var(--box-shadow);
+  transition: all 300ms ease;
+}
+
+.insights > div:hover {
+  box-shadow: none;
+}
+
+.insights > div span {
+  background: var(--clr-primary);
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
+  font-size: 2rem;
+}
+
+.insights > div.expenses span {
+  background: var(--clr-danger);
+}
+
+.insights > div.income span {
+  background: var(--clr-success);
+}
+
+.insights > div .middle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.insights h3 {
+  margin: 1rem 0 0.6rem;
+  font-size: 1rem;
+}
+
+.insights .progress {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+}
+
+.insights svg {
+  width: 7rem;
+  height: 7rem;
+}
+
+.insights svg circle {
+  fill: none;
+  stroke: var(--clr-primary);
+  stroke-width: 14;
+  stroke-linecap: round;
+  transform: translate(5px, 5px);
+  stroke-dasharray: 110;
+  stroke-dashoffset: 92;
+}
+
+.insights .sales svg circle {
+  stroke-dashoffset: -30;
+  stroke-dasharray: 200;
+}
+
+.insights .expenses svg circle {
+  stroke-dashoffset: 20;
+  stroke-dasharray: 80;
+}
+
+.insights .income svg circle {
+  stroke-dashoffset: 35;
+  stroke-dasharray: 110;
+  stroke: var(--clr-success);
+}
+
+.insights .progress .number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.harvest-chart {
+  background: var(--clr-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  margin: 1.5rem 0;
+}
+
+.harvest-chart h2 {
+  margin-bottom: 1rem;
+}
+
+/* RECENT ORDERS */
+.recent-order {
+  margin-top: 2rem;
+}
+
+.recent-order h2 {
+  margin-bottom: 0.8rem;
+}
+
+.recent-order table {
+  background: var(--clr-white);
+  width: 100%;
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  transition: all 300ms ease;
+}
+
+.recent-order table:hover {
+  box-shadow: none;
+}
+
+.recent-order table tbody td {
+  height: 2.8rem;
+  border-bottom: 1px solid var(--clr-light);
+  color: var(--clr-dark-variant);
+}
+
+.recent-order table tbody tr:last-child td {
+  border: none;
+}
+
+.recent-order a {
+  text-align: center;
+  display: block;
+  margin: 1rem auto;
+  color: var(--clr-primary);
+}
+
+/* RIGHT */
+.right {
+  margin-top: 1.4rem;
+}
+
+.right .top {
+  display: flex;
+  justify-content: end;
+  gap: 2rem;
+}
+
+.right .top button {
+  display: none;
+}
+
+.right .theme-toggler {
+  background: var(--clr-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.6rem;
+  width: 4.2rem;
+  cursor: pointer;
+  border-radius: var(--border-radius-1);
+}
+
+.right .theme-toggler span {
+  font-size: 1.2rem;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right .theme-toggler span.active {
+  background: var(--clr-primary);
+  color: white;
+  border-radius: var(--border-radius-1);
+}
+
+.right .top .profile {
+  display: flex;
+  gap: 2rem;
+  text-align: right;
+}
+
+/* RECENT UPDATES */
+.recent-updates {
+  margin-top: 1rem;
+}
+
+.recent-updates h2 {
+  margin-bottom: 0.8rem;
+}
+
+.recent-updates .updates {
+  background: var(--clr-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  transition: all 300ms ease;
+}
+
+.recent-updates .updates:hover {
+  box-shadow: none;
+}
+
+.recent-updates .update {
+  display: grid;
+  grid-template-columns: 2.6rem auto;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* SALES ANALYTICS */
+.sales-analytics {
+  margin-top: 2rem;
+}
+
+.sales-analytics h2 {
+  margin-bottom: 0.8rem;
+}
+
+.sales-analytics .item {
+  background: var(--clr-white);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+  padding: 1.4rem var(--card-padding);
+  border-radius: var(--border-radius-3);
+  box-shadow: var(--box-shadow);
+  transition: all 300ms ease;
+}
+
+.sales-analytics .item:hover {
+  box-shadow: none;
+}
+
+.sales-analytics .item .right {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin: 0;
+  width: 100%;
+}
+
+.sales-analytics .item .icon {
+  padding: 0.6rem;
+  color: white;
+  border-radius: 50%;
+  background: var(--clr-primary);
+  display: flex;
+}
+
+.sales-analytics .item.offline .icon {
+  background: var(--clr-danger);
+}
+
+.sales-analytics .item.customers .icon {
+  background: var(--clr-success);
+}
+
+.sales-analytics .add-product {
+  background-color: transparent;
+  border: 2px dashed var(--clr-primary);
+  color: var(--clr-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sales-analytics .add-product:hover {
+  background: var(--clr-primary);
+  color: white;
+}
+
+.sales-analytics .add-product div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sales-analytics .add-product div h3 {
+  font-weight: 600;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 94%;
+    grid-template-columns: 7rem auto 23rem;
+  }
+
+  aside .logo h2 {
+    display: none;
+  }
+
+  aside .sidebar h3 {
+    display: none;
+  }
+
+  aside .sidebar a {
+    width: 5.6rem;
+  }
+
+  aside .sidebar a:last-child {
+    position: relative;
+    margin-top: 1.8rem;
+  }
+
+  main .insights {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  main .recent-order {
+    width: 94%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 2rem 0 0 8.8rem;
+  }
+
+  main .recent-order table {
+    width: 83vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  aside {
+    position: fixed;
+    left: -100%;
+    background: var(--clr-sidebar);
+    width: 18rem;
+    z-index: 3;
+    box-shadow: 1rem 3rem 4rem var(--clr-light);
+    height: 100vh;
+    padding-right: var(--card-padding);
+    display: none;
+    animation: showMenu 400ms ease forwards;
+  }
+
+  @keyframes showMenu {
+    to {
+      left: 0;
+    }
+  }
+
+  aside .logo {
+    margin-left: 1rem;
+  }
+
+  aside .logo h2 {
+    display: inline;
+  }
+
+  aside .sidebar h3 {
+    display: inline;
+  }
+
+  aside .sidebar a {
+    width: 100%;
+    height: 3.4rem;
+  }
+
+  aside .sidebar a:last-child {
+    position: absolute;
+    bottom: 5rem;
+  }
+
+  aside .close {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  main {
+    margin-top: 8rem;
+    padding: 0 1rem;
+  }
+
+  main .recent-order {
+    position: relative;
+    margin: 3rem 0 0 0;
+    width: 100%;
+  }
+
+  main .recent-order table {
+    width: 100%;
+    margin: 0;
+  }
+
+  .right {
+    width: 94%;
+    margin: 0 auto 4rem;
+  }
+
+  .right .top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    padding: 0 0.8rem;
+    height: 4.6rem;
+    background: var(--clr-white);
+    width: 100%;
+    margin: 0;
+    z-index: 2;
+    box-shadow: 0 1rem 1rem var(--clr-light);
+  }
+
+  .right .top .theme-toggler {
+    width: 4.4rem;
+    position: absolute;
+    left: 66%;
+  }
+
+  .right .profile .info {
+    display: none;
+  }
+
+  .right .top button {
+    display: inline-block;
+    background: transparent;
+    cursor: pointer;
+    color: var(--clr-dark);
+    position: absolute;
+    left: 1rem;
+  }
+
+  .right .top button span {
+    font-size: 2rem;
+  }
+}
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="top">
+        <div class="logo">
+          <h2><span class="success">Agri Inventory</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+          <span class="material-symbols-sharp">close</span>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <a href="dashboard.html" class="active">
+          <span class="material-symbols-sharp">grid_view</span>
+          <h3>Dashboard</h3>
+        </a>
+
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp">receipt_long</span>
+            <h3>Products</h3>
+            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+          </a>
+          <div class="dropdown-content">
+            <a href="production_record.html"><span class="material-symbols-sharp">info</span> Product Record</a>
+            <a href="production_data.html"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp">warehouse</span>
+            <h3>Warehouse</h3>
+            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+          </a>
+          <div class="dropdown-content">
+            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
+            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
+            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Temp Control</a>
+          </div>
+        </div>
+
+        <a href="analytics.html">
+          <span class="material-symbols-sharp">insights</span>
+          <h3>Analytics</h3>
+        </a>
+        <a href="messages.html">
+          <span class="material-symbols-sharp">mail_outline</span>
+          <h3>Messages</h3>
+          <span class="msg-count">3</span>
+        </a>
+        <a href="spoil.html">
+          <span class="material-symbols-sharp">trending_down</span>
+          <h3>Spoilage Records</h3>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">settings</span>
+          <h3>Settings</h3>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">logout</span>
+          <h3>Logout</h3>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="main-header">
+        <h1>Dashboard</h1>
+        <div class="search-bar">
+          <input type="text" placeholder="Search crops, inventory...">
+          <span class="material-symbols-sharp">search</span>
+        </div>
+        <div class="date">
+          <input type="date">
+        </div>
+      </div>
+
+      <div class="insights">
+        <div class="sales">
+          <span class="material-symbols-sharp">trending_up</span>
+          <div class="middle">
+            <div class="left">
+              <h3>Total Sales</h3>
+              <h1>$25,024</h1>
+            </div>
+            <div class="progress">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="number">
+                <p>81%</p>
+              </div>
+            </div>
+          </div>
+          <small>Last 24 Hours</small>
+        </div>
+
+        <div class="expenses">
+          <span class="material-symbols-sharp">local_mall</span>
+          <div class="middle">
+            <div class="left">
+              <h3>Total Expenses</h3>
+              <h1>$12,540</h1>
+            </div>
+            <div class="progress">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="number">
+                <p>62%</p>
+              </div>
+            </div>
+          </div>
+          <small>Last 24 Hours</small>
+        </div>
+
+        <div class="income">
+          <span class="material-symbols-sharp">stacked_line_chart</span>
+          <div class="middle">
+            <div class="left">
+              <h3>Total Income</h3>
+              <h1>$12,484</h1>
+            </div>
+            <div class="progress">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="number">
+                <p>44%</p>
+              </div>
+            </div>
+          </div>
+          <small>Last 24 Hours</small>
+        </div>
+      </div>
+
+      <div class="harvest-chart">
+        <h2>Vegetable Harvest Rates</h2>
+        <canvas id="harvestChart" width="200" height="100"></canvas>
+      </div>
+
+      <div class="recent-order">
+        <h2>Recent Orders</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Product Number</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cucamelon</td>
+              <td>4563</td>
+              <td>Due</td>
+              <td class="warning">Pending</td>
+              <td class="primary">Details</td>
+            </tr>
+            <tr>
+              <td>Potato</td>
+              <td>3421</td>
+              <td>Paid</td>
+              <td class="success">Delivered</td>
+              <td class="primary">Details</td>
+            </tr>
+            <tr>
+              <td>Onion</td>
+              <td>7890</td>
+              <td>Due</td>
+              <td class="warning">Pending</td>
+              <td class="primary">Details</td>
+            </tr>
+            <tr>
+              <td>Carrot</td>
+              <td>1234</td>
+              <td>Paid</td>
+              <td class="success">Delivered</td>
+              <td class="primary">Details</td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="#">Show All</a>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right">
+      <div class="top">
+        <button id="menu-btn">
+          <span class="material-symbols-sharp">menu</span>
+        </button>
+        <div class="theme-toggler">
+          <span class="material-symbols-sharp active">light_mode</span>
+          <span class="material-symbols-sharp">dark_mode</span>
+        </div>
+        <div class="profile">
+          <div class="info">
+            <p>Hey, <b>Joy</b></p>
+            <small class="text-muted">Admin</small>
+          </div>
+          <div class="profile-photo">
+            <img src="image/unnamed.gif" alt="Profile">
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-updates">
+        <h2>Recent Updates</h2>
+        <div class="updates">
+          <div class="update">
+            <div class="profile-photo">
+              <img src="https://ui-avatars.com/api/?name=System&background=FF5722&color=fff" alt="Update">
+            </div>
+            <div class="message">
+              <p><b>System Alert</b> Vegetables received into inventory</p>
+              <small class="text-muted">2 Minutes Ago</small>
+            </div>
+          </div>
+          <div class="update">
+            <div class="profile-photo">
+              <img src="https://ui-avatars.com/api/?name=Delivery&background=2196F3&color=fff" alt="Update">
+            </div>
+            <div class="message">
+              <p><b>Delivery</b> Vegetables delivered to market</p>
+              <small class="text-muted">1 Hour Ago</small>
+            </div>
+          </div>
+          <div class="update">
+            <div class="profile-photo">
+              <img src="https://ui-avatars.com/api/?name=Warning&background=FFC107&color=000" alt="Update">
+            </div>
+            <div class="message">
+              <p><b>Warning</b> Tomato stock below minimum level</p>
+              <small class="text-muted">3 Hours Ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sales-analytics">
+        <h2>Warehouse Analytics</h2>
+   
+         <div class="item onlion">
+           <div class="icon">
+             <span class="material-symbols-sharp">thermometer</span>
+           </div>
+           <div class="right_text">
+             <div class="info">
+               <h3>Temperature</h3>
+               <small class="text-muted">Last Updated: 2 Hours Ago</small>
+             </div>
+             <h5 class="danger">12°C</h5>
+             <h3>Optimal for storage</h3>
+           </div>
+         </div>
+         <div class="item onlion">
+           <div class="icon">
+             <span class="material-symbols-sharp">humidity_percentage</span>
+           </div>
+           <div class="right_text">
+             <div class="info">
+               <h3>Humidity</h3>
+               <small class="text-muted">Last Updated: 2 Hours Ago</small>
+             </div>
+             <h5 class="success">85% RH</h5>
+             <h3>Slightly high</h3>
+           </div>
+         </div>
+         <div class="item onlion">
+           <div class="icon">
+             <span class="material-symbols-sharp">airwave</span>
+           </div>
+           <div class="right_text">
+             <div class="info">
+               <h3>Airflow</h3>
+               <small class="text-muted">Last Updated: 2 Hours Ago</small>
+             </div>
+             <h5 class="danger">12/hr</h5>
+             <h3>Normal circulation</h3>
+           </div>
+         </div>      
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+const menuBtn = document.getElementById('menu-btn');
+const closeBtn = document.getElementById('close-btn');
+const sidebar = document.querySelector('aside');
+const themeToggler = document.querySelector('.theme-toggler');
+const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+
+// Open sidebar
+menuBtn.addEventListener('click', () => {
+  sidebar.style.display = 'block';
+});
+
+// Close sidebar
+closeBtn.addEventListener('click', () => {
+  sidebar.style.display = 'none';
+});
+
+// Theme toggler
+themeToggler.addEventListener('click', () => {
+  document.body.classList.toggle('dark-theme-variables');
+  
+  themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+  themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+});
+
+// Dropdown functionality
+dropdownBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const dropdown = btn.parentElement;
+    dropdown.classList.toggle('active');
+  });
+});
+
+// Harvest Chart
+
+const ctx = document.getElementById('harvestChart').getContext('2d');
+const harvestChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Tomatoes', 'Potatoes', 'Onions', 'Carrots', 'Cucumbers', 'Bell Peppers'],
+    datasets: [{
+      label: 'Harvest Rate (kg/sq.m)',
+      data: [3.5, 2.8, 2.2, 1.9, 2.5, 2.1],
+      backgroundColor: [
+        'rgba(255, 99, 71, 0.7)',
+        'rgba(76, 175, 80, 0.7)',
+        'rgba(156, 39, 176, 0.7)',
+        'rgba(255, 193, 7, 0.7)',
+        'rgba(33, 150, 243, 0.7)',
+        'rgba(244, 67, 54, 0.7)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 71, 1)',
+        'rgba(76, 175, 80, 1)',
+        'rgba(156, 39, 176, 1)',
+        'rgba(255, 193, 7, 1)',
+        'rgba(33, 150, 243, 1)',
+        'rgba(244, 67, 54, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Harvest Rate (kg/sq.m)'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Vegetables'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Vegetable Harvest Rates'
+      }
+    }
+  }
+});
+
+
+  </script>
+</body>
+</html>

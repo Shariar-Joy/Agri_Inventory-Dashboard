@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriStock - Agricultural Inventory Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            color: #2e7d32;
+            font-size: 1.8rem;
+        }
+
+        .auth-buttons a {
+            padding: 8px 20px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .sign-in {
+            background-color: transparent;
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+
+        .sign-up {
+            background-color: #2e7d32;
+            color: white;
+            border: 1px solid #2e7d32;
+        }
+
+        .sign-in:hover {
+            background-color: #e8f5e9;
+        }
+
+        .sign-up:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            padding: 12px 30px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #1b5e20;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 5%;
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            color: white;
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(46, 125, 50, 0.8);
+        }
+
+        .features-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+
+        /* Dashboard Preview Section */
+        .dashboard-preview {
+            padding: 100px 5%;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .dashboard-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            border: 1px solid #ddd;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 5%;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .testimonials-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1b5e20;
+            color: white;
+            padding: 50px 5% 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #b2dfdb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            header {
+                padding: 15px 5%;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/logo.png" alt="AgriStock Logo">
+            <h1>Agri Inventory</h1>
+        </div>
+        <div class="auth-buttons">
+            <a href="auth.html?form=signin" class="sign-in">Sign In</a>
+            <a href="auth.html?form=signup" class="sign-up">Sign Up</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Agricultural Inventory Management Made Simple</h2>
+            <p>Track your crops, livestock, and supplies with our powerful inventory management system designed specifically for farmers and agricultural businesses.</p>
+            <button class="cta-button">Start Your Free Trial</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-content">
+            <h2 class="section-title">Inventory Management Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <h3>Stock Tracking</h3>
+                    <p>Monitor your agricultural inputs (seeds, fertilizers, pesticides) and outputs (harvests) in real-time with our intuitive tracking system.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics & Reports</h3>
+                    <p>Generate detailed reports on inventory levels, usage patterns, and forecasting to optimize your agricultural operations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <h3>Barcode Scanning</h3>
+                    <p>Quickly record inventory movements with our mobile barcode scanning feature, perfect for large farms and storage facilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-preview">
+        <h2 class="section-title" style="color: #2e7d32;">Powerful Dashboard</h2>
+        <p style="max-width: 800px; margin: 0 auto 30px; color: #555;">Our user-friendly dashboard gives you complete visibility and control over your agricultural inventory.</p>
+        <img src="image/Dashboard.png" alt="Dashboard Preview" class="dashboard-image">
+    </section>
+
+    <section class="testimonials">
+        <div class="testimonials-content">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"AgriStock has transformed how we manage our farm inventory. We've reduced waste by 30% and always know exactly what we have in stock."</p>
+                    <div class="testimonial-author">- Robert T., Dairy Farm Manager</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The reporting features helped us identify patterns in our seed usage, saving us thousands in unnecessary purchases."</p>
+                    <div class="testimonial-author">- Maria G., Crop Producer</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"As a agricultural cooperative, keeping track of inventory across multiple locations was a nightmare. AgriStock solved all our problems."</p>
+                    <div class="testimonial-author">- James K., Cooperative Director</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About Agri Invantory</h3>
+                <p>We provide specialized inventory management solutions for the agricultural sector, helping farmers and agribusinesses optimize their operations.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column contact-info">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Plot -16, Aftabuddin Ahmed Road, Block-b, Bashundra R/A, Dhaka-1229.</p>
+                <p><i class="fas fa-phone"></i> 01888888888</p>
+                <p><i class="fas fa-envelope"></i> support@agriinventory.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>Copyright ©2025 AgriStock Limited</p>
+            <p>Designed by Shariar Joy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JavaScript for button interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the CTA button
+            const ctaBtn = document.querySelector('.cta-button');
+            
+            // Add click event listener
+            ctaBtn.addEventListener('click', function() {
+                alert('Free trial registration will be available soon. Thank you for your interest in AgriStock!');
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

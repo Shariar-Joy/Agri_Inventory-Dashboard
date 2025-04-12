@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warehouse Climate Control</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
+  <style>
+    :root {
+      --clr-primary: #7380ec;
+      --clr-primary-variant: #6677ea;
+      --clr-danger: #ff7782;
+      --clr-success: #035200;
+      --clr-warning: #ffbb55;
+      --clr-info-light: #7fd4eb;
+      --clr-white: #fff;
+      --clr-light: #f6f6f9;
+      --clr-dark: #363949;
+      --clr-black: #000;
+      
+      --card-border-radius: 2rem;
+      --border-radius-1: 0.4rem;
+      --border-radius-2: 0.8rem;
+      --border-radius-3: 1.2rem;
+      
+      --card-padding: 1.8rem;
+      --padding-1: 1.2rem;
+      
+      --box-shadow: 0 2rem 3rem var(--clr-light);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      outline: 0;
+      appearance: none;
+      border: 0;
+      text-decoration: none;
+      list-style: none;
+      box-sizing: border-box;
+    }
+    
+    html {
+      font-size: 14px;
+    }
+    
+    body {
+      width: 100vw;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      background: var(--clr-light);
+      user-select: none;
+      overflow-x: hidden;
+      color: var(--clr-dark);
+    }
+    
+    .container {
+      display: grid;
+      width: 96%;
+      margin: 0 auto;
+      gap: 1.8rem;
+      grid-template-columns: 250px auto 250px;
+    }
+    .profile-photo {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    
+    /* ========== SIDEBAR ========== */
+    aside {
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: var(--clr-white);
+      width: 250px;
+      padding: 1.4rem;
+      z-index: 100;
+      box-shadow: var(--box-shadow);
+      transition: all 300ms ease;
+    }
+    
+    aside .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    aside .logo {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    
+    aside .logo img {
+      width: 2rem;
+      height: 2rem;
+    }
+    
+    aside .close {
+      display: none;
+    }
+    
+    aside .sidebar {
+      display: flex;
+      flex-direction: column;
+      height: 86vh;
+      position: relative;
+      top: 3rem;
+    }
+    
+    aside .sidebar a {
+      display: flex;
+      align-items: center;
+      color: var(--clr-dark);
+      height: 3.7rem;
+      gap: 1rem;
+      position: relative;
+      margin-left: 2rem;
+      transition: all 300ms ease;
+    }
+    
+    aside .sidebar a span {
+      font-size: 1.6rem;
+      transition: all 300ms ease;
+    }
+    
+    aside .sidebar a:last-child {
+      position: absolute;
+      bottom: 2rem;
+      width: 100%;
+    }
+    
+    aside .sidebar a.active {
+      background: var(--clr-light);
+      color: var(--clr-primary);
+      margin-left: 0;
+    }
+    
+    aside .sidebar a.active:before {
+      content: '';
+      width: 6px;
+      height: 100%;
+      background: var(--clr-primary);
+    }
+    
+    aside .sidebar a.active span {
+      color: var(--clr-primary);
+      margin-left: calc(1rem - 6px);
+    }
+    
+    aside .sidebar a:hover {
+      color: var(--clr-primary);
+    }
+    
+    aside .sidebar a:hover span {
+      margin-left: 1rem;
+    }
+    
+    aside .sidebar .msg-count {
+      background: var(--clr-danger);
+      color: var(--clr-white);
+      padding: 2px 6px;
+      border-radius: var(--border-radius-1);
+      font-size: 11px;
+    }
+    
+    /* ========== DROPDOWNS ========== */
+    .dropdown {
+      position: relative;
+    }
+    
+    .dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+    
+    .dropdown-content {
+      display: none;
+      padding-left: 2rem;
+      background: var(--clr-light);
+      border-radius: var(--border-radius-1);
+    }
+    
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown-content a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
+      color: var(--clr-dark);
+    }
+    
+    .dropdown-content a:hover {
+      background: var(--clr-white);
+    }
+    
+    .dropdown-icon {
+      margin-left: auto;
+      transition: transform 300ms ease;
+    }
+    
+    .dropdown.active .dropdown-icon {
+      transform: rotate(180deg);
+    }
+    
+    /* ========== RIGHT SIDEBAR ========== */
+    .right {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      background: var(--clr-white);
+      box-shadow: var(--box-shadow);
+      z-index: 99;
+      padding: var(--padding-1);
+    }
+    
+    .right .top {
+      display: flex;
+      justify-content: end;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .right .profile {
+      display: flex;
+      gap: 1rem;
+      text-align: right;
+      align-items: center;
+    }
+    
+    .right .profile .profile-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    
+    .right .theme-toggler {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--clr-light);
+      border-radius: var(--border-radius-1);
+      cursor: pointer;
+      padding: 0.3rem;
+    }
+    
+    .right .theme-toggler span {
+      font-size: 1.2rem;
+      width: 50%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .right .theme-toggler span.active {
+      background: var(--clr-primary);
+      color: white;
+      border-radius: var(--border-radius-1);
+    }
+    
+    /* ========== MAIN CONTENT ========== */
+    main {
+      margin-top: 1.4rem;
+      grid-column: 2;
+    }
+    
+    .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.8rem;
+    }
+    
+    .centered-title {
+      text-align: center;
+      flex-grow: 1;
+    }
+    
+    .search-bar {
+      background: var(--clr-white);
+      border-radius: var(--border-radius-1);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .search-bar input {
+      background: transparent;
+      border: none;
+      color: var(--clr-dark);
+    }
+    
+    .search-bar input::placeholder {
+      color: var(--clr-dark);
+    }
+    
+    .date {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .date input {
+      padding: 0.5rem;
+      border-radius: var(--border-radius-1);
+      border: 1px solid var(--clr-light);
+    }
+    
+    /* ========== CLIMATE CONTROL ========== */
+    .climate-control {
+      margin-top: 2rem;
+      background: var(--clr-white);
+      padding: var(--card-padding);
+      border-radius: var(--card-border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .control-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .control-card {
+      background: var(--clr-light);
+      padding: var(--card-padding);
+      border-radius: var(--card-border-radius);
+      transition: all 300ms ease;
+    }
+    
+    .control-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .control-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .control-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .control-unit {
+      font-size: 0.9rem;
+      color: var(--clr-dark);
+      opacity: 0.8;
+    }
+    
+    .control-range {
+      width: 100%;
+      height: 8px;
+      background: #ddd;
+      border-radius: 4px;
+      margin: 1rem 0;
+      position: relative;
+    }
+    
+    .range-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--clr-primary);
+    }
+    
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--clr-dark);
+      opacity: 0.7;
+    }
+    
+    .control-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--border-radius-1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+    
+    .btn-primary {
+      background: var(--clr-primary);
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background: var(--clr-primary-variant);
+    }
+    
+    .btn-secondary {
+      background: var(--clr-info-light);
+      color: var(--clr-dark);
+      border: none;
+    }
+    
+    .btn-secondary:hover {
+      background: var(--clr-light);
+    }
+    
+    .btn-danger {
+      background: var(--clr-danger);
+      color: white;
+      border: none;
+    }
+    
+    .btn-danger:hover {
+      background: #b33700;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+    
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    
+    .status-active {
+      background: var(--clr-success);
+    }
+    
+    .status-inactive {
+      background: var(--clr-danger);
+    }
+    
+    .system-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    /* ========== DARK THEME ========== */
+    body.dark-theme-variables {
+      --clr-white: #181a1e;
+      --clr-light: #202528;
+      --clr-dark: #edeffd;
+      --clr-black: #fff;
+      --box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.4);
+    }
+    
+    /* ========== RESPONSIVE ========== */
+    @media screen and (max-width: 1200px) {
+      .container {
+        width: 94%;
+        grid-template-columns: 78px auto 250px;
+      }
+      
+      aside {
+        width: 78px;
+      }
+      
+      aside .logo h2,
+      aside .sidebar h3 {
+        display: none;
+      }
+      
+      aside .sidebar a {
+        width: 5.6rem;
+      }
+      
+      aside .sidebar a:last-child {
+        position: relative;
+        margin-top: 1.8rem;
+      }
+    }
+    
+    @media screen and (max-width: 768px) {
+      .container {
+        width: 100%;
+        grid-template-columns: 1fr;
+      }
+      
+      aside {
+        position: fixed;
+        left: -100%;
+        width: 250px;
+        z-index: 1000;
+        height: 100vh;
+        background: var(--clr-white);
+        display: none;
+      }
+      
+      aside.active {
+        display: block;
+        left: 0;
+      }
+      
+      aside .close {
+        display: inline-block;
+        cursor: pointer;
+      }
+      
+      .right {
+        display: none;
+      }
+      
+      main {
+        grid-column: 1;
+        margin: 0 1rem;
+      }
+      
+      .control-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="top">
+        <div class="logo">
+          <h2><span class="success">Agri Inventory</span></h2>
+        </div>
+        <div class="close" id="close-btn">
+          <span class="material-symbols-sharp">close</span>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <a href="#" >
+          <span class="material-symbols-sharp">grid_view</span>
+          <h3>Dashboard</h3>
+        </a>
+
+        <div class="dropdown" >
+          <a href="#" class="dropdown-btn" >
+            <span class="material-symbols-sharp">receipt_long</span>
+            <h3>Production</h3>
+            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+          </a>
+          <div class="dropdown-content">
+            <a href="#"><span class="material-symbols-sharp">info</span> Production Record</a>
+            <a href="#"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn active">
+            <span class="material-symbols-sharp">warehouse</span>
+            <h3>Warehouse</h3>
+            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+          </a>
+          <div class="dropdown-content">
+            <a href="#"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
+            <a href="#"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
+            <a href="#" class="active"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
+          </div>
+        </div>
+
+        <a href="#">
+          <span class="material-symbols-sharp">insights</span>
+          <h3>Analytics</h3>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">mail_outline</span>
+          <h3>Messages</h3>
+          <span class="msg-count">3</span>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">trending_down</span>
+          <h3>Spoilage Records</h3>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">settings</span>
+          <h3>Settings</h3>
+        </a>
+        <a href="#">
+          <span class="material-symbols-sharp">logout</span>
+          <h3>Logout</h3>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="main-header">
+        <h1 class="centered-title">Warehouse Climate Control</h1>
+        <div class="date">
+          <input type="date" id="control-date" value="2023-11-15">
+        </div>
+      </div>
+      
+      <!-- Climate Control Section -->
+      <div class="climate-control">
+        <div class="control-panel">
+          <!-- Temperature Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">thermostat</span> Temperature
+              </div>
+              <div class="control-value">18.5<span class="control-unit">°C</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 62%"></div>
+            </div>
+            <div class="range-labels">
+              <span>-10°C</span>
+              <span>0°C</span>
+              <span>10°C</span>
+              <span>20°C</span>
+              <span>30°C</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('temperature', -1)">
+                <span class="material-symbols-sharp">remove</span> Lower
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('temperature', 1)">
+                <span class="material-symbols-sharp">add</span> Raise
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('temperature')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- Humidity Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">humidity_percentage</span> Humidity
+              </div>
+              <div class="control-value">65<span class="control-unit">%</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 65%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0%</span>
+              <span>25%</span>
+              <span>50%</span>
+              <span>75%</span>
+              <span>100%</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('humidity', -5)">
+                <span class="material-symbols-sharp">remove</span> Dryer
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('humidity', 5)">
+                <span class="material-symbols-sharp">add</span> Humidify
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('humidity')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- Airflow Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">air</span> Airflow
+              </div>
+              <div class="control-value">3<span class="control-unit">m/s</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 30%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0 m/s</span>
+              <span>5 m/s</span>
+              <span>10 m/s</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('airflow', -1)">
+                <span class="material-symbols-sharp">remove</span> Reduce
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('airflow', 1)">
+                <span class="material-symbols-sharp">add</span> Increase
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('airflow')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- Light Exposure Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">light_mode</span> Light Exposure
+              </div>
+              <div class="control-value">750<span class="control-unit">lux</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 25%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0 lux</span>
+              <span>1000 lux</span>
+              <span>2000 lux</span>
+              <span>3000 lux</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('light', -100)">
+                <span class="material-symbols-sharp">remove</span> Dim
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('light', 100)">
+                <span class="material-symbols-sharp">add</span> Brighten
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('light')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- Ethylene Level Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">science</span> Ethylene Level
+              </div>
+              <div class="control-value">0.5<span class="control-unit">ppm</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 10%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0 ppm</span>
+              <span>2.5 ppm</span>
+              <span>5 ppm</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('ethylene', -0.1)">
+                <span class="material-symbols-sharp">remove</span> Reduce
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('ethylene', 0.1)">
+                <span class="material-symbols-sharp">add</span> Increase
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('ethylene')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- CO₂ Level Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">co2</span> CO₂ Level
+              </div>
+              <div class="control-value">450<span class="control-unit">ppm</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 15%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0 ppm</span>
+              <span>1000 ppm</span>
+              <span>2000 ppm</span>
+              <span>3000 ppm</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('co2', -50)">
+                <span class="material-symbols-sharp">remove</span> Reduce
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('co2', 50)">
+                <span class="material-symbols-sharp">add</span> Increase
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('co2')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+          
+          <!-- O₂ Level Control -->
+          <div class="control-card">
+            <div class="control-header">
+              <div class="control-title">
+                <span class="material-symbols-sharp">oxygen</span> O₂ Level
+              </div>
+              <div class="control-value">20.9<span class="control-unit">%</span></div>
+            </div>
+            <div class="control-range">
+              <div class="range-fill" style="width: 69.7%"></div>
+            </div>
+            <div class="range-labels">
+              <span>0%</span>
+              <span>10%</span>
+              <span>20%</span>
+              <span>30%</span>
+            </div>
+            <div class="control-actions">
+              <button class="btn btn-sm btn-secondary" onclick="adjustControl('o2', -1)">
+                <span class="material-symbols-sharp">remove</span> Reduce
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="adjustControl('o2', 1)">
+                <span class="material-symbols-sharp">add</span> Increase
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="setAuto('o2')">
+                <span class="material-symbols-sharp">auto_awesome</span> Auto
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="system-actions">
+          <button class="btn btn-secondary" onclick="refreshReadings()">
+            <span class="material-symbols-sharp">refresh</span> Refresh Readings
+          </button>
+          <button class="btn btn-primary" onclick="saveSettings()">
+            <span class="material-symbols-sharp">save</span> Save Settings
+          </button>
+          <button class="btn btn-danger" onclick="resetToDefault()">
+            <span class="material-symbols-sharp">restart_alt</span> Reset to Default
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right">
+      <div class="top">
+        <button id="menu-btn">
+          <span class="material-symbols-sharp">menu</span>
+        </button>
+        <div class="theme-toggler">
+          <span class="material-symbols-sharp active">light_mode</span>
+          <span class="material-symbols-sharp">dark_mode</span>
+        </div>
+        <div class="profile">
+          <div class="info">
+            <p>Hey, <b>Operator</b></p>
+            <small class="text-muted">Admin</small>
+          </div>
+          <div class="profile-photo">
+            <img src="image/unnamed.gif" alt="Profile">
+          </div>
+        </div>
+      </div>
+      
+      <div class="recent-alerts">
+        <h2>Recent Alerts</h2>
+        <div class="alert-item">
+          <div class="alert-icon">
+            <span class="material-symbols-sharp">warning</span>
+          </div>
+          <div class="alert-content">
+            <div class="alert-message">Temperature fluctuation detected in Zone 3</div>
+            <div class="alert-time">10 min ago</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon">
+            <span class="material-symbols-sharp">info</span>
+          </div>
+          <div class="alert-content">
+            <div class="alert-message">Humidity levels optimal in all zones</div>
+            <div class="alert-time">25 min ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const sidebar = document.querySelector('aside');
+    const themeToggler = document.querySelector('.theme-toggler');
+    const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+
+    // Current climate values
+    let climateValues = {
+      temperature: 18.5,
+      humidity: 65,
+      airflow: 3,
+      light: 750,
+      ethylene: 0.5,
+      co2: 450,
+      o2: 20.9
+    };
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      updateAllDisplays();
+    });
+
+    // Toggle sidebar
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+
+    // Theme toggler
+    themeToggler.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme-variables');
+      
+      themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+      themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+    });
+
+    // Dropdown functionality
+    dropdownBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dropdown = btn.parentElement;
+        dropdown.classList.toggle('active');
+      });
+    });
+
+    // Climate Control Functions
+    function adjustControl(parameter, amount) {
+      // Update the value
+      climateValues[parameter] += amount;
+      
+      // Apply limits based on parameter
+      switch(parameter) {
+        case 'temperature':
+          climateValues[parameter] = Math.max(-10, Math.min(30, climateValues[parameter]));
+          break;
+        case 'humidity':
+          climateValues[parameter] = Math.max(0, Math.min(100, climateValues[parameter]));
+          break;
+        case 'airflow':
+          climateValues[parameter] = Math.max(0, Math.min(10, climateValues[parameter]));
+          break;
+        case 'light':
+          climateValues[parameter] = Math.max(0, Math.min(3000, climateValues[parameter]));
+          break;
+        case 'ethylene':
+          climateValues[parameter] = Math.max(0, Math.min(5, climateValues[parameter]));
+          break;
+        case 'co2':
+          climateValues[parameter] = Math.max(0, Math.min(3000, climateValues[parameter]));
+          break;
+        case 'o2':
+          climateValues[parameter] = Math.max(0, Math.min(30, climateValues[parameter]));
+          break;
+      }
+      
+      // Update the display
+      updateDisplay(parameter);
+      
+      // Simulate sending command to server
+      console.log(`Adjusting ${parameter} by ${amount}. New value: ${climateValues[parameter]}`);
+    }
+
+    function setAuto(parameter) {
+      // Simulate setting to automatic control
+      console.log(`Setting ${parameter} to automatic control`);
+      alert(`${parameter.charAt(0).toUpperCase() + parameter.slice(1)} control set to automatic mode`);
+    }
+
+    function updateDisplay(parameter) {
+      const card = document.querySelector(`.control-card:nth-child(${getCardIndex(parameter) + 1}`);
+      
+      // Update the displayed value
+      card.querySelector('.control-value').innerHTML = 
+        parameter === 'temperature' || parameter === 'o2' || parameter === 'ethylene' ? 
+        climateValues[parameter].toFixed(1) : 
+        Math.round(climateValues[parameter]);
+      
+      // Update the range fill
+      const percentage = getPercentage(parameter, climateValues[parameter]);
+      card.querySelector('.range-fill').style.width = `${percentage}%`;
+    }
+
+    function updateAllDisplays() {
+      for (const param in climateValues) {
+        updateDisplay(param);
+      }
+    }
+
+    function getCardIndex(parameter) {
+      const params = ['temperature', 'humidity', 'airflow', 'light', 'ethylene', 'co2', 'o2'];
+      return params.indexOf(parameter);
+    }
+
+    function getPercentage(parameter, value) {
+      switch(parameter) {
+        case 'temperature': return ((value + 10) / 40) * 100;
+        case 'humidity': return value;
+        case 'airflow': return (value / 10) * 100;
+        case 'light': return (value / 3000) * 100;
+        case 'ethylene': return (value / 5) * 100;
+        case 'co2': return (value / 3000) * 100;
+        case 'o2': return (value / 30) * 100;
+        default: return 0;
+      }
+    }
+
+    function refreshReadings() {
+      // Simulate fetching new readings from sensors
+      for (const param in climateValues) {
+        // Add small random fluctuation to simulate real sensor data
+        const fluctuation = (Math.random() - 0.5) * (param === 'temperature' ? 0.2 : 
+                              param === 'humidity' ? 1 : 
+                              param === 'o2' ? 0.1 : 2);
+        climateValues[param] += fluctuation;
+        
+        // Ensure values stay within bounds
+        adjustControl(param, 0);
+      }
+      
+      alert('Readings refreshed from sensors');
+    }
+
+    function saveSettings() {
+      // Simulate saving settings to server
+      console.log('Saving climate settings:', climateValues);
+      alert('Climate control settings saved successfully');
+    }
+
+    function resetToDefault() {
+      if (confirm('Are you sure you want to reset all climate controls to default values?')) {
+        climateValues = {
+          temperature: 18.5,
+          humidity: 65,
+          airflow: 3,
+          light: 750,
+          ethylene: 0.5,
+          co2: 450,
+          o2: 20.9
+        };
+        updateAllDisplays();
+        alert('All controls reset to default values');
+      }
+    }
+  </script>
+</body>
+</html>
