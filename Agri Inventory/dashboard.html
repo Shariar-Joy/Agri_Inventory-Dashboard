@@ -104,7 +104,8 @@ h2 {
 }
 
 h3 {
-  font-size: 0.87rem;
+  font-size: 0.95rem; /* Increased from 0.87rem */
+  font-weight: 600; /* Added for bolder text */
 }
 
 h4 {
@@ -171,11 +172,18 @@ aside .top {
 aside .logo {
   display: flex;
   gap: 0.8rem;
+  align-items: center;
 }
 
 aside .logo img {
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+aside .logo h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
 aside .close {
@@ -193,7 +201,7 @@ aside .sidebar {
 }
 
 aside h3 {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 aside .sidebar a {
@@ -252,13 +260,26 @@ aside .sidebar .message-count {
   border-radius: var(--border-radius-1);
 }
 aside .sidebar a h3 {
-  font-weight: 700; /* Makes the text bold */
+  font-weight: 600; /* Increased from 500 */
 }
 aside .sidebar a.active h3 {
-  font-weight: 800;
+  font-weight: 700;
 }
 aside .sidebar .dropdown-btn h3 {
-  font-weight: 700;
+  font-weight: 600;
+}
+aside .sidebar .msg-count {
+  background-color: #ff5252;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.2rem;
+  height: 1.2rem;
 }
 
 
@@ -339,6 +360,24 @@ main .date input[type="date"] {
 
 .search-bar span {
   color: var(--clr-info-dark);
+}
+
+.harvest-chart {
+  background: var(--clr-white);
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  margin: 1.5rem 0;
+  height: 600px; /* Add fixed height */
+}
+
+.harvest-chart h2 {
+  margin-bottom: 1rem;
+}
+
+#harvestChart {
+  width: 100% !important;
+  height: calc(100% - 40px) !important;
 }
 
 /* INSIGHTS */
@@ -793,11 +832,20 @@ main .date input[type="date"] {
 
 </head>
 <body>
+  <div id="warehouse-header" style="background: var(--clr-primary); color: white; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+    <div id="current-warehouse">
+      <!-- Warehouse info will be inserted here by JavaScript -->
+    </div>
+    <button id="change-warehouse" style="background: white; color: var(--clr-primary); border: none; padding: 0.3rem 0.8rem; border-radius: 0.3rem; cursor: pointer;">
+      Change Warehouse
+    </button>
+  </div>
   <div class="container">
     <!-- SIDEBAR -->
     <aside>
       <div class="top">
         <div class="logo">
+          <img src="image/logo.png" alt="Agri Inventory Logo">
           <h2><span class="success">Agri Inventory</span></h2>
         </div>
         <div class="close" id="close-btn">
@@ -807,55 +855,59 @@ main .date input[type="date"] {
 
       <div class="sidebar">
         <a href="dashboard.html" class="active">
-          <span class="material-symbols-sharp">grid_view</span>
-          <h3>Dashboard</h3>
+          <span class="material-symbols-sharp"><b>grid_view</b></span>
+          <h3><b>Dashboard</b></h3>
         </a>
 
         <div class="dropdown">
           <a href="#" class="dropdown-btn">
-            <span class="material-symbols-sharp">receipt_long</span>
-            <h3>Products</h3>
-            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+            <span class="material-symbols-sharp"><b>receipt_long</b></span>
+            <h3><b>Products</b></h3>
+            <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="production_record.html"><span class="material-symbols-sharp">info</span> Product Record</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
+            <a href="inventory.html"><span class="material-symbols-sharp"><b>inventory</b></span><b>Inventory</b></a>
+            <a href="production_data.html"><span class="material-symbols-sharp"><b>data_thresholding</b></span><b>Production Data</b></a>
           </div>
         </div>
 
         <div class="dropdown">
           <a href="#" class="dropdown-btn">
-            <span class="material-symbols-sharp">warehouse</span>
-            <h3>Warehouse</h3>
+            <span class="material-symbols-sharp"><b>warehouse</b></span>
+            <h3><b>Warehouse</b></h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Temp Control</a>
+            <a href="received_items.html"><span class="material-symbols-sharp"><b>inventory_2</b></span><b>Received Items</b></a>
+            <a href="delivery_items.html"><span class="material-symbols-sharp"><b>local_shipping</b></span><b>Delivery Items</b></a>
+            <a href="weather_control.html"><span class="material-symbols-sharp"><b>thermostat</b></span><b>Climate Control</b></a>
           </div>
         </div>
 
         <a href="analytics.html">
-          <span class="material-symbols-sharp">insights</span>
-          <h3>Analytics</h3>
+          <span class="material-symbols-sharp"><b>insights</b></span>
+          <h3><b>Analytics</b></h3>
         </a>
         <a href="messages.html">
-          <span class="material-symbols-sharp">mail_outline</span>
-          <h3>Messages</h3>
+          <span class="material-symbols-sharp"><b>mail_outline</b></span>
+          <h3><b>Messages</b></h3>
           <span class="msg-count">3</span>
         </a>
         <a href="spoil.html">
-          <span class="material-symbols-sharp">trending_down</span>
-          <h3>Spoilage Records</h3>
+          <span class="material-symbols-sharp"><b>trending_down</b></span>
+          <h3><b>Spoilage Records</b></h3>
+        </a>
+        <a href="reports.html">
+          <span class="material-symbols-sharp"><b>report_gmailerrorred</b></span>
+          <h3><b>Reports</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">settings</span>
-          <h3>Settings</h3>
+          <span class="material-symbols-sharp"><b>settings</b></span>
+          <h3><b>Settings</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">logout</span>
-          <h3>Logout</h3>
+          <span class="material-symbols-sharp"><b>logout</b></span>
+          <h3><b>Logout</b></h3>
         </a>
       </div>
     </aside>
@@ -942,42 +994,45 @@ main .date input[type="date"] {
         <table>
           <thead>
             <tr>
+              <th>Batch ID</th>
               <th>Product Name</th>
-              <th>Product Number</th>
               <th>Payment</th>
               <th>Status</th>
-              <th></th>
+              <th>Quantity(kg)</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Cucamelon</td>
-              <td>4563</td>
+              <td>25-01</td>
+              <td>Cucumber</td>
               <td>Due</td>
-              <td class="warning">Pending</td>
-              <td class="primary">Details</td>
+              <td class="warning">Received</td>
+              <td class="primary">1020</td>
+              <td class="primary">30,000</td>
             </tr>
             <tr>
+              <td>25-02</td>
               <td>Potato</td>
-              <td>3421</td>
-              <td>Paid</td>
-              <td class="success">Delivered</td>
-              <td class="primary">Details</td>
+              <td>paid</td>
+              <td class="warning">Delivered</td>
+              <td class="primary">1000</td>
+              <td class="primary">15,000</td>
             </tr>
             <tr>
+              <td>25-03</td>
               <td>Onion</td>
-              <td>7890</td>
-              <td>Due</td>
-              <td class="warning">Pending</td>
-              <td class="primary">Details</td>
-            </tr>
+              <td>paid</td>
+              <td class="warning">Delivered</td>
+              <td class="primary">900</td>
+              <td class="primary">25,000</td>
             <tr>
+              <td>25-04</td>
               <td>Carrot</td>
-              <td>1234</td>
-              <td>Paid</td>
-              <td class="success">Delivered</td>
-              <td class="primary">Details</td>
-            </tr>
+              <td>paid</td>
+              <td class="warning">Received</td>
+              <td class="primary">1500</td>
+              <td class="primary">50,000</td>
           </tbody>
         </table>
         <a href="#">Show All</a>
@@ -1086,96 +1141,144 @@ main .date input[type="date"] {
 
   <script>
     // DOM Elements
-const menuBtn = document.getElementById('menu-btn');
-const closeBtn = document.getElementById('close-btn');
-const sidebar = document.querySelector('aside');
-const themeToggler = document.querySelector('.theme-toggler');
-const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const sidebar = document.querySelector('aside');
+    const themeToggler = document.querySelector('.theme-toggler');
+    const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 
-// Open sidebar
-menuBtn.addEventListener('click', () => {
-  sidebar.style.display = 'block';
-});
+    // Open sidebar
+    menuBtn.addEventListener('click', () => {
+      sidebar.style.display = 'block';
+    });
 
-// Close sidebar
-closeBtn.addEventListener('click', () => {
-  sidebar.style.display = 'none';
-});
+    // Close sidebar
+    closeBtn.addEventListener('click', () => {
+      sidebar.style.display = 'none';
+    });
 
-// Theme toggler
-themeToggler.addEventListener('click', () => {
-  document.body.classList.toggle('dark-theme-variables');
-  
-  themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
-  themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
-});
+    // Theme toggler
+    themeToggler.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme-variables');
+      themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+      themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+    });
 
-// Dropdown functionality
-dropdownBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const dropdown = btn.parentElement;
-    dropdown.classList.toggle('active');
-  });
-});
+    // Dropdown functionality
+    dropdownBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dropdown = btn.parentElement;
+        dropdown.classList.toggle('active');
+      });
+    });
 
-// Harvest Chart
-
-const ctx = document.getElementById('harvestChart').getContext('2d');
-const harvestChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Tomatoes', 'Potatoes', 'Onions', 'Carrots', 'Cucumbers', 'Bell Peppers'],
-    datasets: [{
-      label: 'Harvest Rate (kg/sq.m)',
-      data: [3.5, 2.8, 2.2, 1.9, 2.5, 2.1],
-      backgroundColor: [
-        'rgba(255, 99, 71, 0.7)',
-        'rgba(76, 175, 80, 0.7)',
-        'rgba(156, 39, 176, 0.7)',
-        'rgba(255, 193, 7, 0.7)',
-        'rgba(33, 150, 243, 0.7)',
-        'rgba(244, 67, 54, 0.7)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 71, 1)',
-        'rgba(76, 175, 80, 1)',
-        'rgba(156, 39, 176, 1)',
-        'rgba(255, 193, 7, 1)',
-        'rgba(33, 150, 243, 1)',
-        'rgba(244, 67, 54, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Harvest Rate (kg/sq.m)'
-        }
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'Vegetables'
-        }
+    // Check for selected warehouse on dashboard load
+    document.addEventListener('DOMContentLoaded', function() {
+      const selectedWarehouse = sessionStorage.getItem('selectedWarehouse');
+      
+      if (!selectedWarehouse) {
+        // Redirect to warehouse selection if none is selected
+        window.location.href = 'warehouse-select.html';
+        return;
       }
-    },
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Vegetable Harvest Rates'
-      }
+      
+      // Display current warehouse
+      displayWarehouseInfo(selectedWarehouse);
+      
+      // Handle change warehouse button
+      document.getElementById('change-warehouse').addEventListener('click', function() {
+        window.location.href = 'warehouse-select.html';
+      });
+      
+      // Initialize warehouse-specific chart
+      initializeHarvestChart(selectedWarehouse);
+    });
+
+    function displayWarehouseInfo(warehouseId) {
+      const warehouseHeader = document.getElementById('current-warehouse');
+      let warehouseName = '';
+      
+      // Map warehouse IDs to names
+      const warehouses = {
+        'WH001': 'Warehouse-01 (Mirpur)',
+        'WH002': 'Warehouse-02 (Badda)',
+        'WH003': 'Warehouse-03 (Uttora)'
+      };
+      
+      warehouseName = warehouses[warehouseId] || warehouseId;
+      warehouseHeader.innerHTML = `<h3>Current Warehouse: ${warehouseName}</h3>`;
     }
-  }
-});
 
+    function initializeHarvestChart(warehouseId) {
+      // Harvest Chart with warehouse-specific data
+      const ctx = document.getElementById('harvestChart').getContext('2d');
+      const harvestChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Tomatoes', 'Potatoes', 'Onions', 'Carrots', 'Cucumbers', 'Bell Peppers'],
+          datasets: [{
+            label: 'Harvest Rate (kg/sq.m)',
+            data: getWarehouseData(warehouseId), // Function to get warehouse-specific data
+            backgroundColor: [
+              'rgba(255, 99, 71, 0.7)',
+              'rgba(76, 175, 80, 0.7)',
+              'rgba(156, 39, 176, 0.7)',
+              'rgba(255, 193, 7, 0.7)',
+              'rgba(33, 150, 243, 0.7)',
+              'rgba(244, 67, 54, 0.7)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 71, 1)',
+              'rgba(76, 175, 80, 1)',
+              'rgba(156, 39, 176, 1)',
+              'rgba(255, 193, 7, 1)',
+              'rgba(33, 150, 243, 1)',
+              'rgba(244, 67, 54, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Harvest Rate (kg/sq.m)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Vegetables'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: `Vegetable Harvest Rates - ${warehouseId}`
+            }
+          }
+        }
+      });
+    }
+
+    // Function to get warehouse-specific data (mock data for demonstration)
+    function getWarehouseData(warehouseId) {
+      // In a real application, you would fetch this data from your backend API
+      const warehouseData = {
+        'WH001': [3.5, 2.8, 2.2, 1.9, 2.5, 2.1], // Main Warehouse data
+        'WH002': [3.2, 2.5, 2.0, 1.7, 2.3, 1.9], // Cold Storage A data
+        'WH003': [3.8, 3.0, 2.4, 2.1, 2.7, 2.3]  // Distribution Center data
+      };
+      
+      return warehouseData[warehouseId] || [3.5, 2.8, 2.2, 1.9, 2.5, 2.1]; // Default data
+    }
   </script>
 </body>
 </html>

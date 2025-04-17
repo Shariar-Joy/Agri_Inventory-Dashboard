@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Warehouse</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
+  <style>
+    :root {
+      --clr-primary: #7380ec;
+      --clr-success: #035200;
+      --clr-white: #fff;
+      --clr-dark: #363949;
+      --clr-color-background: #f6f6f9;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background: var(--clr-color-background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .warehouse-container {
+      background: var(--clr-white);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .logo img {
+      width: 3rem;
+      height: 3rem;
+    }
+    
+    .logo h1 {
+      color: var(--clr-success);
+      font-size: 1.8rem;
+    }
+    
+    h2 {
+      margin-bottom: 2rem;
+      color: var(--clr-dark);
+    }
+    
+    .warehouse-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .warehouse-item {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .warehouse-item:hover {
+      background: var(--clr-primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+    
+    .warehouse-item.active {
+      background: var(--clr-primary);
+      color: white;
+      border-color: var(--clr-primary);
+    }
+    
+    .btn {
+      background: var(--clr-primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background: var(--clr-primary);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="warehouse-container">
+    <div class="logo">
+      <img src="image/logo.png" alt="Agri Inventory Logo">
+      <h1>Agri Inventory</h1>
+    </div>
+    
+    <h2>Select Your Warehouse</h2>
+    
+    <div class="warehouse-list">
+      <div class="warehouse-item" data-warehouse="WH001">
+        <h3>Warehouse-01</h3>
+        <p>Location: Mirpur</p>
+      </div>
+      <div class="warehouse-item" data-warehouse="WH002">
+        <h3>Warehouse-02</h3>
+        <p>Location: Baddaa</p>
+      </div>
+      <div class="warehouse-item" data-warehouse="WH003">
+        <h3>Warehouse-03</h3>
+        <p>Location: Uttora</p>
+      </div>
+    </div>
+    
+    <button class="btn" id="proceed-btn">Proceed to Dashboard</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const warehouseItems = document.querySelectorAll('.warehouse-item');
+      const proceedBtn = document.getElementById('proceed-btn');
+      let selectedWarehouse = null;
+      
+      // Select warehouse
+      warehouseItems.forEach(item => {
+        item.addEventListener('click', function() {
+          warehouseItems.forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+          selectedWarehouse = this.getAttribute('data-warehouse');
+        });
+      });
+      
+      // Proceed to dashboard
+      proceedBtn.addEventListener('click', function() {
+        if (!selectedWarehouse) {
+          alert('Please select a warehouse first');
+          return;
+        }
+        
+        // Store selected warehouse in session storage
+        sessionStorage.setItem('selectedWarehouse', selectedWarehouse);
+        
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      });
+    });
+  </script>
+</body>
+</html>

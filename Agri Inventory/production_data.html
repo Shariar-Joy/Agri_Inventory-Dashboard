@@ -560,6 +560,7 @@
     <aside>
       <div class="top">
         <div class="logo">
+          <img src="image/logo.png" alt="Agri Inventory Logo">
           <h2><span class="success">Agri Inventory</span></h2>
         </div>
         <div class="close" id="close-btn">
@@ -580,7 +581,7 @@
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="production_record.html" id="product-info-link"><span class="material-symbols-sharp">info</span> Product Record</a>
+            <a href="inventory.html" id="product-info-link"><span class="material-symbols-sharp">inventory</span> Inventory</a>
             <a href="#" class="active"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
           </div>
         </div>
@@ -594,7 +595,7 @@
           <div class="dropdown-content">
             <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
             <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Temp Control</a>
+            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
           </div>
         </div>
 
@@ -611,6 +612,11 @@
           <span class="material-symbols-sharp">trending_down</span>
           <h3>Spoilage Records</h3>
         </a>
+        </a>
+        <a href="reports.html">
+          <span class="material-symbols-sharp">report_gmailerrorred</span>
+          <h3>Reports</h3>
+        </a>
         <a href="#">
           <span class="material-symbols-sharp">settings</span>
           <h3>Settings</h3>
@@ -625,7 +631,7 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1 class="centered-title">Production Data</h1>
+        <h1>Production Data</h1>
         <div class="search-bar">
           <input type="text" id="product-search" placeholder="Search products...">
           <span class="material-symbols-sharp">search</span>
@@ -650,13 +656,13 @@
           <table id="products-table">
             <thead>
               <tr>
-                <th>Product ID</th>
+                <th>Batch ID</th>
                 <th>Product Name</th>
                 <th>Type</th>
                 <th>Variety</th>
-                <th>Seasonality</th>
-                <th>Main Price</th>
-                <th>Current Price</th>
+                <th>Total Quantity (kg)</th>
+                <th>Main Price (BDT/kg)</th>
+                <th>Current Price (BDT/kg)</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -711,20 +717,16 @@
           <input type="text" id="product-validity" required>
         </div>
         <div class="form-group">
-          <label for="product-basis">Seasonality</label>
-          <input type="text" id="product-basis" required>
+          <label for="product-quantity">Total Quantity (kg)</label>
+          <input type="number" id="product-quantity" required>
         </div>
         <div class="form-group">
-          <label for="product-main-price">Main Price</label>
+          <label for="product-main-price">Main Price (BDT/kg)</label>
           <input type="number" id="product-main-price" required>
         </div>
         <div class="form-group">
-          <label for="product-current-price">Current Price</label>
+          <label for="product-current-price">Current Price (BDT/kg)</label>
           <input type="number" id="product-current-price" required>
-        </div>
-        <div class="form-group">
-          <label for="product-author">Author</label>
-          <input type="text" id="product-author" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
@@ -750,14 +752,21 @@ const closeModal = document.querySelector('.close-modal');
 const productForm = document.getElementById('product-form');
 const modalTitle = document.getElementById('modal-title');
 
-// Sample product data
+// Sample product data with new format
 let products = [
-  { id: 16, name: "Orders", type: "Large", validity: "Indices", basis: "All", mainPrice: 250, currentPrice: 300, author: "Admin" },
-  { id: 29, name: "Rose", type: "Mid-Cell", validity: "Dash", basis: "All", mainPrice: 150, currentPrice: 200, author: "Admin" },
-  { id: 22, name: "Tension", type: "Red", validity: "Dash", basis: "Winner", mainPrice: 30, currentPrice: 35, author: "Admin" },
-  { id: 23, name: "Potato", type: "Red", validity: "Palation", basis: "Winner", mainPrice: 100, currentPrice: 140, author: "Admin" },
-  { id: 28, name: "Bright", type: "Round", validity: "Bangalore's!", basis: "Winner", mainPrice: 100, currentPrice: 130, author: "Admin" }
+  { id: 25, batchId: "25-184", name: "Tomato", type: "Large", validity: "Bangladesh", quantity: 500, mainPrice: 25, currentPrice: 30 },
+  { id: 25, batchId: "25-185", name: "Potato", type: "Large", validity: "Bangladesh", quantity: 800, mainPrice: 15, currentPrice: 20 },
+  { id: 25, batchId: "25-186", name: "Onion", type: "Red", validity: "India", quantity: 300, mainPrice: 30, currentPrice: 35 },
+  { id: 25, batchId: "25-187", name: "Carrot", type: "Smalll", validity: "Pakistan", quantity: 200, mainPrice: 40, currentPrice: 45 },
+  { id: 25, batchId: "25-188", name: "Cucumber", type: "Long", validity: "China", quantity: 150, mainPrice: 35, currentPrice: 40 }
 ];
+
+// Generate batch ID (year + random 3-digit number)
+function generateBatchId() {
+  const currentYear = new Date().getFullYear().toString().slice(-2);
+  const randomNum = Math.floor(100 + Math.random() * 900);
+  return `${currentYear}-${randomNum}`;
+}
 
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', () => {
@@ -796,13 +805,13 @@ function renderProducts(productsToRender) {
   productsToRender.forEach(product => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${product.id}</td>
+      <td>${product.batchId}</td>
       <td>${product.name}</td>
       <td>${product.type}</td>
       <td>${product.validity}</td>
-      <td>${product.basis}</td>
-      <td>$${product.mainPrice}</td>
-      <td>$${product.currentPrice}</td>
+      <td>${product.quantity} kg</td>
+      <td>${product.mainPrice} BDT/kg</td>
+      <td>${product.currentPrice} BDT/kg</td>
       <td class="action-buttons">
         <button class="btn btn-secondary edit-product" data-id="${product.id}">
           <span class="material-symbols-sharp">edit</span>
@@ -837,10 +846,9 @@ function addProduct() {
   document.getElementById('product-name').value = '';
   document.getElementById('product-type').value = '';
   document.getElementById('product-validity').value = '';
-  document.getElementById('product-basis').value = '';
+  document.getElementById('product-quantity').value = '';
   document.getElementById('product-main-price').value = '';
   document.getElementById('product-current-price').value = '';
-  document.getElementById('product-author').value = '';
   productModal.style.display = 'block';
 }
 
@@ -852,10 +860,9 @@ function editProduct(productId) {
     document.getElementById('product-name').value = product.name;
     document.getElementById('product-type').value = product.type;
     document.getElementById('product-validity').value = product.validity;
-    document.getElementById('product-basis').value = product.basis;
+    document.getElementById('product-quantity').value = product.quantity;
     document.getElementById('product-main-price').value = product.mainPrice;
     document.getElementById('product-current-price').value = product.currentPrice;
-    document.getElementById('product-author').value = product.author;
     productModal.style.display = 'block';
   }
 }
@@ -873,7 +880,7 @@ function searchProducts() {
     product.name.toLowerCase().includes(searchTerm) ||
     product.type.toLowerCase().includes(searchTerm) ||
     product.validity.toLowerCase().includes(searchTerm) ||
-    product.basis.toLowerCase().includes(searchTerm)
+    product.batchId.toLowerCase().includes(searchTerm)
   );
   renderProducts(filteredProducts);
 }
@@ -905,16 +912,18 @@ productForm.addEventListener('submit', (e) => {
     name: document.getElementById('product-name').value,
     type: document.getElementById('product-type').value,
     validity: document.getElementById('product-validity').value,
-    basis: document.getElementById('product-basis').value,
+    quantity: parseFloat(document.getElementById('product-quantity').value),
     mainPrice: parseFloat(document.getElementById('product-main-price').value),
     currentPrice: parseFloat(document.getElementById('product-current-price').value),
-    author: document.getElementById('product-author').value
+    batchId: generateBatchId()
   };
   
   if (productId) {
     // Update existing product
     const index = products.findIndex(p => p.id === parseInt(productId));
     if (index !== -1) {
+      // Keep the original batch ID when updating
+      productData.batchId = products[index].batchId;
       products[index] = { ...products[index], ...productData };
     }
   } else {

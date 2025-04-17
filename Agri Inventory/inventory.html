@@ -591,6 +591,7 @@
     <aside>
       <div class="top">
         <div class="logo">
+          <img src="image/logo.png" alt="Agri Inventory Logo">
           <h2><span class="success">Agri Inventory</span></h2>
         </div>
         <div class="close" id="close-btn">
@@ -611,7 +612,7 @@
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="#" class="active" id="product-info-link"><span class="material-symbols-sharp">info</span> Production Record</a>
+            <a href="#" class="active" id="product-info-link"><span class="material-symbols-sharp">inventory</span> Inventory</a>
             <a href="production_data.html"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
           </div>
         </div>
@@ -625,7 +626,7 @@
           <div class="dropdown-content">
             <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
             <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Temp Control</a>
+            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
           </div>
         </div>
 
@@ -642,6 +643,11 @@
           <span class="material-symbols-sharp">trending_down</span>
           <h3>Spoilage Records</h3>
         </a>
+        </a>
+        <a href="reports.html">
+          <span class="material-symbols-sharp">report_gmailerrorred</span>
+          <h3>Reports</h3>
+        </a>
         <a href="#">
           <span class="material-symbols-sharp">settings</span>
           <h3>Settings</h3>
@@ -656,7 +662,7 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1 class="centered-title">Production Record</h1>
+        <h1>Inventory</h1>
         <div class="search-bar">
           <input type="text" id="product-search" placeholder="Search records...">
           <span class="material-symbols-sharp">search</span>
@@ -688,7 +694,7 @@
                 <th>Quantity Packed (kg/crates)</th>
                 <th>Packaging Type</th>
                 <th>Grade/Quality</th>
-                <th>Waste / Rejected Qty (kg)</th>
+                
                 <th>Destination</th>
                 <th>Remarks</th>
                 <th>Actions</th>
@@ -714,7 +720,7 @@
         </div>
         <div class="profile">
           <div class="info">
-            <p>Hey, <b>Farmer</b></p>
+            <p>Hey, <b>Joy</b></p>
             <small class="text-muted">Admin</small>
           </div>
           <div class="profile-photo">
@@ -772,10 +778,7 @@
             <option value="Organic">Organic</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="waste-qty">Waste / Rejected Qty (kg)</label>
-          <input type="number" id="waste-qty" step="0.01" required>
-        </div>
+        
         <div class="form-group">
           <label for="destination">Destination</label>
           <input type="text" id="destination" required>
@@ -820,7 +823,7 @@
         qtyPacked: 1150, 
         packagingType: "Crates", 
         grade: "Grade A", 
-        wasteQty: 50, 
+        
         destination: "Local Market", 
         remarks: "Good quality" 
       },
@@ -833,7 +836,7 @@
         qtyPacked: 780, 
         packagingType: "Boxes", 
         grade: "Organic", 
-        wasteQty: 20, 
+        
         destination: "Export", 
         remarks: "Organic certified" 
       },
@@ -846,7 +849,7 @@
         qtyPacked: 1450, 
         packagingType: "Bags", 
         grade: "Grade B", 
-        wasteQty: 50, 
+         
         destination: "Processing Plant", 
         remarks: "Some minor defects" 
       }
@@ -896,7 +899,7 @@
           <td>${product.qtyPacked.toFixed(2)}</td>
           <td>${product.packagingType}</td>
           <td>${product.grade}</td>
-          <td>${product.wasteQty.toFixed(2)}</td>
+          
           <td>${product.destination}</td>
           <td>${product.remarks}</td>
           <td class="action-buttons">
@@ -937,7 +940,7 @@
       document.getElementById('quantity-packed').value = '';
       document.getElementById('packaging-type').value = '';
       document.getElementById('grade-quality').value = '';
-      document.getElementById('waste-qty').value = '';
+      
       document.getElementById('destination').value = '';
       document.getElementById('remarks').value = '';
       productModal.style.display = 'block';
@@ -955,7 +958,7 @@
         document.getElementById('quantity-packed').value = product.qtyPacked;
         document.getElementById('packaging-type').value = product.packagingType;
         document.getElementById('grade-quality').value = product.grade;
-        document.getElementById('waste-qty').value = product.wasteQty;
+        
         document.getElementById('destination').value = product.destination;
         document.getElementById('remarks').value = product.remarks;
         productModal.style.display = 'block';
@@ -1011,7 +1014,7 @@
         qtyPacked: parseFloat(document.getElementById('quantity-packed').value),
         packagingType: document.getElementById('packaging-type').value,
         grade: document.getElementById('grade-quality').value,
-        wasteQty: parseFloat(document.getElementById('waste-qty').value),
+        
         destination: document.getElementById('destination').value,
         remarks: document.getElementById('remarks').value
       };

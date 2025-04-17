@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Warehouse - Received Items</title>
+  <title>Warehouse - Delivery Report</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
   <style>
     :root {
@@ -321,8 +321,8 @@
       border: 1px solid var(--clr-light);
     }
     
-    /* ========== RECEIVED ITEMS ========== */
-    .received-items {
+    /* ========== DELIVERY REPORT ========== */
+    .delivery-report {
       margin-top: 2rem;
       background: var(--clr-white);
       padding: var(--card-padding);
@@ -330,10 +330,11 @@
       box-shadow: var(--box-shadow);
     }
     
-    .item-actions {
+    .report-actions {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
+      justify-content: flex-end;
     }
     
     .btn {
@@ -366,99 +367,59 @@
       background: var(--clr-light);
     }
     
-    .btn-danger {
-      background: var(--clr-danger);
+    .btn-success {
+      background: var(--clr-success);
       color: white;
       border: none;
     }
     
-    .btn-danger:hover {
-      background: #b33700;
+    .btn-success:hover {
+      background: #024100;
     }
     
-    .items-table-container {
+    .report-table-container {
       overflow-x: auto;
     }
     
-    #items-table {
+    #report-table {
       width: 100%;
       border-collapse: collapse;
     }
     
-    #items-table th, 
-    #items-table td {
+    #report-table th, 
+    #report-table td {
       padding: 0.8rem;
       text-align: left;
       border-bottom: 1px solid var(--clr-light);
     }
     
-    #items-table th {
+    #report-table th {
       background: var(--clr-primary);
       color: white;
     }
     
-    #items-table tr:hover {
+    #report-table tr:hover {
       background: var(--clr-light);
     }
     
-    .action-buttons {
-      display: flex;
-      gap: 0.5rem;
+    .status-pending {
+      color: var(--clr-warning);
+      font-weight: bold;
     }
     
-    /* ========== MODAL ========== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+    .status-delivered {
+      color: var(--clr-success);
+      font-weight: bold;
     }
     
-    .modal-content {
-      background-color: var(--clr-white);
-      margin: 10% auto;
-      padding: 2rem;
-      border-radius: var(--card-border-radius);
-      width: 50%;
-      max-width: 500px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 1rem;
-      right: 1.5rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--clr-dark);
-    }
-    
-    .close-modal:hover {
+    .status-cancelled {
       color: var(--clr-danger);
+      font-weight: bold;
     }
     
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: var(--clr-dark);
-    }
-    
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid var(--clr-light);
-      border-radius: var(--border-radius-1);
-      background: var(--clr-white);
-      color: var(--clr-dark);
+    .spoil-cell {
+      color: var(--clr-danger);
+      font-weight: bold;
     }
     
     /* ========== DARK THEME ========== */
@@ -531,12 +492,7 @@
         margin: 0 1rem;
       }
       
-      .modal-content {
-        width: 90%;
-        margin: 20% auto;
-      }
-      
-      .item-actions {
+      .report-actions {
         flex-direction: column;
       }
       
@@ -561,13 +517,13 @@
       </div>
 
       <div class="sidebar">
-        <a href="dashboard.html" >
+        <a href="dashboard.html">
           <span class="material-symbols-sharp">grid_view</span>
           <h3>Dashboard</h3>
         </a>
 
-        <div class="dropdown" >
-          <a href="#" class="dropdown-btn" >
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
             <span class="material-symbols-sharp">receipt_long</span>
             <h3>Production</h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
@@ -585,8 +541,8 @@
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="#" class="active"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
+            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
+            <a href="delivery_items.html" class="active"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
             <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
           </div>
         </div>
@@ -605,7 +561,7 @@
           <h3>Spoilage Records</h3>
         </a>
         </a>
-        <a href="reports.html">
+        <a href="#">
           <span class="material-symbols-sharp">report_gmailerrorred</span>
           <h3>Reports</h3>
         </a>
@@ -623,42 +579,50 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1>Received Items</h1>
+        <h1>Delivery Report</h1>
         <div class="search-bar">
-          <input type="text" id="item-search" placeholder="Search items...">
+          <input type="text" id="report-search" placeholder="Search deliveries...">
           <span class="material-symbols-sharp">search</span>
         </div>
         <div class="date">
-          <input type="date" id="received-date" value="2023-11-15">
+          <input type="date" id="report-date" value="2023-11-15">
         </div>
       </div>
       
-      <!-- Received Items Section -->
-      <div class="received-items">
-        <div class="item-actions">
-          <button id="add-item-btn" class="btn btn-primary">
-            <span class="material-symbols-sharp">add</span> Add Item
+      <!-- Delivery Report Section -->
+      <div class="delivery-report">
+        <div class="report-actions">
+          <button id="export-pdf-btn" class="btn btn-primary">
+            <span class="material-symbols-sharp">picture_as_pdf</span> Export PDF
           </button>
-          <button id="refresh-items-btn" class="btn btn-secondary">
+          <button id="export-excel-btn" class="btn btn-success">
+            <span class="material-symbols-sharp">description</span> Export Excel
+          </button>
+          <button id="refresh-report-btn" class="btn btn-secondary">
             <span class="material-symbols-sharp">refresh</span> Refresh
           </button>
         </div>
         
-        <div class="items-table-container">
-          <table id="items-table">
+        <div class="report-table-container">
+          <table id="report-table">
             <thead>
               <tr>
                 <th>Batch ID</th>
                 <th>Product Name</th>
-                <th>Quantity (kg)</th>
+                <th>Production Date</th>
+                <th>Total Qty (kg)</th>
+                <th>Spoil Qty (kg)</th>
+                <th>Total Cost</th>
+                <th>Total Price</th>
                 <th>Supplier ID</th>
-                <th>Source</th>
-                <th>Receiving Date</th>
-                <th>Actions</th>
+                <th>Shipment ID</th>
+                <th>Destination</th>
+                <th>Status</th>
+                <th>Delivery Date</th>
               </tr>
             </thead>
-            <tbody id="items-table-body">
-              <!-- Items will be loaded here -->
+            <tbody id="report-table-body">
+              <!-- Delivery items will be loaded here -->
             </tbody>
           </table>
         </div>
@@ -693,7 +657,7 @@
             <span class="material-symbols-sharp">warning</span>
           </div>
           <div class="alert-content">
-            <div class="alert-message">New shipment received in Warehouse 2</div>
+            <div class="alert-message">New shipment scheduled for tomorrow</div>
             <div class="alert-time">15 min ago</div>
           </div>
         </div>
@@ -702,53 +666,11 @@
             <span class="material-symbols-sharp">info</span>
           </div>
           <div class="alert-content">
-            <div class="alert-message">Inventory levels optimal in all warehouses</div>
+            <div class="alert-message">3 deliveries completed today</div>
             <div class="alert-time">45 min ago</div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Item Modal -->
-  <div id="item-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 id="modal-title">Add Received Item</h2>
-      <form id="item-form">
-        <input type="hidden" id="item-id">
-        <div class="form-group">
-          <label for="batch-id">Batch ID</label>
-          <input type="text" id="batch-id" required>
-        </div>
-        <div class="form-group">
-          <label for="product-name">Product Name</label>
-          <input type="text" id="product-name" required>
-        </div>
-        <div class="form-group">
-          <label for="quantity">Quantity (kg)</label>
-          <input type="number" id="quantity" required>
-        </div>
-        <div class="form-group">
-          <label for="supplier-id">Supplier ID</label>
-          <input type="text" id="supplier-id" required placeholder="5-digit number">
-        </div>
-        <div class="form-group">
-          <label for="source">Source</label>
-          <select id="source" required>
-            <option value="">Select source</option>
-            <option value="Farm A">Farm A</option>
-            <option value="Farm B">Farm B</option>
-            <option value="External Supplier">External Supplier</option>
-            <option value="Local Producer">Local Producer</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="receiving-date">Receiving Date</label>
-          <input type="date" id="receiving-date" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
     </div>
   </div>
 
@@ -760,30 +682,91 @@
     const themeToggler = document.querySelector('.theme-toggler');
     const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 
-    // Received Items Management Elements
-    const addItemBtn = document.getElementById('add-item-btn');
-    const refreshItemsBtn = document.getElementById('refresh-items-btn');
-    const itemSearch = document.getElementById('item-search');
-    const itemsTableBody = document.getElementById('items-table-body');
-    const itemModal = document.getElementById('item-modal');
-    const closeModal = document.querySelector('.close-modal');
-    const itemForm = document.getElementById('item-form');
-    const modalTitle = document.getElementById('modal-title');
+    // Delivery Report Management Elements
+    const exportPdfBtn = document.getElementById('export-pdf-btn');
+    const exportExcelBtn = document.getElementById('export-excel-btn');
+    const refreshReportBtn = document.getElementById('refresh-report-btn');
+    const reportSearch = document.getElementById('report-search');
+    const reportTableBody = document.getElementById('report-table-body');
+    const reportDate = document.getElementById('report-date');
 
-    // Sample received items data with new fields
-    let receivedItems = [
-      { batchId: "25-847", name: "Wheat Grain", quantity: 500, supplierId: "12345", source: "Farm A", receivingDate: "2023-11-10" },
-      { batchId: "25-848", name: "Corn Seeds", quantity: 300, supplierId: "23456", source: "Farm B", receivingDate: "2023-11-12" },
-      { batchId: "25-849", name: "Potatoes", quantity: 1200, supplierId: "34567", source: "External Supplier", receivingDate: "2023-11-14" },
-      { batchId: "25-850", name: "Rice Bags", quantity: 200, supplierId: "45678", source: "Local Producer", receivingDate: "2023-11-15" },
-      { batchId: "25-851", name: "Tomato Seedlings", quantity: 150, supplierId: "56789", source: "Farm A", receivingDate: "2023-11-15" }
+    // Sample delivery report data
+    let deliveryItems = [
+      { 
+        batchId: "25-847", 
+        name: "Wheat Grain", 
+        productionDate: "2023-10-15", 
+        totalQty: 500, 
+        spoilQty: 5, 
+        totalCost: 2500, 
+        totalPrice: 3500, 
+        supplierId: "12345", 
+        shipmentId: "SH-847", 
+        destination: "Dhaka", 
+        status: "Delivered", 
+        deliveryDate: "2023-11-05" 
+      },
+      { 
+        batchId: "25-848", 
+        name: "Corn Seeds", 
+        productionDate: "2023-10-18", 
+        totalQty: 300, 
+        spoilQty: 3, 
+        totalCost: 1800, 
+        totalPrice: 2400, 
+        supplierId: "23456", 
+        shipmentId: "SH-848", 
+        destination: "Dhaka", 
+        status: "In Transit", 
+        deliveryDate: "" 
+      },
+      { 
+        batchId: "25-849", 
+        name: "Potatoes", 
+        productionDate: "2023-10-20", 
+        totalQty: 1200, 
+        spoilQty: 10, 
+        totalCost: 3600, 
+        totalPrice: 4800, 
+        supplierId: "34567", 
+        shipmentId: "SH-849", 
+        destination: "Barishaal", 
+        status: "Pending", 
+        deliveryDate: "" 
+      },
+      { 
+        batchId: "25-850", 
+        name: "Rice Bags", 
+        productionDate: "2023-10-22", 
+        totalQty: 200, 
+        spoilQty: 2, 
+        totalCost: 1600, 
+        totalPrice: 2200, 
+        supplierId: "45678", 
+        shipmentId: "SH-850", 
+        destination: "Dhaka", 
+        status: "Cancelled", 
+        deliveryDate: "" 
+      },
+      { 
+        batchId: "25-851", 
+        name: "Tomato Seedlings", 
+        productionDate: "2023-10-25", 
+        totalQty: 150, 
+        spoilQty: 1, 
+        totalCost: 1200, 
+        totalPrice: 1800, 
+        supplierId: "56789", 
+        shipmentId: "SH-851", 
+        destination: "Noaakhali", 
+        status: "Delivered", 
+        deliveryDate: "2023-11-10" 
+      }
     ];
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', () => {
-      renderItems(receivedItems);
-      // Set today's date as default for new items
-      document.getElementById('receiving-date').valueAsDate = new Date();
+      renderDeliveryReport(deliveryItems);
     });
 
     // Toggle sidebar
@@ -811,157 +794,90 @@
       });
     });
 
-    // Received Items Functions
-    function renderItems(itemsToRender) {
-      itemsTableBody.innerHTML = '';
-      
+    // Delivery Report Functions
+    function renderDeliveryReport(itemsToRender) {
+      reportTableBody.innerHTML = '';
+  
       itemsToRender.forEach(item => {
         const row = document.createElement('tr');
-        row.innerHTML = `
+    
+        // Determine status class
+        let statusClass = '';
+        if (item.status === 'Delivered') {
+          statusClass = 'status-delivered';
+        } else if (item.status === 'Pending') {
+          statusClass = 'status-pending';
+        } else if (item.status === 'Cancelled') {
+          statusClass = 'status-cancelled';
+        } else if (item.status === 'In Transit') {
+          statusClass = 'status-pending'; // You can create another class if needed
+        }
+    
+       row.innerHTML = `
           <td>${item.batchId}</td>
           <td>${item.name}</td>
-          <td>${item.quantity}</td>
+          <td>${item.productionDate}</td>
+          <td>${item.totalQty}</td>
+          <td class="spoil-cell">${item.spoilQty}</td>
+          <td>${item.totalCost.toLocaleString()}</td>
+          <td>${item.totalPrice.toLocaleString()}</td>
           <td>${item.supplierId}</td>
-          <td>${item.source}</td>
-          <td>${formatDate(item.receivingDate)}</td>
-          <td class="action-buttons">
-            <button class="btn btn-secondary edit-item" data-id="${item.batchId}">
-              <span class="material-symbols-sharp">edit</span>
-            </button>
-            <button class="btn btn-danger delete-item" data-id="${item.batchId}">
-              <span class="material-symbols-sharp">delete</span>
-            </button>
-          </td>
-        `;
-        itemsTableBody.appendChild(row);
-      });
-      
-      // Add event listeners to edit and delete buttons
-      document.querySelectorAll('.edit-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const batchId = e.target.closest('button').getAttribute('data-id');
-          editItem(batchId);
-        });
-      });
-      
-      document.querySelectorAll('.delete-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const batchId = e.target.closest('button').getAttribute('data-id');
-          deleteItem(batchId);
-        });
-      });
-    }
+          <td>${item.shipmentId}</td>
+          <td>${item.destination}</td>
+          <td class="${statusClass}">${item.status}</td>
+          <td>${item.deliveryDate || '-'}</td>
+      `;
+      reportTableBody.appendChild(row);
+    });
+  }
 
-    function formatDate(dateString) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-    }
-
-    function addItem() {
-      modalTitle.textContent = 'Add Received Item';
-      document.getElementById('item-id').value = '';
-      document.getElementById('batch-id').value = generateBatchId();
-      document.getElementById('product-name').value = '';
-      document.getElementById('quantity').value = '';
-      document.getElementById('supplier-id').value = '';
-      document.getElementById('source').value = '';
-      document.getElementById('receiving-date').valueAsDate = new Date();
-      itemModal.style.display = 'block';
-    }
-
-    function editItem(batchId) {
-      const item = receivedItems.find(i => i.batchId === batchId);
-      if (item) {
-        modalTitle.textContent = 'Edit Item';
-        document.getElementById('item-id').value = item.batchId;
-        document.getElementById('batch-id').value = item.batchId;
-        document.getElementById('product-name').value = item.name;
-        document.getElementById('quantity').value = item.quantity;
-        document.getElementById('supplier-id').value = item.supplierId;
-        document.getElementById('source').value = item.source;
-        document.getElementById('receiving-date').value = item.receivingDate;
-        itemModal.style.display = 'block';
-      }
-    }
-
-    function deleteItem(batchId) {
-      if (confirm('Are you sure you want to delete this item?')) {
-        receivedItems = receivedItems.filter(item => item.batchId !== batchId);
-        renderItems(receivedItems);
-      }
-    }
-
-    function searchItems() {
-      const searchTerm = itemSearch.value.toLowerCase();
-      const filteredItems = receivedItems.filter(item => 
+    function searchDeliveries() {
+      const searchTerm = reportSearch.value.toLowerCase();
+      const filteredItems = deliveryItems.filter(item => 
         item.name.toLowerCase().includes(searchTerm) ||
         item.supplierId.toLowerCase().includes(searchTerm) ||
         item.batchId.toLowerCase().includes(searchTerm) ||
-        item.source.toLowerCase().includes(searchTerm)
+        item.shipmentId.toLowerCase().includes(searchTerm) ||
+        item.destination.toLowerCase().includes(searchTerm) ||
+        item.status.toLowerCase().includes(searchTerm)
       );
-      renderItems(filteredItems);
+      renderDeliveryReport(filteredItems);
     }
 
-    // Generate a new batch ID in format "YY-XXX"
-    function generateBatchId() {
-      const now = new Date();
-      const year = now.getFullYear().toString().slice(-2);
-      const randomNum = Math.floor(100 + Math.random() * 900);
-      return `${year}-${randomNum}`;
-    }
-
-    // Event Listeners
-    addItemBtn.addEventListener('click', addItem);
-
-    refreshItemsBtn.addEventListener('click', () => {
-      renderItems(receivedItems);
-    });
-
-    itemSearch.addEventListener('input', searchItems);
-
-    closeModal.addEventListener('click', () => {
-      itemModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === itemModal) {
-        itemModal.style.display = 'none';
-      }
-    });
-
-    itemForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const itemId = document.getElementById('item-id').value;
-      const itemData = {
-        batchId: document.getElementById('batch-id').value || generateBatchId(),
-        name: document.getElementById('product-name').value,
-        quantity: parseInt(document.getElementById('quantity').value),
-        supplierId: document.getElementById('supplier-id').value,
-        source: document.getElementById('source').value,
-        receivingDate: document.getElementById('receiving-date').value
-      };
-      
-      // Validate supplier ID is 5 digits
-      if (!/^\d{5}$/.test(itemData.supplierId)) {
-        alert('Supplier ID must be a 5-digit number');
+    function filterByDate() {
+      const selectedDate = reportDate.value;
+      if (!selectedDate) {
+        renderDeliveryReport(deliveryItems);
         return;
       }
       
-      if (itemId) {
-        // Update existing item
-        const index = receivedItems.findIndex(i => i.batchId === itemId);
-        if (index !== -1) {
-          receivedItems[index] = { ...receivedItems[index], ...itemData };
-        }
-      } else {
-        // Add new item
-        receivedItems.push(itemData);
-      }
-      
-      renderItems(receivedItems);
-      itemModal.style.display = 'none';
+      const filteredItems = deliveryItems.filter(item => 
+        item.productionDate === selectedDate || 
+        item.deliveryDate === selectedDate
+      );
+      renderDeliveryReport(filteredItems);
+    }
+
+    function exportToPDF() {
+      alert('PDF export functionality would be implemented here');
+      // In a real implementation, you would use a library like jsPDF
+      // to generate a PDF from the table data
+    }
+
+    function exportToExcel() {
+      alert('Excel export functionality would be implemented here');
+      // In a real implementation, you would use a library like SheetJS
+      // to generate an Excel file from the table data
+    }
+
+    // Event Listeners
+    exportPdfBtn.addEventListener('click', exportToPDF);
+    exportExcelBtn.addEventListener('click', exportToExcel);
+    refreshReportBtn.addEventListener('click', () => {
+      renderDeliveryReport(deliveryItems);
     });
+    reportSearch.addEventListener('input', searchDeliveries);
+    reportDate.addEventListener('change', filterByDate);
   </script>
 </body>
 </html>
