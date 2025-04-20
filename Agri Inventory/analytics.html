@@ -392,6 +392,16 @@
       background: #b33700;
     }
     
+    .btn-warning {
+      background: var(--clr-warning);
+      color: var(--clr-dark);
+      border: none;
+    }
+    
+    .btn-warning:hover {
+      background: #e6a336;
+    }
+    
     .btn-sm {
       padding: 0.4rem 0.8rem;
       font-size: 0.8rem;
@@ -728,7 +738,8 @@
             </div>
           </div>
         </div>
-        <!-- Add this new chart container after the "Received vs Delivered" section in your HTML -->
+        
+        <!-- Spoilage Records -->
         <div class="chart-container">
           <div class="chart-header">
             <h2 class="chart-title">Product Spoilage Records</h2>
@@ -741,10 +752,28 @@
               </button>
             </div>
           </div>
-        <div class="chart-card">
-          <canvas id="spoilageChart"></canvas>
+          <div class="chart-card">
+            <canvas id="spoilageChart"></canvas>
+          </div>
         </div>
-      </div>
+        
+        <!-- Expiry Alerts -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h2 class="chart-title">Expiry Alerts</h2>
+            <div class="chart-actions">
+              <button class="btn btn-sm btn-secondary">
+                <span class="material-symbols-sharp">filter_alt</span> Filter
+              </button>
+              <button class="btn btn-sm btn-warning">
+                <span class="material-symbols-sharp">notification_add</span> Set Alerts
+              </button>
+            </div>
+          </div>
+          <div class="chart-card">
+            <canvas id="expiryAlertsChart"></canvas>
+          </div>
+        </div>
         
         <!-- Received vs Delivered -->
         <div class="chart-container">
@@ -995,6 +1024,7 @@
           cutout: '70%'
         }
       });
+      
       // Spoilage Chart (Bar Chart with Line)
       const spoilageCtx = document.getElementById('spoilageChart').getContext('2d');
       const spoilageChart = new Chart(spoilageCtx, {
@@ -1075,26 +1105,83 @@
         }
       });
       
-      // Received vs Delivered Chart (Bar Chart)
-      const receivedDeliveredCtx = document.getElementById('receivedDeliveredChart').getContext('2d');
-      const receivedDeliveredChart = new Chart(receivedDeliveredCtx, {
+      // Expiry Alerts Chart (Horizontal Bar Chart)
+      const expiryAlertsCtx = document.getElementById('expiryAlertsChart').getContext('2d');
+      const expiryAlertsChart = new Chart(expiryAlertsCtx, {
         type: 'bar',
         data: {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          labels: ['Tomatoes', 'Lettuce', 'Berries', 'Milk', 'Yogurt', 'Cheese'],
+          datasets: [{
+            label: 'Days Until Expiry',
+            data: [2, 3, 1, 5, 7, 10],
+            backgroundColor: [
+              'rgba(255, 119, 130, 0.7)',
+              'rgba(255, 119, 130, 0.7)',
+              'rgba(255, 119, 130, 0.7)',
+              'rgba(255, 187, 85, 0.7)',
+              'rgba(255, 187, 85, 0.7)',
+              'rgba(115, 128, 236, 0.7)'
+            ],
+            borderColor: [
+              'rgba(255, 119, 130, 1)',
+              'rgba(255, 119, 130, 1)',
+              'rgba(255, 119, 130, 1)',
+              'rgba(255, 187, 85, 1)',
+              'rgba(115, 128, 236, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.raw + ' days remaining';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Days Until Expiry'
+              }
+            }
+          }
+        }
+      });
+      
+      // Received vs Delivered Chart (Radar Chart)
+      const receivedDeliveredCtx = document.getElementById('receivedDeliveredChart').getContext('2d');
+      const receivedDeliveredChart = new Chart(receivedDeliveredCtx, {
+        type: 'radar',
+        data: {
+          labels: ['Tomatoes', 'Potatoes', 'Carrots', 'Onions', 'Lettuce', 'Cucumbers'],
           datasets: [
             {
               label: 'Received',
-              data: [85, 72, 93, 92],
-              backgroundColor: 'rgba(65, 241, 182, 0.7)',
+              data: [120, 190, 170, 220, 180, 150],
+              backgroundColor: 'rgba(65, 241, 182, 0.2)',
               borderColor: 'rgba(65, 241, 182, 1)',
-              borderWidth: 1
+              borderWidth: 2,
+              pointBackgroundColor: 'rgba(65, 241, 182, 1)'
             },
             {
               label: 'Delivered',
-              data: [68, 76, 58, 85],
-              backgroundColor: 'rgba(255, 187, 85, 0.7)',
+              data: [90, 150, 140, 180, 160, 120],
+              backgroundColor: 'rgba(255, 187, 85, 0.2)',
               borderColor: 'rgba(255, 187, 85, 1)',
-              borderWidth: 1
+              borderWidth: 2,
+              pointBackgroundColor: 'rgba(255, 187, 85, 1)'
             }
           ]
         },
@@ -1107,55 +1194,18 @@
             }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Number of Items'
-              }
+            r: {
+              angleLines: {
+                display: true
+              },
+              suggestedMin: 0,
+              suggestedMax: 250
             }
           }
         }
       });
-      
-      // Update charts when theme changes
-      const isDarkTheme = document.body.classList.contains('dark-theme-variables');
-      updateChartColors(isDarkTheme);
-    }
-    
-    function updateChartColors(isDark) {
-      const textColor = isDark ? '#edeffd' : '#363949';
-      const gridColor = isDark ? 'rgba(237, 239, 253, 0.1)' : 'rgba(54, 57, 73, 0.1)';
-      
-      Chart.getChart("inventoryFlowChart").options.scales.x.grid.color = gridColor;
-      Chart.getChart("inventoryFlowChart").options.scales.y.grid.color = gridColor;
-      Chart.getChart("inventoryFlowChart").options.scales.x.ticks.color = textColor;
-      Chart.getChart("inventoryFlowChart").options.scales.y.ticks.color = textColor;
-      Chart.getChart("inventoryFlowChart").update();
-      
-      Chart.getChart("topProductsChart").options.scales.x.grid.color = gridColor;
-      Chart.getChart("topProductsChart").options.scales.y.grid.color = gridColor;
-      Chart.getChart("topProductsChart").options.scales.x.ticks.color = textColor;
-      Chart.getChart("topProductsChart").options.scales.y.ticks.color = textColor;
-      Chart.getChart("topProductsChart").update();
-      
-      Chart.getChart("inventoryDistributionChart").options.plugins.legend.labels.color = textColor;
-      Chart.getChart("inventoryDistributionChart").update();
-      
-      Chart.getChart("receivedDeliveredChart").options.scales.x.grid.color = gridColor;
-      Chart.getChart("receivedDeliveredChart").options.scales.y.grid.color = gridColor;
-      Chart.getChart("receivedDeliveredChart").options.scales.x.ticks.color = textColor;
-      Chart.getChart("receivedDeliveredChart").options.scales.y.ticks.color = textColor;
-      Chart.getChart("receivedDeliveredChart").update();
-
-      Chart.getChart("spoilageChart").options.scales.x.grid.color = gridColor;
-      Chart.getChart("spoilageChart").options.scales.y.grid.color = gridColor;
-      Chart.getChart("spoilageChart").options.scales.y1.grid.color = gridColor;
-      Chart.getChart("spoilageChart").options.scales.x.ticks.color = textColor;
-      Chart.getChart("spoilageChart").options.scales.y.ticks.color = textColor;
-      Chart.getChart("spoilageChart").options.scales.y1.ticks.color = textColor;
-      Chart.getChart("spoilageChart").update();
     }
   </script>
 </body>
 </html>
+              
