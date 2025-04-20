@@ -530,19 +530,19 @@
           </a>
           <div class="dropdown-content">
             <a href="inventory.html"><span class="material-symbols-sharp">inventory</span> Inventory</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">data_thresholding</span> Production Data</a>
+            <a href="production_data.html"><span class="material-symbols-sharp">input</span> New Entries</a>
           </div>
         </div>
 
         <div class="dropdown">
-          <a href="#">
+          <a href="#" class="dropdown-btn">
             <span class="material-symbols-sharp">warehouse</span>
             <h3>Warehouse</h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
             <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html" ><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
+            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
             <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
           </div>
         </div>
@@ -580,10 +580,6 @@
     <main>
       <div class="main-header">
         <h1>Delivery Report</h1>
-        <div class="search-bar">
-          <input type="text" id="report-search" placeholder="Search deliveries...">
-          <span class="material-symbols-sharp">search</span>
-        </div>
         <div class="date">
           <input type="date" id="report-date" value="2023-11-15">
         </div>
@@ -601,6 +597,10 @@
           <button id="refresh-report-btn" class="btn btn-secondary">
             <span class="material-symbols-sharp">refresh</span> Refresh
           </button>
+          <div class="search-bar">
+            <input type="text" id="report-search" placeholder="Search deliveries...">
+            <span class="material-symbols-sharp">search</span>
+          </div>
         </div>
         
         <div class="report-table-container">

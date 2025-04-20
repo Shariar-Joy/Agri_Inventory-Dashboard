@@ -12,6 +12,7 @@
       --clr-white: #fff;
       --clr-dark: #363949;
       --clr-color-background: #f6f6f9;
+      --clr-light-gray: #e0e0e0;
     }
     
     * {
@@ -62,31 +63,61 @@
       color: var(--clr-dark);
     }
     
-    .warehouse-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .select-container {
+      position: relative;
       margin-bottom: 2rem;
     }
     
-    .warehouse-item {
+    .select-container::after {
+      content: "▼";
+      font-size: 0.8rem;
+      color: var(--clr-dark);
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    
+    select {
+      width: 100%;
       padding: 1rem;
-      border: 1px solid #ddd;
+      border: 1px solid var(--clr-light-gray);
       border-radius: 0.5rem;
+      appearance: none;
+      background-color: var(--clr-white);
+      font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
     }
     
-    .warehouse-item:hover {
-      background: var(--clr-primary);
-      color: white;
-      transform: translateY(-3px);
+    select:focus {
+      outline: none;
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 2px rgba(115, 128, 236, 0.2);
     }
     
-    .warehouse-item.active {
-      background: var(--clr-primary);
-      color: white;
-      border-color: var(--clr-primary);
+    select option {
+      padding: 0.5rem;
+    }
+    
+    .warehouse-details {
+      background: var(--clr-color-background);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      display: none;
+    }
+    
+    .warehouse-details h3 {
+      margin-bottom: 0.5rem;
+      color: var(--clr-dark);
+    }
+    
+    .warehouse-details p {
+      color: var(--clr-dark);
+      opacity: 0.8;
     }
     
     .btn {
@@ -98,11 +129,20 @@
       cursor: pointer;
       font-size: 1rem;
       transition: all 0.3s ease;
+      width: 100%;
     }
     
     .btn:hover {
       background: var(--clr-primary);
       transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn:disabled {
+      background: var(--clr-light-gray);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
   </style>
 </head>
@@ -115,45 +155,60 @@
     
     <h2>Select Your Warehouse</h2>
     
-    <div class="warehouse-list">
-      <div class="warehouse-item" data-warehouse="WH001">
-        <h3>Warehouse-01</h3>
-        <p>Location: Mirpur</p>
-      </div>
-      <div class="warehouse-item" data-warehouse="WH002">
-        <h3>Warehouse-02</h3>
-        <p>Location: Baddaa</p>
-      </div>
-      <div class="warehouse-item" data-warehouse="WH003">
-        <h3>Warehouse-03</h3>
-        <p>Location: Uttora</p>
-      </div>
+    <div class="select-container">
+      <select id="warehouse-select">
+        <option value="" selected disabled>Select a warehouse</option>
+        <option value="WH001" data-location="Mirpur">Warehouse-01 - Mirpur</option>
+        <option value="WH002" data-location="Baddaa">Warehouse-02 - Baddaa</option>
+        <option value="WH003" data-location="Uttora">Warehouse-03 - Uttora</option>
+        <option value="WH004" data-location="Gulshan">Warehouse-04 - Gulshan</option>
+        <option value="WH005" data-location="Dhanmondi">Warehouse-05 - Dhanmondi</option>
+        <option value="WH006" data-location="Motijheel">Warehouse-06 - Motijheel</option>
+        <option value="WH007" data-location="Farmgate">Warehouse-07 - Farmgate</option>
+        <option value="WH008" data-location="Mohakhali">Warehouse-08 - Mohakhali</option>
+        <option value="WH009" data-location="Banani">Warehouse-09 - Banani</option>
+        <option value="WH010" data-location="Tejgaon">Warehouse-10 - Tejgaon</option>
+      </select>
     </div>
     
-    <button class="btn" id="proceed-btn">Proceed to Dashboard</button>
+    <div class="warehouse-details" id="warehouse-details">
+      <h3 id="warehouse-name">Warehouse Name</h3>
+      <p>Location: <span id="warehouse-location">Location</span></p>
+    </div>
+    
+    <button class="btn" id="proceed-btn" disabled>Proceed to Dashboard</button>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const warehouseItems = document.querySelectorAll('.warehouse-item');
+      const warehouseSelect = document.getElementById('warehouse-select');
+      const warehouseDetails = document.getElementById('warehouse-details');
+      const warehouseName = document.getElementById('warehouse-name');
+      const warehouseLocation = document.getElementById('warehouse-location');
       const proceedBtn = document.getElementById('proceed-btn');
-      let selectedWarehouse = null;
       
-      // Select warehouse
-      warehouseItems.forEach(item => {
-        item.addEventListener('click', function() {
-          warehouseItems.forEach(i => i.classList.remove('active'));
-          this.classList.add('active');
-          selectedWarehouse = this.getAttribute('data-warehouse');
-        });
+      // When warehouse is selected
+      warehouseSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        
+        if (this.value) {
+          // Show details
+          warehouseDetails.style.display = 'block';
+          warehouseName.textContent = selectedOption.text.split(' - ')[0];
+          warehouseLocation.textContent = selectedOption.getAttribute('data-location');
+          
+          // Enable proceed button
+          proceedBtn.disabled = false;
+        } else {
+          // Hide details and disable button if no selection
+          warehouseDetails.style.display = 'none';
+          proceedBtn.disabled = true;
+        }
       });
       
       // Proceed to dashboard
       proceedBtn.addEventListener('click', function() {
-        if (!selectedWarehouse) {
-          alert('Please select a warehouse first');
-          return;
-        }
+        const selectedWarehouse = warehouseSelect.value;
         
         // Store selected warehouse in session storage
         sessionStorage.setItem('selectedWarehouse', selectedWarehouse);
