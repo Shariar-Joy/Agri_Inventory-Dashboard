@@ -459,7 +459,7 @@
     color: var(--clr-dark);
   }
   
-  .form-group input {
+  .form-group input, .form-group select {
     width: 100%;
     padding: 0.6rem;
     border: 1px solid var(--clr-light);
@@ -581,7 +581,7 @@
             <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="production_data.html"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
+            <a href="production_data.html" class="active"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
             <a href="harvest.html"><span class="material-symbols-sharp"><b>agriculture</b></span><b>Harvest Session Data</b></a>
             <a href="batch.html"><span class="material-symbols-sharp"><b>qr_code_2</b></span><b>Batch Datas</b></a>
           </div>
@@ -635,7 +635,7 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1>New Entries</h1>
+        <h1>Product Data</h1>
         <div class="date">
           <input type="date">
         </div>
@@ -660,12 +660,12 @@
           <table id="products-table">
             <thead>
               <tr>
-                <th>Batch ID</th>
+                <th>Product ID</th>
+                <th>Product Type</th>
                 <th>Product Name</th>
-                <th>Type</th>
                 <th>Variety</th>
-                <th>Total Quantity (kg)</th>
-                <th>Main Price (BDT/kg)</th>
+                <th>Seasonality</th>
+                <th>Historical Price (BDT/kg)</th>
                 <th>Current Price (BDT/kg)</th>
                 <th>Actions</th>
               </tr>
@@ -709,28 +709,47 @@
       <form id="product-form">
         <input type="hidden" id="product-id">
         <div class="form-group">
+          <label for="product-id-display">Product ID</label>
+          <input type="text" id="product-id-display" disabled>
+        </div>
+        <div class="form-group">
+          <label for="product-type">Product Type</label>
+          <select id="product-type" required>
+            <option value="">Select Type</option>
+            <option value="Vegetable">Vegetable</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Grain">Grain</option>
+            <option value="Spice">Spice</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="product-name">Product Name</label>
           <input type="text" id="product-name" required>
         </div>
         <div class="form-group">
-          <label for="product-type">Type</label>
-          <input type="text" id="product-type" required>
+          <label for="product-variety">Variety</label>
+          <input type="text" id="product-variety" required>
         </div>
         <div class="form-group">
-          <label for="product-validity">Variety</label>
-          <input type="text" id="product-validity" required>
+          <label for="product-seasonality">Seasonality</label>
+          <select id="product-seasonality" required>
+            <option value="">Select Season</option>
+            <option value="Year-round">Year-round</option>
+            <option value="Summer">Summer</option>
+            <option value="Winter">Winter</option>
+            <option value="Spring">Spring</option>
+            <option value="Fall">Fall</option>
+            <option value="Rainy">Rainy</option>
+          </select>
         </div>
         <div class="form-group">
-          <label for="product-quantity">Total Quantity (kg)</label>
-          <input type="number" id="product-quantity" required>
-        </div>
-        <div class="form-group">
-          <label for="product-main-price">Main Price (BDT/kg)</label>
-          <input type="number" id="product-main-price" required>
+          <label for="product-historical-price">Historical Price (BDT/kg)</label>
+          <input type="number" id="product-historical-price" step="0.01" required>
         </div>
         <div class="form-group">
           <label for="product-current-price">Current Price (BDT/kg)</label>
-          <input type="number" id="product-current-price" required>
+          <input type="number" id="product-current-price" step="0.01" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
@@ -758,18 +777,17 @@ const modalTitle = document.getElementById('modal-title');
 
 // Sample product data with new format
 let products = [
-  { id: 25, batchId: "25-184", name: "Tomato", type: "Large", validity: "Bangladesh", quantity: 500, mainPrice: 25, currentPrice: 30 },
-  { id: 25, batchId: "25-185", name: "Potato", type: "Large", validity: "Bangladesh", quantity: 800, mainPrice: 15, currentPrice: 20 },
-  { id: 25, batchId: "25-186", name: "Onion", type: "Red", validity: "India", quantity: 300, mainPrice: 30, currentPrice: 35 },
-  { id: 25, batchId: "25-187", name: "Carrot", type: "Smalll", validity: "Pakistan", quantity: 200, mainPrice: 40, currentPrice: 45 },
-  { id: 25, batchId: "25-188", name: "Cucumber", type: "Long", validity: "China", quantity: 150, mainPrice: 35, currentPrice: 40 }
+  { id: "PD-1001", type: "Vegetable", name: "Tomato", variety: "Cherry", seasonality: "Summer", historicalPrice: 25.50, currentPrice: 30.00 },
+  { id: "PD-1002", type: "Vegetable", name: "Potato", variety: "Russet", seasonality: "Year-round", historicalPrice: 15.00, currentPrice: 20.00 },
+  { id: "PD-1003", type: "Fruit", name: "Mango", variety: "Himsagar", seasonality: "Summer", historicalPrice: 40.00, currentPrice: 50.00 },
+  { id: "PD-1004", type: "Grain", name: "Rice", variety: "Basmati", seasonality: "Year-round", historicalPrice: 60.00, currentPrice: 65.00 },
+  { id: "PD-1005", type: "Spice", name: "Turmeric", variety: "Local", seasonality: "Winter", historicalPrice: 120.00, currentPrice: 150.00 }
 ];
 
-// Generate batch ID (year + random 3-digit number)
-function generateBatchId() {
-  const currentYear = new Date().getFullYear().toString().slice(-2);
-  const randomNum = Math.floor(100 + Math.random() * 900);
-  return `${currentYear}-${randomNum}`;
+// Generate product ID (PD- + random 4-digit number)
+function generateProductId() {
+  const randomNum = Math.floor(1000 + Math.random() * 9000);
+  return `PD-${randomNum}`;
 }
 
 // Initialize the dashboard
@@ -809,13 +827,13 @@ function renderProducts(productsToRender) {
   productsToRender.forEach(product => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${product.batchId}</td>
-      <td>${product.name}</td>
+      <td>${product.id}</td>
       <td>${product.type}</td>
-      <td>${product.validity}</td>
-      <td>${product.quantity} kg</td>
-      <td>${product.mainPrice} BDT/kg</td>
-      <td>${product.currentPrice} BDT/kg</td>
+      <td>${product.name}</td>
+      <td>${product.variety}</td>
+      <td>${product.seasonality}</td>
+      <td>${product.historicalPrice.toFixed(2)} BDT/kg</td>
+      <td>${product.currentPrice.toFixed(2)} BDT/kg</td>
       <td class="action-buttons">
         <button class="btn btn-secondary edit-product" data-id="${product.id}">
           <span class="material-symbols-sharp">edit</span>
@@ -831,14 +849,14 @@ function renderProducts(productsToRender) {
   // Add event listeners to edit and delete buttons
   document.querySelectorAll('.edit-product').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const productId = parseInt(e.target.closest('button').getAttribute('data-id'));
+      const productId = e.target.closest('button').getAttribute('data-id');
       editProduct(productId);
     });
   });
   
   document.querySelectorAll('.delete-product').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const productId = parseInt(e.target.closest('button').getAttribute('data-id'));
+      const productId = e.target.closest('button').getAttribute('data-id');
       deleteProduct(productId);
     });
   });
@@ -846,12 +864,14 @@ function renderProducts(productsToRender) {
 
 function addProduct() {
   modalTitle.textContent = 'Add New Product';
+  const newId = generateProductId();
   document.getElementById('product-id').value = '';
-  document.getElementById('product-name').value = '';
+  document.getElementById('product-id-display').value = newId;
   document.getElementById('product-type').value = '';
-  document.getElementById('product-validity').value = '';
-  document.getElementById('product-quantity').value = '';
-  document.getElementById('product-main-price').value = '';
+  document.getElementById('product-name').value = '';
+  document.getElementById('product-variety').value = '';
+  document.getElementById('product-seasonality').value = '';
+  document.getElementById('product-historical-price').value = '';
   document.getElementById('product-current-price').value = '';
   productModal.style.display = 'block';
 }
@@ -861,11 +881,12 @@ function editProduct(productId) {
   if (product) {
     modalTitle.textContent = 'Edit Product';
     document.getElementById('product-id').value = product.id;
-    document.getElementById('product-name').value = product.name;
+    document.getElementById('product-id-display').value = product.id;
     document.getElementById('product-type').value = product.type;
-    document.getElementById('product-validity').value = product.validity;
-    document.getElementById('product-quantity').value = product.quantity;
-    document.getElementById('product-main-price').value = product.mainPrice;
+    document.getElementById('product-name').value = product.name;
+    document.getElementById('product-variety').value = product.variety;
+    document.getElementById('product-seasonality').value = product.seasonality;
+    document.getElementById('product-historical-price').value = product.historicalPrice;
     document.getElementById('product-current-price').value = product.currentPrice;
     productModal.style.display = 'block';
   }
@@ -883,8 +904,9 @@ function searchProducts() {
   const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchTerm) ||
     product.type.toLowerCase().includes(searchTerm) ||
-    product.validity.toLowerCase().includes(searchTerm) ||
-    product.batchId.toLowerCase().includes(searchTerm)
+    product.variety.toLowerCase().includes(searchTerm) ||
+    product.id.toLowerCase().includes(searchTerm) ||
+    product.seasonality.toLowerCase().includes(searchTerm)
   );
   renderProducts(filteredProducts);
 }
@@ -913,34 +935,29 @@ productForm.addEventListener('submit', (e) => {
   
   const productId = document.getElementById('product-id').value;
   const productData = {
-    name: document.getElementById('product-name').value,
+    id: document.getElementById('product-id-display').value,
     type: document.getElementById('product-type').value,
-    validity: document.getElementById('product-validity').value,
-    quantity: parseFloat(document.getElementById('product-quantity').value),
-    mainPrice: parseFloat(document.getElementById('product-main-price').value),
-    currentPrice: parseFloat(document.getElementById('product-current-price').value),
-    batchId: generateBatchId()
+    name: document.getElementById('product-name').value,
+    variety: document.getElementById('product-variety').value,
+    seasonality: document.getElementById('product-seasonality').value,
+    historicalPrice: parseFloat(document.getElementById('product-historical-price').value),
+    currentPrice: parseFloat(document.getElementById('product-current-price').value)
   };
   
   if (productId) {
     // Update existing product
-    const index = products.findIndex(p => p.id === parseInt(productId));
+    const index = products.findIndex(p => p.id === productId);
     if (index !== -1) {
-      // Keep the original batch ID when updating
-      productData.batchId = products[index].batchId;
-      products[index] = { ...products[index], ...productData };
+      products[index] = productData;
     }
   } else {
     // Add new product
-    const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-    products.push({ id: newId, ...productData });
+    products.push(productData);
   }
   
   renderProducts(products);
   productModal.style.display = 'none';
 });
-
-
   </script>
 
 </body>
