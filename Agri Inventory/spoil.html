@@ -579,54 +579,58 @@
 
         <div class="dropdown">
           <a href="#" class="dropdown-btn">
-            <span class="material-symbols-sharp">receipt_long</span>
-            <h3>Production</h3>
-            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+            <span class="material-symbols-sharp"><b>receipt_long</b></span>
+            <h3><b> Production</b></h3>
+            <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="inventory.html"><span class="material-symbols-sharp">inventory</span> Inventory</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">input</span> New Entries</a>
+            <a href="production_data.html"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
+            <a href="harvest.html"><span class="material-symbols-sharp"><b>agriculture</b></span><b>Harvest Session Data</b></a>
+            <a href="batch.html"><span class="material-symbols-sharp"><b>qr_code_2</b></span><b>Batch Datas</b></a>
           </div>
         </div>
 
         <div class="dropdown">
           <a href="#" class="dropdown-btn">
-            <span class="material-symbols-sharp">warehouse</span>
-            <h3>Warehouse</h3>
+            <span class="material-symbols-sharp"><b>warehouse</b></span>
+            <h3><b>Warehouse</b></h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
+            <a href="warehouse_data.html"><span class="material-symbols-sharp"><b>factory</b></span><b>Warehouse Data</b></a>
+            <a href="inventory.html"><span class="material-symbols-sharp"><b>inventory</b></span><b>Inventory</b></a>
+            <a href="weather_control.html"><span class="material-symbols-sharp"><b>thermostat</b></span><b>Climate Control</b></a>
           </div>
         </div>
 
         <a href="analytics.html">
-          <span class="material-symbols-sharp">insights</span>
-          <h3>Analytics</h3>
+          <span class="material-symbols-sharp"><b>insights</b></span>
+          <h3><b>Analytics</b></h3>
+        </a>
+        <a href="shipment.html">
+          <span class="material-symbols-sharp"><b>local_shipping</b></span>
+          <h3><b>Shipment</b></h3>
         </a>
         <a href="messages.html">
-          <span class="material-symbols-sharp">mail_outline</span>
-          <h3>Messages</h3>
+          <span class="material-symbols-sharp"><b>mail_outline</b></span>
+          <h3><b>Messages</b></h3>
           <span class="msg-count">3</span>
         </a>
-        <a href="#" class="active">
-          <span class="material-symbols-sharp">trending_down</span>
-          <h3>Spoilage Records</h3>
-        </a>
+        <a href="spoil.html">
+          <span class="material-symbols-sharp"><b>trending_down</b></span>
+          <h3><b>Spoilage Records</b></h3>
         </a>
         <a href="reports.html">
-          <span class="material-symbols-sharp">report_gmailerrorred</span>
-          <h3>Reports</h3>
+          <span class="material-symbols-sharp"><b>report_gmailerrorred</b></span>
+          <h3><b>Reports</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">settings</span>
-          <h3>Settings</h3>
+          <span class="material-symbols-sharp"><b>settings</b></span>
+          <h3><b>Settings</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">logout</span>
-          <h3>Logout</h3>
+          <span class="material-symbols-sharp"><b>logout</b></span>
+          <h3><b>Logout</b></h3>
         </a>
       </div>
     </aside>
@@ -665,13 +669,13 @@
           <table id="records-table">
             <thead>
               <tr>
-                <th>Batch No.</th>
+                <th>Harvest ID</th>
                 <th>Product Name</th>
-                <th>Total Qty</th>
-                <th>Spoil at Harvest</th>
-                <th>Spoil at Receiving</th>
-                <th>Spoil in Warehouse</th>
-                <th>Spoil in Delivery</th>
+                <th>Harvest Quantity</th>
+                <th>Spoilage At Harvest</th>
+                <th>Spoilage At Storage</th>
+                <th>Spoilage At Handling</th>
+                <th>Spoilage During Shipment</th>
                 <th>Total Spoilage</th>
                 <th>Actions</th>
               </tr>
@@ -712,7 +716,7 @@
             <span class="material-symbols-sharp">warning</span>
           </div>
           <div class="alert-content">
-            <div class="alert-message">High spoilage detected in Batch #1024</div>
+            <div class="alert-message">High spoilage detected in Harvest #HV-1024</div>
             <div class="alert-time">15 min ago</div>
           </div>
         </div>
@@ -737,32 +741,32 @@
       <form id="record-form">
         <input type="hidden" id="record-id">
         <div class="form-group">
-          <label for="batch-number">Batch Number</label>
-          <input type="text" id="batch-number" required>
+          <label for="harvest-id">Harvest ID</label>
+          <input type="text" id="harvest-id" required>
         </div>
         <div class="form-group">
           <label for="product-name">Product Name</label>
           <input type="text" id="product-name" required>
         </div>
         <div class="form-group">
-          <label for="total-quantity">Total Quantity</label>
-          <input type="number" id="total-quantity" required>
+          <label for="harvest-quantity">Harvest Quantity</label>
+          <input type="number" id="harvest-quantity" required>
         </div>
         <div class="form-group">
-          <label for="spoil-harvest">Spoil at Harvest</label>
+          <label for="spoil-harvest">Spoilage At Harvest</label>
           <input type="number" id="spoil-harvest" required>
         </div>
         <div class="form-group">
-          <label for="spoil-receiving">Spoil at Receiving</label>
-          <input type="number" id="spoil-receiving" required>
+          <label for="spoil-storage">Spoilage At Storage</label>
+          <input type="number" id="spoil-storage" required>
         </div>
         <div class="form-group">
-          <label for="spoil-warehouse">Spoil in Warehouse</label>
-          <input type="number" id="spoil-warehouse" required>
+          <label for="spoil-handling">Spoilage At Handling</label>
+          <input type="number" id="spoil-handling" required>
         </div>
         <div class="form-group">
-          <label for="spoil-delivery">Spoil in Delivery</label>
-          <input type="number" id="spoil-delivery" required>
+          <label for="spoil-shipment">Spoilage During Shipment</label>
+          <input type="number" id="spoil-shipment" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
@@ -791,53 +795,53 @@
     let spoilageRecords = [
       { 
         id: 1, 
-        batchNo: "BATCH-2023-001", 
+        harvestId: "HV-2023-001", 
         productName: "Tomatoes", 
-        totalQty: 1000, 
+        harvestQty: 1000, 
         spoilHarvest: 50, 
-        spoilReceiving: 20, 
-        spoilWarehouse: 30, 
-        spoilDelivery: 10 
+        spoilStorage: 20, 
+        spoilHandling: 30, 
+        spoilShipment: 10 
       },
       { 
         id: 2, 
-        batchNo: "BATCH-2023-002", 
+        harvestId: "HV-2023-002", 
         productName: "Potatoes", 
-        totalQty: 2000, 
+        harvestQty: 2000, 
         spoilHarvest: 80, 
-        spoilReceiving: 40, 
-        spoilWarehouse: 60, 
-        spoilDelivery: 20 
+        spoilStorage: 40, 
+        spoilHandling: 60, 
+        spoilShipment: 20 
       },
       { 
         id: 3, 
-        batchNo: "BATCH-2023-003", 
+        harvestId: "HV-2023-003", 
         productName: "Carrots", 
-        totalQty: 1500, 
+        harvestQty: 1500, 
         spoilHarvest: 30, 
-        spoilReceiving: 15, 
-        spoilWarehouse: 25, 
-        spoilDelivery: 5 
+        spoilStorage: 15, 
+        spoilHandling: 25, 
+        spoilShipment: 5 
       },
       { 
         id: 4, 
-        batchNo: "BATCH-2023-004", 
+        harvestId: "HV-2023-004", 
         productName: "Lettuce", 
-        totalQty: 800, 
+        harvestQty: 800, 
         spoilHarvest: 40, 
-        spoilReceiving: 20, 
-        spoilWarehouse: 30, 
-        spoilDelivery: 10 
+        spoilStorage: 20, 
+        spoilHandling: 30, 
+        spoilShipment: 10 
       },
       { 
         id: 5, 
-        batchNo: "BATCH-2023-005", 
+        harvestId: "HV-2023-005", 
         productName: "Apples", 
-        totalQty: 1200, 
+        harvestQty: 1200, 
         spoilHarvest: 20, 
-        spoilReceiving: 10, 
-        spoilWarehouse: 15, 
-        spoilDelivery: 5 
+        spoilStorage: 10, 
+        spoilHandling: 15, 
+        spoilShipment: 5 
       }
     ];
 
@@ -874,7 +878,7 @@
 
     // Spoilage Records Functions
     function calculateTotalSpoilage(record) {
-      return record.spoilHarvest + record.spoilReceiving + record.spoilWarehouse + record.spoilDelivery;
+      return record.spoilHarvest + record.spoilStorage + record.spoilHandling + record.spoilShipment;
     }
 
     function renderRecords(recordsToRender) {
@@ -882,17 +886,17 @@
       
       recordsToRender.forEach(record => {
         const totalSpoilage = calculateTotalSpoilage(record);
-        const spoilagePercentage = ((totalSpoilage / record.totalQty) * 100).toFixed(2);
+        const spoilagePercentage = ((totalSpoilage / record.harvestQty) * 100).toFixed(2);
         
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${record.batchNo}</td>
+          <td>${record.harvestId}</td>
           <td>${record.productName}</td>
-          <td>${record.totalQty}</td>
+          <td>${record.harvestQty}</td>
           <td>${record.spoilHarvest}</td>
-          <td>${record.spoilReceiving}</td>
-          <td>${record.spoilWarehouse}</td>
-          <td>${record.spoilDelivery}</td>
+          <td>${record.spoilStorage}</td>
+          <td>${record.spoilHandling}</td>
+          <td>${record.spoilShipment}</td>
           <td>${totalSpoilage} (${spoilagePercentage}%)</td>
           <td class="action-buttons">
             <button class="btn btn-secondary edit-record" data-id="${record.id}">
@@ -986,13 +990,13 @@
     function addRecord() {
       modalTitle.textContent = 'Add Spoilage Record';
       document.getElementById('record-id').value = '';
-      document.getElementById('batch-number').value = '';
+      document.getElementById('harvest-id').value = '';
       document.getElementById('product-name').value = '';
-      document.getElementById('total-quantity').value = '';
+      document.getElementById('harvest-quantity').value = '';
       document.getElementById('spoil-harvest').value = '';
-      document.getElementById('spoil-receiving').value = '';
-      document.getElementById('spoil-warehouse').value = '';
-      document.getElementById('spoil-delivery').value = '';
+      document.getElementById('spoil-storage').value = '';
+      document.getElementById('spoil-handling').value = '';
+      document.getElementById('spoil-shipment').value = '';
       recordModal.style.display = 'block';
     }
 
@@ -1001,13 +1005,13 @@
       if (record) {
         modalTitle.textContent = 'Edit Record';
         document.getElementById('record-id').value = record.id;
-        document.getElementById('batch-number').value = record.batchNo;
+        document.getElementById('harvest-id').value = record.harvestId;
         document.getElementById('product-name').value = record.productName;
-        document.getElementById('total-quantity').value = record.totalQty;
+        document.getElementById('harvest-quantity').value = record.harvestQty;
         document.getElementById('spoil-harvest').value = record.spoilHarvest;
-        document.getElementById('spoil-receiving').value = record.spoilReceiving;
-        document.getElementById('spoil-warehouse').value = record.spoilWarehouse;
-        document.getElementById('spoil-delivery').value = record.spoilDelivery;
+        document.getElementById('spoil-storage').value = record.spoilStorage;
+        document.getElementById('spoil-handling').value = record.spoilHandling;
+        document.getElementById('spoil-shipment').value = record.spoilShipment;
         recordModal.style.display = 'block';
       }
     }
@@ -1024,7 +1028,7 @@
       const searchTerm = recordSearch.value.toLowerCase();
       const filteredRecords = spoilageRecords.filter(record => 
         record.productName.toLowerCase().includes(searchTerm) ||
-        record.batchNo.toLowerCase().includes(searchTerm)
+        record.harvestId.toLowerCase().includes(searchTerm)
       );
       renderRecords(filteredRecords);
     }
@@ -1054,13 +1058,13 @@
       
       const recordId = document.getElementById('record-id').value;
       const recordData = {
-        batchNo: document.getElementById('batch-number').value,
+        harvestId: document.getElementById('harvest-id').value,
         productName: document.getElementById('product-name').value,
-        totalQty: parseInt(document.getElementById('total-quantity').value),
+        harvestQty: parseInt(document.getElementById('harvest-quantity').value),
         spoilHarvest: parseInt(document.getElementById('spoil-harvest').value),
-        spoilReceiving: parseInt(document.getElementById('spoil-receiving').value),
-        spoilWarehouse: parseInt(document.getElementById('spoil-warehouse').value),
-        spoilDelivery: parseInt(document.getElementById('spoil-delivery').value)
+        spoilStorage: parseInt(document.getElementById('spoil-storage').value),
+        spoilHandling: parseInt(document.getElementById('spoil-handling').value),
+        spoilShipment: parseInt(document.getElementById('spoil-shipment').value)
       };
       
       if (recordId) {

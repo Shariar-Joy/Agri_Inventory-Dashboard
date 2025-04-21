@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Warehouse - Received Items</title>
+  <title>Harvest Management Dashboard</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.css">
   <style>
     :root {
       --clr-primary: #7380ec;
@@ -321,8 +322,8 @@
       border: 1px solid var(--clr-light);
     }
     
-    /* ========== RECEIVED ITEMS ========== */
-    .received-items {
+    /* ========== HARVEST MANAGEMENT ========== */
+    .harvest-management {
       margin-top: 2rem;
       background: var(--clr-white);
       padding: var(--card-padding);
@@ -330,7 +331,7 @@
       box-shadow: var(--box-shadow);
     }
     
-    .item-actions {
+    .harvest-actions {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
@@ -376,28 +377,28 @@
       background: #b33700;
     }
     
-    .items-table-container {
+    .harvest-table-container {
       overflow-x: auto;
     }
     
-    #items-table {
+    #harvest-table {
       width: 100%;
       border-collapse: collapse;
     }
     
-    #items-table th, 
-    #items-table td {
+    #harvest-table th, 
+    #harvest-table td {
       padding: 0.8rem;
       text-align: left;
       border-bottom: 1px solid var(--clr-light);
     }
     
-    #items-table th {
+    #harvest-table th {
       background: var(--clr-primary);
       color: white;
     }
     
-    #items-table tr:hover {
+    #harvest-table tr:hover {
       background: var(--clr-light);
     }
     
@@ -416,17 +417,33 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
     }
-    
+
     .modal-content {
       background-color: var(--clr-white);
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 2rem;
       border-radius: var(--card-border-radius);
       width: 50%;
-      max-width: 500px;
+      max-width: 600px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       position: relative;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-right: 0.5rem;
+    }
+
+    .modal-footer {
+      padding-top: 1rem;
+      border-top: 1px solid var(--clr-light);
+      margin-top: 1rem;
     }
     
     .close-modal {
@@ -536,7 +553,7 @@
         margin: 20% auto;
       }
       
-      .item-actions {
+      .harvest-actions {
         flex-direction: column;
       }
       
@@ -566,56 +583,60 @@
           <h3>Dashboard</h3>
         </a>
 
-        <div class="dropdown" >
-          <a href="#" class="dropdown-btn" >
-            <span class="material-symbols-sharp">receipt_long</span>
-            <h3>Production</h3>
-            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp"><b>receipt_long</b></span>
+            <h3><b> Production</b></h3>
+            <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="inventory.html"><span class="material-symbols-sharp">inventory</span> Inventory</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">input</span> New Entries</a>
+            <a href="production_data.html"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
+            <a href="harvest.html"><span class="material-symbols-sharp"><b>agriculture</b></span><b>Harvest Session Data</b></a>
+            <a href="batch.html"><span class="material-symbols-sharp"><b>qr_code_2</b></span><b>Batch Datas</b></a>
           </div>
         </div>
 
         <div class="dropdown">
-          <a href="#" class="dropdown-btn active">
-            <span class="material-symbols-sharp">warehouse</span>
-            <h3>Warehouse</h3>
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp"><b>warehouse</b></span>
+            <h3><b>Warehouse</b></h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="#" class="active"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
+            <a href="warehouse_data.html"><span class="material-symbols-sharp"><b>factory</b></span><b>Warehouse Data</b></a>
+            <a href="inventory.html"><span class="material-symbols-sharp"><b>inventory</b></span><b>Inventory</b></a>
+            <a href="weather_control.html"><span class="material-symbols-sharp"><b>thermostat</b></span><b>Climate Control</b></a>
           </div>
         </div>
 
         <a href="analytics.html">
-          <span class="material-symbols-sharp">insights</span>
-          <h3>Analytics</h3>
+          <span class="material-symbols-sharp"><b>insights</b></span>
+          <h3><b>Analytics</b></h3>
+        </a>
+        <a href="shipment.html">
+          <span class="material-symbols-sharp"><b>local_shipping</b></span>
+          <h3><b>Shipment</b></h3>
         </a>
         <a href="messages.html">
-          <span class="material-symbols-sharp">mail_outline</span>
-          <h3>Messages</h3>
+          <span class="material-symbols-sharp"><b>mail_outline</b></span>
+          <h3><b>Messages</b></h3>
           <span class="msg-count">3</span>
         </a>
         <a href="spoil.html">
-          <span class="material-symbols-sharp">trending_down</span>
-          <h3>Spoilage Records</h3>
-        </a>
+          <span class="material-symbols-sharp"><b>trending_down</b></span>
+          <h3><b>Spoilage Records</b></h3>
         </a>
         <a href="reports.html">
-          <span class="material-symbols-sharp">report_gmailerrorred</span>
-          <h3>Reports</h3>
+          <span class="material-symbols-sharp"><b>report_gmailerrorred</b></span>
+          <h3><b>Reports</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">settings</span>
-          <h3>Settings</h3>
+          <span class="material-symbols-sharp"><b>settings</b></span>
+          <h3><b>Settings</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">logout</span>
-          <h3>Logout</h3>
+          <span class="material-symbols-sharp"><b>logout</b></span>
+          <h3><b>Logout</b></h3>
         </a>
       </div>
     </aside>
@@ -623,42 +644,41 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1>Received Items</h1>
+        <h1>Harvest Sessions</h1>
         <div class="date">
-          <input type="date" id="received-date" value="2023-11-15">
+          <input type="date">
         </div>
       </div>
       
-      <!-- Received Items Section -->
-      <div class="received-items">
-        <div class="item-actions">
-          <button id="add-item-btn" class="btn btn-primary">
-            <span class="material-symbols-sharp">add</span> Add Item
+      <!-- Harvest Management Section -->
+      <div class="harvest-management">
+        <div class="harvest-actions">
+          <button id="add-harvest-btn" class="btn btn-primary">
+            <span class="material-symbols-sharp">add</span> Add Session
           </button>
-          <button id="refresh-items-btn" class="btn btn-secondary">
+          <button id="refresh-harvest-btn" class="btn btn-secondary">
             <span class="material-symbols-sharp">refresh</span> Refresh
           </button>
           <div class="search-bar">
-            <input type="text" id="item-search" placeholder="Search items...">
+            <input type="text" id="harvest-search" placeholder="Search harvests...">
             <span class="material-symbols-sharp">search</span>
           </div>
         </div>
         
-        <div class="items-table-container">
-          <table id="items-table">
+        <div class="harvest-table-container">
+          <table id="harvest-table">
             <thead>
               <tr>
-                <th>Batch ID</th>
-                <th>Product Name</th>
-                <th>Quantity (kg)</th>
-                <th>Supplier ID</th>
-                <th>Source</th>
-                <th>Receiving Date</th>
+                <th>Harvest ID</th>
+                <th>Farmer ID</th>
+                <th>Product ID</th>
+                <th>Harvest Quantity (kg)</th>
+                <th>Harvest Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="items-table-body">
-              <!-- Items will be loaded here -->
+            <tbody id="harvest-table-body">
+              <!-- Harvest records will be loaded here -->
             </tbody>
           </table>
         </div>
@@ -684,74 +704,43 @@
             <img src="image/unnamed.gif" alt="Profile">
           </div>
         </div>
-      </div>
-      
-      <div class="recent-alerts">
-        <h2>Recent Alerts</h2>
-        <div class="alert-item">
-          <div class="alert-icon">
-            <span class="material-symbols-sharp">warning</span>
-          </div>
-          <div class="alert-content">
-            <div class="alert-message">New shipment received in Warehouse 2</div>
-            <div class="alert-time">15 min ago</div>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-icon">
-            <span class="material-symbols-sharp">info</span>
-          </div>
-          <div class="alert-content">
-            <div class="alert-message">Inventory levels optimal in all warehouses</div>
-            <div class="alert-time">45 min ago</div>
-          </div>
-        </div>
-      </div>
+      </div>     
     </div>
   </div>
 
-  <!-- Item Modal -->
-  <div id="item-modal" class="modal">
+  <!-- Harvest Session Modal -->
+  <div id="harvest-modal" class="modal">
     <div class="modal-content">
       <span class="close-modal">&times;</span>
-      <h2 id="modal-title">Add Received Item</h2>
-      <form id="item-form">
-        <input type="hidden" id="item-id">
+      <h2 id="modal-title">Add New Harvest Session</h2>
+      <form id="harvest-form">
+        <input type="hidden" id="harvest-id">
         <div class="form-group">
-          <label for="batch-id">Batch ID</label>
-          <input type="text" id="batch-id" required>
+          <label for="harvest-id-input">Harvest ID</label>
+          <input type="text" id="harvest-id-input" required>
         </div>
         <div class="form-group">
-          <label for="product-name">Product Name</label>
-          <input type="text" id="product-name" required>
+          <label for="farmer-id">Farmer ID</label>
+          <input type="text" id="farmer-id" required>
         </div>
         <div class="form-group">
-          <label for="quantity">Quantity (kg)</label>
-          <input type="number" id="quantity" required>
+          <label for="product-id">Product ID</label>
+          <input type="text" id="product-id" required>
         </div>
         <div class="form-group">
-          <label for="supplier-id">Supplier ID</label>
-          <input type="text" id="supplier-id" required placeholder="5-digit number">
+          <label for="harvest-quantity">Harvest Quantity (kg)</label>
+          <input type="number" id="harvest-quantity" step="0.01" required>
         </div>
         <div class="form-group">
-          <label for="source">Source</label>
-          <select id="source" required>
-            <option value="">Select source</option>
-            <option value="Farm A">Farm A</option>
-            <option value="Farm B">Farm B</option>
-            <option value="External Supplier">External Supplier</option>
-            <option value="Local Producer">Local Producer</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="receiving-date">Receiving Date</label>
-          <input type="date" id="receiving-date" required>
+          <label for="harvest-date">Harvest Date</label>
+          <input type="date" id="harvest-date" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
   <script>
     // DOM Elements
     const menuBtn = document.getElementById('menu-btn');
@@ -759,31 +748,49 @@
     const sidebar = document.querySelector('aside');
     const themeToggler = document.querySelector('.theme-toggler');
     const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+    const harvestInfoLink = document.getElementById('harvest-info-link');
 
-    // Received Items Management Elements
-    const addItemBtn = document.getElementById('add-item-btn');
-    const refreshItemsBtn = document.getElementById('refresh-items-btn');
-    const itemSearch = document.getElementById('item-search');
-    const itemsTableBody = document.getElementById('items-table-body');
-    const itemModal = document.getElementById('item-modal');
+    // Harvest Management Elements
+    const addHarvestBtn = document.getElementById('add-harvest-btn');
+    const refreshHarvestBtn = document.getElementById('refresh-harvest-btn');
+    const harvestSearch = document.getElementById('harvest-search');
+    const harvestTableBody = document.getElementById('harvest-table-body');
+    const harvestModal = document.getElementById('harvest-modal');
     const closeModal = document.querySelector('.close-modal');
-    const itemForm = document.getElementById('item-form');
+    const harvestForm = document.getElementById('harvest-form');
     const modalTitle = document.getElementById('modal-title');
 
-    // Sample received items data with new fields
-    let receivedItems = [
-      { batchId: "25-847", name: "Wheat Grain", quantity: 500, supplierId: "12345", source: "Farm A", receivingDate: "2023-11-10" },
-      { batchId: "25-848", name: "Corn Seeds", quantity: 300, supplierId: "23456", source: "Farm B", receivingDate: "2023-11-12" },
-      { batchId: "25-849", name: "Potatoes", quantity: 1200, supplierId: "34567", source: "External Supplier", receivingDate: "2023-11-14" },
-      { batchId: "25-850", name: "Rice Bags", quantity: 200, supplierId: "45678", source: "Local Producer", receivingDate: "2023-11-15" },
-      { batchId: "25-851", name: "Tomato Seedlings", quantity: 150, supplierId: "56789", source: "Farm A", receivingDate: "2023-11-15" }
+    // Sample harvest data
+    let harvests = [
+      { 
+        id: 1, 
+        harvestId: "HARV-001", 
+        farmerId: "FARM-101", 
+        productId: "PROD-202", 
+        quantity: 1200, 
+        date: "2023-05-15"
+      },
+      { 
+        id: 2, 
+        harvestId: "HARV-002", 
+        farmerId: "FARM-102", 
+        productId: "PROD-205", 
+        quantity: 800, 
+        date: "2023-06-20"
+      },
+      { 
+        id: 3, 
+        harvestId: "HARV-003", 
+        farmerId: "FARM-103", 
+        productId: "PROD-210", 
+        quantity: 1500, 
+        date: "2023-04-10"
+      }
     ];
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', () => {
-      renderItems(receivedItems);
-      // Set today's date as default for new items
-      document.getElementById('receiving-date').valueAsDate = new Date();
+      renderHarvests(harvests);
     });
 
     // Toggle sidebar
@@ -811,156 +818,134 @@
       });
     });
 
-    // Received Items Functions
-    function renderItems(itemsToRender) {
-      itemsTableBody.innerHTML = '';
+    // Harvest Management Functions
+    function renderHarvests(harvestsToRender) {
+      harvestTableBody.innerHTML = '';
       
-      itemsToRender.forEach(item => {
+      harvestsToRender.forEach(harvest => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${item.batchId}</td>
-          <td>${item.name}</td>
-          <td>${item.quantity}</td>
-          <td>${item.supplierId}</td>
-          <td>${item.source}</td>
-          <td>${formatDate(item.receivingDate)}</td>
+          <td>${harvest.harvestId}</td>
+          <td>${harvest.farmerId}</td>
+          <td>${harvest.productId}</td>
+          <td>${harvest.quantity.toFixed(2)}</td>
+          <td>${harvest.date}</td>
           <td class="action-buttons">
-            <button class="btn btn-secondary edit-item" data-id="${item.batchId}">
+            <button class="btn btn-secondary edit-harvest" data-id="${harvest.id}">
               <span class="material-symbols-sharp">edit</span>
             </button>
-            <button class="btn btn-danger delete-item" data-id="${item.batchId}">
+            <button class="btn btn-danger delete-harvest" data-id="${harvest.id}">
               <span class="material-symbols-sharp">delete</span>
             </button>
           </td>
         `;
-        itemsTableBody.appendChild(row);
+        harvestTableBody.appendChild(row);
       });
       
       // Add event listeners to edit and delete buttons
-      document.querySelectorAll('.edit-item').forEach(btn => {
+      document.querySelectorAll('.edit-harvest').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const batchId = e.target.closest('button').getAttribute('data-id');
-          editItem(batchId);
+          const harvestId = parseInt(e.target.closest('button').getAttribute('data-id'));
+          editHarvest(harvestId);
         });
       });
       
-      document.querySelectorAll('.delete-item').forEach(btn => {
+      document.querySelectorAll('.delete-harvest').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const batchId = e.target.closest('button').getAttribute('data-id');
-          deleteItem(batchId);
+          const harvestId = parseInt(e.target.closest('button').getAttribute('data-id'));
+          deleteHarvest(harvestId);
         });
       });
     }
 
-    function formatDate(dateString) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
+    function addHarvest() {
+      modalTitle.textContent = 'Add New Harvest Session';
+      document.getElementById('harvest-id').value = '';
+      document.getElementById('harvest-id-input').value = '';
+      document.getElementById('farmer-id').value = '';
+      document.getElementById('product-id').value = '';
+      document.getElementById('harvest-quantity').value = '';
+      document.getElementById('harvest-date').value = '';
+      harvestModal.style.display = 'block';
     }
 
-    function addItem() {
-      modalTitle.textContent = 'Add Received Item';
-      document.getElementById('item-id').value = '';
-      document.getElementById('batch-id').value = generateBatchId();
-      document.getElementById('product-name').value = '';
-      document.getElementById('quantity').value = '';
-      document.getElementById('supplier-id').value = '';
-      document.getElementById('source').value = '';
-      document.getElementById('receiving-date').valueAsDate = new Date();
-      itemModal.style.display = 'block';
-    }
-
-    function editItem(batchId) {
-      const item = receivedItems.find(i => i.batchId === batchId);
-      if (item) {
-        modalTitle.textContent = 'Edit Item';
-        document.getElementById('item-id').value = item.batchId;
-        document.getElementById('batch-id').value = item.batchId;
-        document.getElementById('product-name').value = item.name;
-        document.getElementById('quantity').value = item.quantity;
-        document.getElementById('supplier-id').value = item.supplierId;
-        document.getElementById('source').value = item.source;
-        document.getElementById('receiving-date').value = item.receivingDate;
-        itemModal.style.display = 'block';
+    function editHarvest(harvestId) {
+      const harvest = harvests.find(h => h.id === harvestId);
+      if (harvest) {
+        modalTitle.textContent = 'Edit Harvest Session';
+        document.getElementById('harvest-id').value = harvest.id;
+        document.getElementById('harvest-id-input').value = harvest.harvestId;
+        document.getElementById('farmer-id').value = harvest.farmerId;
+        document.getElementById('product-id').value = harvest.productId;
+        document.getElementById('harvest-quantity').value = harvest.quantity;
+        document.getElementById('harvest-date').value = harvest.date;
+        harvestModal.style.display = 'block';
       }
     }
 
-    function deleteItem(batchId) {
-      if (confirm('Are you sure you want to delete this item?')) {
-        receivedItems = receivedItems.filter(item => item.batchId !== batchId);
-        renderItems(receivedItems);
+    function deleteHarvest(harvestId) {
+      if (confirm('Are you sure you want to delete this harvest session?')) {
+        harvests = harvests.filter(harvest => harvest.id !== harvestId);
+        renderHarvests(harvests);
       }
     }
 
-    function searchItems() {
-      const searchTerm = itemSearch.value.toLowerCase();
-      const filteredItems = receivedItems.filter(item => 
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.supplierId.toLowerCase().includes(searchTerm) ||
-        item.batchId.toLowerCase().includes(searchTerm) ||
-        item.source.toLowerCase().includes(searchTerm)
+    function searchHarvests() {
+      const searchTerm = harvestSearch.value.toLowerCase();
+      const filteredHarvests = harvests.filter(harvest => 
+        harvest.harvestId.toLowerCase().includes(searchTerm) ||
+        harvest.farmerId.toLowerCase().includes(searchTerm) ||
+        harvest.productId.toLowerCase().includes(searchTerm) ||
+        harvest.date.toLowerCase().includes(searchTerm)
       );
-      renderItems(filteredItems);
-    }
-
-    // Generate a new batch ID in format "YY-XXX"
-    function generateBatchId() {
-      const now = new Date();
-      const year = now.getFullYear().toString().slice(-2);
-      const randomNum = Math.floor(100 + Math.random() * 900);
-      return `${year}-${randomNum}`;
+      renderHarvests(filteredHarvests);
     }
 
     // Event Listeners
-    addItemBtn.addEventListener('click', addItem);
+    addHarvestBtn.addEventListener('click', addHarvest);
 
-    refreshItemsBtn.addEventListener('click', () => {
-      renderItems(receivedItems);
+    refreshHarvestBtn.addEventListener('click', () => {
+      renderHarvests(harvests);
     });
 
-    itemSearch.addEventListener('input', searchItems);
+    harvestSearch.addEventListener('input', searchHarvests);
 
     closeModal.addEventListener('click', () => {
-      itemModal.style.display = 'none';
+      harvestModal.style.display = 'none';
     });
 
     window.addEventListener('click', (e) => {
-      if (e.target === itemModal) {
-        itemModal.style.display = 'none';
+      if (e.target === harvestModal) {
+        harvestModal.style.display = 'none';
       }
     });
 
-    itemForm.addEventListener('submit', (e) => {
+    harvestForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const itemId = document.getElementById('item-id').value;
-      const itemData = {
-        batchId: document.getElementById('batch-id').value || generateBatchId(),
-        name: document.getElementById('product-name').value,
-        quantity: parseInt(document.getElementById('quantity').value),
-        supplierId: document.getElementById('supplier-id').value,
-        source: document.getElementById('source').value,
-        receivingDate: document.getElementById('receiving-date').value
+      const harvestId = document.getElementById('harvest-id').value;
+      const harvestData = {
+        harvestId: document.getElementById('harvest-id-input').value,
+        farmerId: document.getElementById('farmer-id').value,
+        productId: document.getElementById('product-id').value,
+        quantity: parseFloat(document.getElementById('harvest-quantity').value),
+        date: document.getElementById('harvest-date').value
       };
       
-      // Validate supplier ID is 5 digits
-      if (!/^\d{5}$/.test(itemData.supplierId)) {
-        alert('Supplier ID must be a 5-digit number');
-        return;
-      }
-      
-      if (itemId) {
-        // Update existing item
-        const index = receivedItems.findIndex(i => i.batchId === itemId);
+      if (harvestId) {
+        // Update existing harvest
+        const index = harvests.findIndex(h => h.id === parseInt(harvestId));
         if (index !== -1) {
-          receivedItems[index] = { ...receivedItems[index], ...itemData };
+          harvests[index] = { ...harvests[index], ...harvestData };
         }
       } else {
-        // Add new item
-        receivedItems.push(itemData);
+        // Add new harvest
+        const newId = harvests.length > 0 ? Math.max(...harvests.map(h => h.id)) + 1 : 1;
+        harvests.push({ id: newId, ...harvestData });
       }
       
-      renderItems(receivedItems);
-      itemModal.style.display = 'none';
+      renderHarvests(harvests);
+      harvestModal.style.display = 'none';
     });
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agri Production Dashboard</title>
+  <title>Inventory Dashboard</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.css">
   <style>
@@ -322,8 +322,8 @@
       border: 1px solid var(--clr-light);
     }
     
-    /* ========== PRODUCT MANAGEMENT ========== */
-    .product-management {
+    /* ========== INVENTORY MANAGEMENT ========== */
+    .inventory-management {
       margin-top: 2rem;
       background: var(--clr-white);
       padding: var(--card-padding);
@@ -331,7 +331,7 @@
       box-shadow: var(--box-shadow);
     }
     
-    .product-actions {
+    .inventory-actions {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
@@ -377,28 +377,28 @@
       background: #b33700;
     }
     
-    .product-table-container {
+    .inventory-table-container {
       overflow-x: auto;
     }
     
-    #products-table {
+    #inventory-table {
       width: 100%;
       border-collapse: collapse;
     }
     
-    #products-table th, 
-    #products-table td {
+    #inventory-table th, 
+    #inventory-table td {
       padding: 0.8rem;
       text-align: left;
       border-bottom: 1px solid var(--clr-light);
     }
     
-    #products-table th {
+    #inventory-table th {
       background: var(--clr-primary);
       color: white;
     }
     
-    #products-table tr:hover {
+    #inventory-table tr:hover {
       background: var(--clr-light);
     }
     
@@ -408,44 +408,6 @@
     }
     
     /* ========== MODAL ========== */
-    /* ========== MODAL ========== */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow: auto;
-}
-
-.modal-content {
-  background-color: var(--clr-white);
-  margin: 5% auto; /* Reduced from 10% to show more of the modal */
-  padding: 2rem;
-  border-radius: var(--card-border-radius);
-  width: 50%;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  max-height: 80vh; /* Limit height */
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-body {
-  overflow-y: auto;
-  flex-grow: 1;
-  padding-right: 0.5rem; /* Add space for scrollbar */
-}
-
-.modal-footer {
-  padding-top: 1rem;
-  border-top: 1px solid var(--clr-light);
-  margin-top: 1rem;
-}
     .modal {
       display: none;
       position: fixed;
@@ -455,17 +417,33 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
     }
-    
+
     .modal-content {
       background-color: var(--clr-white);
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 2rem;
       border-radius: var(--card-border-radius);
       width: 50%;
       max-width: 600px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       position: relative;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-right: 0.5rem;
+    }
+
+    .modal-footer {
+      padding-top: 1rem;
+      border-top: 1px solid var(--clr-light);
+      margin-top: 1rem;
     }
     
     .close-modal {
@@ -575,7 +553,7 @@
         margin: 20% auto;
       }
       
-      .product-actions {
+      .inventory-actions {
         flex-direction: column;
       }
       
@@ -600,39 +578,44 @@
       </div>
 
       <div class="sidebar">
-        <a href="dashboard.html" >
+        <a href="dashboard.html">
           <span class="material-symbols-sharp">grid_view</span>
           <h3>Dashboard</h3>
         </a>
 
-        <div class="dropdown" >
-          <a href="#" class="dropdown-btn active" >
-            <span class="material-symbols-sharp">receipt_long</span>
-            <h3>Production</h3>
-            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp"><b>receipt_long</b></span>
+            <h3><b> Production</b></h3>
+            <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="#" class="active" id="product-info-link"><span class="material-symbols-sharp">inventory</span> Inventory</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">input</span> New Entries</a>
+            <a href="production_data.html"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
+            <a href="harvest.html"><span class="material-symbols-sharp"><b>agriculture</b></span><b>Harvest Session Data</b></a>
+            <a href="batch.html"><span class="material-symbols-sharp"><b>qr_code_2</b></span><b>Batch Datas</b></a>
           </div>
         </div>
 
         <div class="dropdown">
           <a href="#" class="dropdown-btn">
-            <span class="material-symbols-sharp">warehouse</span>
-            <h3>Warehouse</h3>
+            <span class="material-symbols-sharp"><b>warehouse</b></span>
+            <h3><b>Warehouse</b></h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="delivery_items.html"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
+            <a href="warehouse_data.html"><span class="material-symbols-sharp"><b>factory</b></span><b>Warehouse Data</b></a>
+            <a href="inventory.html" class="active"><span class="material-symbols-sharp"><b>inventory</b></span><b>Inventory</b></a>
+            <a href="weather_control.html"><span class="material-symbols-sharp"><b>thermostat</b></span><b>Climate Control</b></a>
           </div>
         </div>
 
         <a href="analytics.html">
-          <span class="material-symbols-sharp">insights</span>
-          <h3>Analytics</h3>
+          <span class="material-symbols-sharp"><b>insights</b></span>
+          <h3><b>Analytics</b></h3>
+        </a>
+        <a href="shipment.html">
+          <span class="material-symbols-sharp"><b>local_shipping</b></span>
+          <h3><b>Shipment</b></h3>
         </a>
         <a href="messages.html">
           <span class="material-symbols-sharp">mail_outline</span>
@@ -668,40 +651,38 @@
         </div>
       </div>
       
-      <!-- Product Management Section -->
-      <div class="product-management">
-        <div class="product-actions">
-          <button id="add-product-btn" class="btn btn-primary">
+      <!-- Inventory Management Section -->
+      <div class="inventory-management">
+        <div class="inventory-actions">
+          <button id="add-inventory-btn" class="btn btn-primary">
             <span class="material-symbols-sharp">add</span> Add Record
           </button>
-          <button id="refresh-products-btn" class="btn btn-secondary">
+          <button id="refresh-inventory-btn" class="btn btn-secondary">
             <span class="material-symbols-sharp">refresh</span> Refresh
           </button>
           <div class="search-bar">
-            <input type="text" id="product-search" placeholder="Search records...">
+            <input type="text" id="inventory-search" placeholder="Search records...">
             <span class="material-symbols-sharp">search</span>
           </div>
         </div>
         
-        <div class="product-table-container">
-          <table id="products-table">
+        <div class="inventory-table-container">
+          <table id="inventory-table">
             <thead>
               <tr>
-                <th>Batch No. / Lot No.</th>
+                <th>Warehouse ID</th>
+                <th>Warehouse Stock ID</th>
+                <th>Batch ID</th>
                 <th>Product Name</th>
-                <th>Production Date</th>
-                <th>Quantity Received (kg/crates)</th>
-                <th>Quantity Packed (kg/crates)</th>
-                <th>Packaging Type</th>
-                <th>Grade/Quality</th>
-                
-                <th>Destination</th>
-                <th>Remarks</th>
+                <th>Stock Capacity</th>
+                <th>Batch Weight (kg)</th>
+                <th>Entry Date</th>
+                <th>Expiry Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="products-table-body">
-              <!-- Production records will be loaded here -->
+            <tbody id="inventory-table-body">
+              <!-- Inventory records will be loaded here -->
             </tbody>
           </table>
         </div>
@@ -731,61 +712,44 @@
     </div>
   </div>
 
-  <!-- Production Record Modal -->
-  <div id="product-modal" class="modal">
+  <!-- Inventory Record Modal -->
+  <div id="inventory-modal" class="modal">
     <div class="modal-content">
       <span class="close-modal">&times;</span>
-      <h2 id="modal-title">Add New Production Record</h2>
-      <form id="product-form">
-        <input type="hidden" id="product-id">
+      <h2 id="modal-title">Add New Inventory Record</h2>
+      <form id="inventory-form">
+        <input type="hidden" id="inventory-id">
         <div class="form-group">
-          <label for="batch-no">Batch No. / Lot No.</label>
-          <input type="text" id="batch-no" required>
+          <label for="warehouse-id">Warehouse ID</label>
+          <input type="text" id="warehouse-id" required>
+        </div>
+        <div class="form-group">
+          <label for="stock-id">Warehouse Stock ID</label>
+          <input type="text" id="stock-id" required>
+        </div>
+        <div class="form-group">
+          <label for="batch-id">Batch ID</label>
+          <input type="text" id="batch-id" required>
         </div>
         <div class="form-group">
           <label for="product-name">Product Name</label>
           <input type="text" id="product-name" required>
         </div>
         <div class="form-group">
-          <label for="production-date">Production Date</label>
-          <input type="date" id="production-date" required>
+          <label for="stock-capacity">Stock Capacity</label>
+          <input type="number" id="stock-capacity" step="0.01" required>
         </div>
         <div class="form-group">
-          <label for="quantity-received">Quantity Received (kg/crates)</label>
-          <input type="number" id="quantity-received" step="0.01" required>
+          <label for="batch-weight">Batch Weight (kg)</label>
+          <input type="number" id="batch-weight" step="0.01" required>
         </div>
         <div class="form-group">
-          <label for="quantity-packed">Quantity Packed (kg/crates)</label>
-          <input type="number" id="quantity-packed" step="0.01" required>
+          <label for="entry-date">Entry Date</label>
+          <input type="date" id="entry-date" required>
         </div>
         <div class="form-group">
-          <label for="packaging-type">Packaging Type</label>
-          <select id="packaging-type" required>
-            <option value="">Select Packaging</option>
-            <option value="Crates">Crates</option>
-            <option value="Bags">Bags</option>
-            <option value="Boxes">Boxes</option>
-            <option value="Bulk">Bulk</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="grade-quality">Grade/Quality</label>
-          <select id="grade-quality" required>
-            <option value="">Select Grade</option>
-            <option value="Grade A">Grade A</option>
-            <option value="Grade B">Grade B</option>
-            <option value="Grade C">Grade C</option>
-            <option value="Organic">Organic</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label for="destination">Destination</label>
-          <input type="text" id="destination" required>
-        </div>
-        <div class="form-group">
-          <label for="remarks">Remarks</label>
-          <input type="text" id="remarks">
+          <label for="expiry-date">Expiry Date</label>
+          <input type="date" id="expiry-date" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
@@ -800,64 +764,57 @@
     const sidebar = document.querySelector('aside');
     const themeToggler = document.querySelector('.theme-toggler');
     const dropdownBtns = document.querySelectorAll('.dropdown-btn');
-    const productInfoLink = document.getElementById('product-info-link');
 
-    // Production Management Elements
-    const addProductBtn = document.getElementById('add-product-btn');
-    const refreshProductsBtn = document.getElementById('refresh-products-btn');
-    const productSearch = document.getElementById('product-search');
-    const productsTableBody = document.getElementById('products-table-body');
-    const productModal = document.getElementById('product-modal');
+    // Inventory Management Elements
+    const addInventoryBtn = document.getElementById('add-inventory-btn');
+    const refreshInventoryBtn = document.getElementById('refresh-inventory-btn');
+    const inventorySearch = document.getElementById('inventory-search');
+    const inventoryTableBody = document.getElementById('inventory-table-body');
+    const inventoryModal = document.getElementById('inventory-modal');
     const closeModal = document.querySelector('.close-modal');
-    const productForm = document.getElementById('product-form');
+    const inventoryForm = document.getElementById('inventory-form');
     const modalTitle = document.getElementById('modal-title');
 
-    // Sample production data
-    let products = [
+    // Sample inventory data
+    let inventory = [
       { 
         id: 1, 
-        batchNo: "BATCH-001", 
-        name: "Tomatoes", 
-        date: "2023-05-15", 
-        qtyReceived: 1200, 
-        qtyPacked: 1150, 
-        packagingType: "Crates", 
-        grade: "Grade A", 
-        
-        destination: "Local Market", 
-        remarks: "Good quality" 
+        warehouseId: "WH-001", 
+        stockId: "STK-001", 
+        batchId: "BATCH-001", 
+        productName: "Tomatoes", 
+        stockCapacity: 5000, 
+        batchWeight: 1200, 
+        entryDate: "2023-05-15", 
+        expiryDate: "2023-06-15"
       },
       { 
         id: 2, 
-        batchNo: "BATCH-002", 
-        name: "Apples", 
-        date: "2023-06-20", 
-        qtyReceived: 800, 
-        qtyPacked: 780, 
-        packagingType: "Boxes", 
-        grade: "Organic", 
-        
-        destination: "Export", 
-        remarks: "Organic certified" 
+        warehouseId: "WH-002", 
+        stockId: "STK-002", 
+        batchId: "BATCH-002", 
+        productName: "Apples", 
+        stockCapacity: 3000, 
+        batchWeight: 800, 
+        entryDate: "2023-06-20", 
+        expiryDate: "2023-08-20"
       },
       { 
         id: 3, 
-        batchNo: "BATCH-003", 
-        name: "Carrots", 
-        date: "2023-04-10", 
-        qtyReceived: 1500, 
-        qtyPacked: 1450, 
-        packagingType: "Bags", 
-        grade: "Grade B", 
-         
-        destination: "Processing Plant", 
-        remarks: "Some minor defects" 
+        warehouseId: "WH-001", 
+        stockId: "STK-003", 
+        batchId: "BATCH-003", 
+        productName: "Carrots", 
+        stockCapacity: 4000, 
+        batchWeight: 1500, 
+        entryDate: "2023-04-10", 
+        expiryDate: "2023-05-10"
       }
     ];
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', () => {
-      renderProducts(products);
+      renderInventory(inventory);
     });
 
     // Toggle sidebar
@@ -885,154 +842,146 @@
       });
     });
 
-    // Production Management Functions
-    function renderProducts(productsToRender) {
-      productsTableBody.innerHTML = '';
+    // Inventory Management Functions
+    function renderInventory(inventoryToRender) {
+      inventoryTableBody.innerHTML = '';
       
-      productsToRender.forEach(product => {
+      inventoryToRender.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${product.batchNo}</td>
-          <td>${product.name}</td>
-          <td>${product.date}</td>
-          <td>${product.qtyReceived.toFixed(2)}</td>
-          <td>${product.qtyPacked.toFixed(2)}</td>
-          <td>${product.packagingType}</td>
-          <td>${product.grade}</td>
-          
-          <td>${product.destination}</td>
-          <td>${product.remarks}</td>
+          <td>${item.warehouseId}</td>
+          <td>${item.stockId}</td>
+          <td>${item.batchId}</td>
+          <td>${item.productName}</td>
+          <td>${item.stockCapacity.toFixed(2)}</td>
+          <td>${item.batchWeight.toFixed(2)}</td>
+          <td>${item.entryDate}</td>
+          <td>${item.expiryDate}</td>
           <td class="action-buttons">
-            <button class="btn btn-secondary edit-product" data-id="${product.id}">
+            <button class="btn btn-secondary edit-inventory" data-id="${item.id}">
               <span class="material-symbols-sharp">edit</span>
             </button>
-            <button class="btn btn-danger delete-product" data-id="${product.id}">
+            <button class="btn btn-danger delete-inventory" data-id="${item.id}">
               <span class="material-symbols-sharp">delete</span>
             </button>
           </td>
         `;
-        productsTableBody.appendChild(row);
+        inventoryTableBody.appendChild(row);
       });
       
       // Add event listeners to edit and delete buttons
-      document.querySelectorAll('.edit-product').forEach(btn => {
+      document.querySelectorAll('.edit-inventory').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const productId = parseInt(e.target.closest('button').getAttribute('data-id'));
-          editProduct(productId);
+          const inventoryId = parseInt(e.target.closest('button').getAttribute('data-id'));
+          editInventory(inventoryId);
         });
       });
       
-      document.querySelectorAll('.delete-product').forEach(btn => {
+      document.querySelectorAll('.delete-inventory').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const productId = parseInt(e.target.closest('button').getAttribute('data-id'));
-          deleteProduct(productId);
+          const inventoryId = parseInt(e.target.closest('button').getAttribute('data-id'));
+          deleteInventory(inventoryId);
         });
       });
     }
 
-    function addProduct() {
-      modalTitle.textContent = 'Add New Production Record';
-      document.getElementById('product-id').value = '';
-      document.getElementById('batch-no').value = '';
+    function addInventory() {
+      modalTitle.textContent = 'Add New Inventory Record';
+      document.getElementById('inventory-id').value = '';
+      document.getElementById('warehouse-id').value = '';
+      document.getElementById('stock-id').value = '';
+      document.getElementById('batch-id').value = '';
       document.getElementById('product-name').value = '';
-      document.getElementById('production-date').value = '';
-      document.getElementById('quantity-received').value = '';
-      document.getElementById('quantity-packed').value = '';
-      document.getElementById('packaging-type').value = '';
-      document.getElementById('grade-quality').value = '';
-      
-      document.getElementById('destination').value = '';
-      document.getElementById('remarks').value = '';
-      productModal.style.display = 'block';
+      document.getElementById('stock-capacity').value = '';
+      document.getElementById('batch-weight').value = '';
+      document.getElementById('entry-date').value = '';
+      document.getElementById('expiry-date').value = '';
+      inventoryModal.style.display = 'block';
     }
 
-    function editProduct(productId) {
-      const product = products.find(p => p.id === productId);
-      if (product) {
-        modalTitle.textContent = 'Edit Production Record';
-        document.getElementById('product-id').value = product.id;
-        document.getElementById('batch-no').value = product.batchNo;
-        document.getElementById('product-name').value = product.name;
-        document.getElementById('production-date').value = product.date;
-        document.getElementById('quantity-received').value = product.qtyReceived;
-        document.getElementById('quantity-packed').value = product.qtyPacked;
-        document.getElementById('packaging-type').value = product.packagingType;
-        document.getElementById('grade-quality').value = product.grade;
-        
-        document.getElementById('destination').value = product.destination;
-        document.getElementById('remarks').value = product.remarks;
-        productModal.style.display = 'block';
+    function editInventory(inventoryId) {
+      const item = inventory.find(i => i.id === inventoryId);
+      if (item) {
+        modalTitle.textContent = 'Edit Inventory Record';
+        document.getElementById('inventory-id').value = item.id;
+        document.getElementById('warehouse-id').value = item.warehouseId;
+        document.getElementById('stock-id').value = item.stockId;
+        document.getElementById('batch-id').value = item.batchId;
+        document.getElementById('product-name').value = item.productName;
+        document.getElementById('stock-capacity').value = item.stockCapacity;
+        document.getElementById('batch-weight').value = item.batchWeight;
+        document.getElementById('entry-date').value = item.entryDate;
+        document.getElementById('expiry-date').value = item.expiryDate;
+        inventoryModal.style.display = 'block';
       }
     }
 
-    function deleteProduct(productId) {
-      if (confirm('Are you sure you want to delete this production record?')) {
-        products = products.filter(product => product.id !== productId);
-        renderProducts(products);
+    function deleteInventory(inventoryId) {
+      if (confirm('Are you sure you want to delete this inventory record?')) {
+        inventory = inventory.filter(item => item.id !== inventoryId);
+        renderInventory(inventory);
       }
     }
 
-    function searchProducts() {
-      const searchTerm = productSearch.value.toLowerCase();
-      const filteredProducts = products.filter(product => 
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.batchNo.toLowerCase().includes(searchTerm) ||
-        product.date.toLowerCase().includes(searchTerm) ||
-        product.destination.toLowerCase().includes(searchTerm)
+    function searchInventory() {
+      const searchTerm = inventorySearch.value.toLowerCase();
+      const filteredInventory = inventory.filter(item => 
+        item.warehouseId.toLowerCase().includes(searchTerm) ||
+        item.stockId.toLowerCase().includes(searchTerm) ||
+        item.batchId.toLowerCase().includes(searchTerm) ||
+        item.productName.toLowerCase().includes(searchTerm)
       );
-      renderProducts(filteredProducts);
+      renderInventory(filteredInventory);
     }
 
     // Event Listeners
-    addProductBtn.addEventListener('click', addProduct);
+    addInventoryBtn.addEventListener('click', addInventory);
 
-    refreshProductsBtn.addEventListener('click', () => {
-      renderProducts(products);
+    refreshInventoryBtn.addEventListener('click', () => {
+      renderInventory(inventory);
     });
 
-    productSearch.addEventListener('input', searchProducts);
+    inventorySearch.addEventListener('input', searchInventory);
 
     closeModal.addEventListener('click', () => {
-      productModal.style.display = 'none';
+      inventoryModal.style.display = 'none';
     });
 
     window.addEventListener('click', (e) => {
-      if (e.target === productModal) {
-        productModal.style.display = 'none';
+      if (e.target === inventoryModal) {
+        inventoryModal.style.display = 'none';
       }
     });
 
-    productForm.addEventListener('submit', (e) => {
+    inventoryForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const productId = document.getElementById('product-id').value;
-      const productData = {
-        batchNo: document.getElementById('batch-no').value,
-        name: document.getElementById('product-name').value,
-        date: document.getElementById('production-date').value,
-        qtyReceived: parseFloat(document.getElementById('quantity-received').value),
-        qtyPacked: parseFloat(document.getElementById('quantity-packed').value),
-        packagingType: document.getElementById('packaging-type').value,
-        grade: document.getElementById('grade-quality').value,
-        
-        destination: document.getElementById('destination').value,
-        remarks: document.getElementById('remarks').value
+      const inventoryId = document.getElementById('inventory-id').value;
+      const inventoryData = {
+        warehouseId: document.getElementById('warehouse-id').value,
+        stockId: document.getElementById('stock-id').value,
+        batchId: document.getElementById('batch-id').value,
+        productName: document.getElementById('product-name').value,
+        stockCapacity: parseFloat(document.getElementById('stock-capacity').value),
+        batchWeight: parseFloat(document.getElementById('batch-weight').value),
+        entryDate: document.getElementById('entry-date').value,
+        expiryDate: document.getElementById('expiry-date').value
       };
       
-      if (productId) {
-        // Update existing product
-        const index = products.findIndex(p => p.id === parseInt(productId));
+      if (inventoryId) {
+        // Update existing inventory
+        const index = inventory.findIndex(i => i.id === parseInt(inventoryId));
         if (index !== -1) {
-          products[index] = { ...products[index], ...productData };
+          inventory[index] = { ...inventory[index], ...inventoryData };
         }
       } else {
-        // Add new product
-        const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-        products.push({ id: newId, ...productData });
+        // Add new inventory
+        const newId = inventory.length > 0 ? Math.max(...inventory.map(i => i.id)) + 1 : 1;
+        inventory.push({ id: newId, ...inventoryData });
       }
       
-      renderProducts(products);
-      productModal.style.display = 'none';
+      renderInventory(inventory);
+      inventoryModal.style.display = 'none';
     });
   </script>
 </body>

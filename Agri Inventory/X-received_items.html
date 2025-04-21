@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Warehouse - Delivery Items</title>
+  <title>Warehouse - Received Items</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0">
   <style>
     :root {
@@ -321,8 +321,8 @@
       border: 1px solid var(--clr-light);
     }
     
-    /* ========== DELIVERY ITEMS ========== */
-    .delivery-items {
+    /* ========== RECEIVED ITEMS ========== */
+    .received-items {
       margin-top: 2rem;
       background: var(--clr-white);
       padding: var(--card-padding);
@@ -566,55 +566,60 @@
           <h3>Dashboard</h3>
         </a>
 
-        <div class="dropdown" >
-          <a href="#" class="dropdown-btn" >
-            <span class="material-symbols-sharp">receipt_long</span>
-            <h3>Production</h3>
-            <span class="material-symbols-sharp dropdown-icon">expand_more</span>
+        <div class="dropdown">
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp"><b>receipt_long</b></span>
+            <h3><b> Production</b></h3>
+            <span class="material-symbols-sharp dropdown-icon"><b>expand_more</b></span>
           </a>
           <div class="dropdown-content">
-            <a href="inventory.html"><span class="material-symbols-sharp">inventory</span> Inventory</a>
-            <a href="production_data.html"><span class="material-symbols-sharp">input</span> New Entries</a>
+            <a href="production_data.html"><span class="material-symbols-sharp"><b>grocery</b></span><b>Product Data</b></a>
+            <a href="harvest.html"><span class="material-symbols-sharp"><b>agriculture</b></span><b>Harvest Session Data</b></a>
+            <a href="batch.html"><span class="material-symbols-sharp"><b>qr_code_2</b></span><b>Batch Datas</b></a>
           </div>
         </div>
 
         <div class="dropdown">
-          <a href="#" class="dropdown-btn active">
-            <span class="material-symbols-sharp">warehouse</span>
-            <h3>Warehouse</h3>
+          <a href="#" class="dropdown-btn">
+            <span class="material-symbols-sharp"><b>warehouse</b></span>
+            <h3><b>Warehouse</b></h3>
             <span class="material-symbols-sharp dropdown-icon">expand_more</span>
           </a>
           <div class="dropdown-content">
-            <a href="received_items.html"><span class="material-symbols-sharp">inventory_2</span> Received Items</a>
-            <a href="#" class="active"><span class="material-symbols-sharp">local_shipping</span> Delivery Items</a>
-            <a href="weather_control.html"><span class="material-symbols-sharp">thermostat</span> Climate Control</a>
+            <a href="warehouse_data.html"><span class="material-symbols-sharp"><b>factory</b></span><b>Warehouse Data</b></a>
+            <a href="inventory.html"><span class="material-symbols-sharp"><b>inventory</b></span><b>Inventory</b></a>
+            <a href="weather_control.html"><span class="material-symbols-sharp"><b>thermostat</b></span><b>Climate Control</b></a>
           </div>
         </div>
 
         <a href="analytics.html">
-          <span class="material-symbols-sharp">insights</span>
-          <h3>Analytics</h3>
+          <span class="material-symbols-sharp"><b>insights</b></span>
+          <h3><b>Analytics</b></h3>
+        </a>
+        <a href="shipment.html">
+          <span class="material-symbols-sharp"><b>local_shipping</b></span>
+          <h3><b>Shipment</b></h3>
         </a>
         <a href="messages.html">
-          <span class="material-symbols-sharp">mail_outline</span>
-          <h3>Messages</h3>
+          <span class="material-symbols-sharp"><b>mail_outline</b></span>
+          <h3><b>Messages</b></h3>
           <span class="msg-count">3</span>
         </a>
         <a href="spoil.html">
-          <span class="material-symbols-sharp">trending_down</span>
-          <h3>Spoilage Records</h3>
+          <span class="material-symbols-sharp"><b>trending_down</b></span>
+          <h3><b>Spoilage Records</b></h3>
         </a>
         <a href="reports.html">
-          <span class="material-symbols-sharp">report_gmailerrorred</span>
-          <h3>Reports</h3>
+          <span class="material-symbols-sharp"><b>report_gmailerrorred</b></span>
+          <h3><b>Reports</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">settings</span>
-          <h3>Settings</h3>
+          <span class="material-symbols-sharp"><b>settings</b></span>
+          <h3><b>Settings</b></h3>
         </a>
         <a href="#">
-          <span class="material-symbols-sharp">logout</span>
-          <h3>Logout</h3>
+          <span class="material-symbols-sharp"><b>logout</b></span>
+          <h3><b>Logout</b></h3>
         </a>
       </div>
     </aside>
@@ -622,14 +627,14 @@
     <!-- MAIN CONTENT -->
     <main>
       <div class="main-header">
-        <h1>Delivery Items</h1>
+        <h1>Received Items</h1>
         <div class="date">
-          <input type="date" id="delivery-date" value="2023-11-15">
+          <input type="date" id="received-date" value="2023-11-15">
         </div>
       </div>
       
-      <!-- Delivery Items Section -->
-      <div class="delivery-items">
+      <!-- Received Items Section -->
+      <div class="received-items">
         <div class="item-actions">
           <button id="add-item-btn" class="btn btn-primary">
             <span class="material-symbols-sharp">add</span> Add Item
@@ -650,10 +655,9 @@
                 <th>Batch ID</th>
                 <th>Product Name</th>
                 <th>Quantity (kg)</th>
-                <th>Shipment ID</th>
-                <th>Delivery Place</th>
-                <th>Delivery Date</th>
-                <th>Vehicle Capacity (kg)</th>
+                <th>Supplier ID</th>
+                <th>Source</th>
+                <th>Receiving Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -693,8 +697,8 @@
             <span class="material-symbols-sharp">warning</span>
           </div>
           <div class="alert-content">
-            <div class="alert-message">New shipment scheduled for delivery</div>
-            <div class="alert-time">30 min ago</div>
+            <div class="alert-message">New shipment received in Warehouse 2</div>
+            <div class="alert-time">15 min ago</div>
           </div>
         </div>
         <div class="alert-item">
@@ -702,8 +706,8 @@
             <span class="material-symbols-sharp">info</span>
           </div>
           <div class="alert-content">
-            <div class="alert-message">Delivery completed for Shipment #DL-456</div>
-            <div class="alert-time">2 hours ago</div>
+            <div class="alert-message">Inventory levels optimal in all warehouses</div>
+            <div class="alert-time">45 min ago</div>
           </div>
         </div>
       </div>
@@ -714,7 +718,7 @@
   <div id="item-modal" class="modal">
     <div class="modal-content">
       <span class="close-modal">&times;</span>
-      <h2 id="modal-title">Add Delivery Item</h2>
+      <h2 id="modal-title">Add Received Item</h2>
       <form id="item-form">
         <input type="hidden" id="item-id">
         <div class="form-group">
@@ -730,27 +734,22 @@
           <input type="number" id="quantity" required>
         </div>
         <div class="form-group">
-          <label for="shipment-id">Shipment ID</label>
-          <input type="text" id="shipment-id" required>
+          <label for="supplier-id">Supplier ID</label>
+          <input type="text" id="supplier-id" required placeholder="5-digit number">
         </div>
         <div class="form-group">
-          <label for="delivery-place">Delivery Place</label>
-          <select id="delivery-place" required>
-            <option value="">Select a location</option>
-            <option value="Nairobi">Dhaka</option>
-            <option value="Mombasa">Barishal</option>
-            <option value="Kisumu">Khulna</option>
-            <option value="Nakuru">Dhaka</option>
-            <option value="Eldoret">Dhaka</option>
+          <label for="source">Source</label>
+          <select id="source" required>
+            <option value="">Select source</option>
+            <option value="Farm A">Farm A</option>
+            <option value="Farm B">Farm B</option>
+            <option value="External Supplier">External Supplier</option>
+            <option value="Local Producer">Local Producer</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="delivery-date">Delivery Date</label>
-          <input type="date" id="delivery-date-input" required>
-        </div>
-        <div class="form-group">
-          <label for="vehicle-capacity">Vehicle Capacity (kg)</label>
-          <input type="number" id="vehicle-capacity" required>
+          <label for="receiving-date">Receiving Date</label>
+          <input type="date" id="receiving-date" required>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>
@@ -765,7 +764,7 @@
     const themeToggler = document.querySelector('.theme-toggler');
     const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 
-    // Delivery Items Management Elements
+    // Received Items Management Elements
     const addItemBtn = document.getElementById('add-item-btn');
     const refreshItemsBtn = document.getElementById('refresh-items-btn');
     const itemSearch = document.getElementById('item-search');
@@ -775,20 +774,20 @@
     const itemForm = document.getElementById('item-form');
     const modalTitle = document.getElementById('modal-title');
 
-    // Sample delivery items data with new fields
-    let deliveryItems = [
-      { batchId: "25-847", name: "Wheat Grain", quantity: 250, shipmentId: "DL-001", deliveryPlace: "Dhaka", deliveryDate: "2023-11-10", vehicleCapacity: 1000 },
-      { batchId: "25-848", name: "Corn Seeds", quantity: 150, shipmentId: "DL-002", deliveryPlace: "Barishal", deliveryDate: "2023-11-12", vehicleCapacity: 800 },
-      { batchId: "25-849", name: "Potatoes", quantity: 500, shipmentId: "DL-003", deliveryPlace: "Khulna", deliveryDate: "2023-11-14", vehicleCapacity: 1500 },
-      { batchId: "25-850", name: "Rice Bags", quantity: 100, shipmentId: "DL-001", deliveryPlace: "Dhaka", deliveryDate: "2023-11-15", vehicleCapacity: 1000 },
-      { batchId: "25-851", name: "Tomato Seedlings", quantity: 75, shipmentId: "DL-004", deliveryPlace: "Dhaka", deliveryDate: "2023-11-16", vehicleCapacity: 500 }
+    // Sample received items data with new fields
+    let receivedItems = [
+      { batchId: "25-847", name: "Wheat Grain", quantity: 500, supplierId: "12345", source: "Farm A", receivingDate: "2023-11-10" },
+      { batchId: "25-848", name: "Corn Seeds", quantity: 300, supplierId: "23456", source: "Farm B", receivingDate: "2023-11-12" },
+      { batchId: "25-849", name: "Potatoes", quantity: 1200, supplierId: "34567", source: "External Supplier", receivingDate: "2023-11-14" },
+      { batchId: "25-850", name: "Rice Bags", quantity: 200, supplierId: "45678", source: "Local Producer", receivingDate: "2023-11-15" },
+      { batchId: "25-851", name: "Tomato Seedlings", quantity: 150, supplierId: "56789", source: "Farm A", receivingDate: "2023-11-15" }
     ];
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', () => {
-      renderItems(deliveryItems);
-      // Set today's date as default for the delivery date input
-      document.getElementById('delivery-date-input').valueAsDate = new Date();
+      renderItems(receivedItems);
+      // Set today's date as default for new items
+      document.getElementById('receiving-date').valueAsDate = new Date();
     });
 
     // Toggle sidebar
@@ -816,7 +815,7 @@
       });
     });
 
-    // Delivery Items Functions
+    // Received Items Functions
     function renderItems(itemsToRender) {
       itemsTableBody.innerHTML = '';
       
@@ -826,10 +825,9 @@
           <td>${item.batchId}</td>
           <td>${item.name}</td>
           <td>${item.quantity}</td>
-          <td>${item.shipmentId}</td>
-          <td>${item.deliveryPlace}</td>
-          <td>${formatDate(item.deliveryDate)}</td>
-          <td>${item.vehicleCapacity}</td>
+          <td>${item.supplierId}</td>
+          <td>${item.source}</td>
+          <td>${formatDate(item.receivingDate)}</td>
           <td class="action-buttons">
             <button class="btn btn-secondary edit-item" data-id="${item.batchId}">
               <span class="material-symbols-sharp">edit</span>
@@ -864,48 +862,46 @@
     }
 
     function addItem() {
-      modalTitle.textContent = 'Add Delivery Item';
+      modalTitle.textContent = 'Add Received Item';
       document.getElementById('item-id').value = '';
-      document.getElementById('batch-id').value = '';
+      document.getElementById('batch-id').value = generateBatchId();
       document.getElementById('product-name').value = '';
       document.getElementById('quantity').value = '';
-      document.getElementById('shipment-id').value = '';
-      document.getElementById('delivery-place').value = '';
-      document.getElementById('delivery-date-input').valueAsDate = new Date();
-      document.getElementById('vehicle-capacity').value = '';
+      document.getElementById('supplier-id').value = '';
+      document.getElementById('source').value = '';
+      document.getElementById('receiving-date').valueAsDate = new Date();
       itemModal.style.display = 'block';
     }
 
     function editItem(batchId) {
-      const item = deliveryItems.find(i => i.batchId === batchId);
+      const item = receivedItems.find(i => i.batchId === batchId);
       if (item) {
         modalTitle.textContent = 'Edit Item';
         document.getElementById('item-id').value = item.batchId;
         document.getElementById('batch-id').value = item.batchId;
         document.getElementById('product-name').value = item.name;
         document.getElementById('quantity').value = item.quantity;
-        document.getElementById('shipment-id').value = item.shipmentId;
-        document.getElementById('delivery-place').value = item.deliveryPlace;
-        document.getElementById('delivery-date-input').value = item.deliveryDate;
-        document.getElementById('vehicle-capacity').value = item.vehicleCapacity;
+        document.getElementById('supplier-id').value = item.supplierId;
+        document.getElementById('source').value = item.source;
+        document.getElementById('receiving-date').value = item.receivingDate;
         itemModal.style.display = 'block';
       }
     }
 
     function deleteItem(batchId) {
       if (confirm('Are you sure you want to delete this item?')) {
-        deliveryItems = deliveryItems.filter(item => item.batchId !== batchId);
-        renderItems(deliveryItems);
+        receivedItems = receivedItems.filter(item => item.batchId !== batchId);
+        renderItems(receivedItems);
       }
     }
 
     function searchItems() {
       const searchTerm = itemSearch.value.toLowerCase();
-      const filteredItems = deliveryItems.filter(item => 
+      const filteredItems = receivedItems.filter(item => 
         item.name.toLowerCase().includes(searchTerm) ||
-        item.shipmentId.toLowerCase().includes(searchTerm) ||
+        item.supplierId.toLowerCase().includes(searchTerm) ||
         item.batchId.toLowerCase().includes(searchTerm) ||
-        item.deliveryPlace.toLowerCase().includes(searchTerm)
+        item.source.toLowerCase().includes(searchTerm)
       );
       renderItems(filteredItems);
     }
@@ -922,7 +918,7 @@
     addItemBtn.addEventListener('click', addItem);
 
     refreshItemsBtn.addEventListener('click', () => {
-      renderItems(deliveryItems);
+      renderItems(receivedItems);
     });
 
     itemSearch.addEventListener('input', searchItems);
@@ -945,24 +941,29 @@
         batchId: document.getElementById('batch-id').value || generateBatchId(),
         name: document.getElementById('product-name').value,
         quantity: parseInt(document.getElementById('quantity').value),
-        shipmentId: document.getElementById('shipment-id').value,
-        deliveryPlace: document.getElementById('delivery-place').value,
-        deliveryDate: document.getElementById('delivery-date-input').value,
-        vehicleCapacity: parseInt(document.getElementById('vehicle-capacity').value)
+        supplierId: document.getElementById('supplier-id').value,
+        source: document.getElementById('source').value,
+        receivingDate: document.getElementById('receiving-date').value
       };
+      
+      // Validate supplier ID is 5 digits
+      if (!/^\d{5}$/.test(itemData.supplierId)) {
+        alert('Supplier ID must be a 5-digit number');
+        return;
+      }
       
       if (itemId) {
         // Update existing item
-        const index = deliveryItems.findIndex(i => i.batchId === itemId);
+        const index = receivedItems.findIndex(i => i.batchId === itemId);
         if (index !== -1) {
-          deliveryItems[index] = { ...deliveryItems[index], ...itemData };
+          receivedItems[index] = { ...receivedItems[index], ...itemData };
         }
       } else {
         // Add new item
-        deliveryItems.push(itemData);
+        receivedItems.push(itemData);
       }
       
-      renderItems(deliveryItems);
+      renderItems(receivedItems);
       itemModal.style.display = 'none';
     });
   </script>
