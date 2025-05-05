@@ -516,7 +516,7 @@ include('includes/header.php');
                     <th>Shipment ID</th>
                     <th>Date</th>
                     <th>Destination</th>
-                    <th>Market</th>
+                    <th>Market ID</th>
                     <th>Weight</th>
                     <th>Batches</th>
                     <th>Vehicles</th>
@@ -534,7 +534,7 @@ include('includes/header.php');
                             <td><?php echo $shipment['ShipmentID']; ?></td>
                             <td><?php echo $shipment['Day'] . '/' . $shipment['Month'] . '/' . $shipment['Year']; ?></td>
                             <td><?php echo $shipment['DestinationLocation']; ?></td>
-                            <td><?php echo $shipment['MarketName'] ?? 'N/A'; ?></td>
+                            <td><?php echo $shipment['MarketID'] ?? 'N/A'; ?></td>
                             <td><?php echo number_format($shipment['TotalWeight'], 2) . ' kg'; ?></td>
                             <td><?php echo $shipment['BatchCount']; ?></td>
                             <td><?php echo $shipment['VehicleCount']; ?></td>

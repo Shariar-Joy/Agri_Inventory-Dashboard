@@ -113,7 +113,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])) {
 }
 
 // Get all harvests
-$query = "SELECT h.*, f.Name as FarmerName, 
+$query = "SELECT h.*, f.Name as FarmerName, f.FarmerID,
           (SELECT COUNT(*) FROM batch WHERE HarvestID = h.HarvestID) as BatchCount
           FROM harvest_session h
           JOIN farmer f ON h.FarmerID = f.FarmerID
@@ -240,7 +240,7 @@ include('includes/header.php');
             <thead>
                 <tr>
                     <th>Harvest ID</th>
-                    <th>Farmer</th>
+                    <th>Farmer ID</th>
                     <th>Date</th>
                     <th>Quantity</th>
                     <th>Batch Count</th>
@@ -256,7 +256,7 @@ include('includes/header.php');
                     <?php foreach ($harvests as $harvest): ?>
                         <tr>
                             <td><?php echo $harvest['HarvestID']; ?></td>
-                            <td><?php echo $harvest['FarmerName']; ?></td>
+                            <td><?php echo $harvest['FarmerID']; ?></td>
                             <td><?php echo $harvest['Day'] . '/' . $harvest['Month'] . '/' . $harvest['Year']; ?></td>
                             <td><?php echo number_format($harvest['TotalHarvestQuantity'], 2) . ' kg'; ?></td>
                             <td><?php echo $harvest['BatchCount']; ?></td>

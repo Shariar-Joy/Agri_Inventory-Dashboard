@@ -6,7 +6,7 @@ require_once 'config.php';
 requireLogin();
 
 // Check if warehouse is selected
-if (!isset($_SESSION['selectedWarehouse'])) {
+if (!isset($_SESSION['selectedWarehouse']) || empty($_SESSION['selectedWarehouse'])) {
     showError("Please select a warehouse first!");
     header("Location: warehouses.php");
     exit();
@@ -20,10 +20,17 @@ $warehouseQuery = "SELECT * FROM warehouse WHERE WarehouseID = ?";
 $warehouseStmt = $conn->prepare($warehouseQuery);
 $warehouseStmt->bind_param("s", $warehouseId);
 $warehouseStmt->execute();
-$warehouse = $warehouseStmt->get_result()->fetch_assoc();
-$warehouseStmt->close();
+$warehouseResult = $warehouseStmt->get_result();
 
-$warehouseId = $_SESSION['selectedWarehouse'];
+// Check if warehouse exists
+if ($warehouseResult->num_rows == 0) {
+    showError("Selected warehouse not found!");
+    header("Location: warehouses.php");
+    exit();
+}
+
+$warehouse = $warehouseResult->fetch_assoc();
+$warehouseStmt->close();
 
 // Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -42,8 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $cropVariety = sanitizeInput($_POST['cropVariety']);
             $growingSeason = sanitizeInput($_POST['growingSeason']);
             
-            // ... [Inside the 'add' action block]
-
             // Calculate expiry date (6 months from production date)
             $expiryDate = date('Y-m-d', strtotime($productionDate . ' + 6 months'));
 
@@ -93,8 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn->rollback();
                 showError("Error adding batch: " . $e->getMessage());
             }
-
-            // ... [Rest of the code]
         }
         // Update batch
         else if ($_POST['action'] == 'edit' && isset($_POST['batchId'])) {
@@ -181,14 +184,21 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
         $conn->begin_transaction();
         
         try {
-            // Delete crop details
+            // 1. First delete any nutritional_analysis records that reference this batch
+            $deleteAnalysisQuery = "DELETE FROM nutritional_analysis WHERE BatchID = ?";
+            $deleteAnalysisStmt = $conn->prepare($deleteAnalysisQuery);
+            $deleteAnalysisStmt->bind_param("s", $batchId);
+            $deleteAnalysisStmt->execute();
+            $deleteAnalysisStmt->close();
+            
+            // 2. Delete crop details
             $deleteCropQuery = "DELETE FROM crop WHERE BatchID = ?";
             $deleteCropStmt = $conn->prepare($deleteCropQuery);
             $deleteCropStmt->bind_param("s", $batchId);
             $deleteCropStmt->execute();
             $deleteCropStmt->close();
             
-            // Get warehouse stock ID
+            // 3. Get warehouse stock ID
             $stockIdQuery = "SELECT WarehouseStockID FROM batch WHERE BatchID = ?";
             $stockIdStmt = $conn->prepare($stockIdQuery);
             $stockIdStmt->bind_param("s", $batchId);
@@ -198,14 +208,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
             $warehouseStockId = $stockIdRow['WarehouseStockID'];
             $stockIdStmt->close();
             
-            // Delete batch
+            // 4. Delete batch
             $deleteBatchQuery = "DELETE FROM batch WHERE BatchID = ?";
             $deleteBatchStmt = $conn->prepare($deleteBatchQuery);
             $deleteBatchStmt->bind_param("s", $batchId);
             $deleteBatchStmt->execute();
             $deleteBatchStmt->close();
             
-            // Delete warehouse stock
+            // 5. Delete warehouse stock
             $deleteStockQuery = "DELETE FROM warehouse_stock WHERE WarehouseStockID = ?";
             $deleteStockStmt = $conn->prepare($deleteStockQuery);
             $deleteStockStmt->bind_param("s", $warehouseStockId);
@@ -301,15 +311,6 @@ if ($harvestResult && $harvestResult->num_rows > 0) {
     }
 }
 
-// Get warehouse details
-$warehouseQuery = "SELECT * FROM warehouse WHERE WarehouseID = ?";
-$warehouseStmt = $conn->prepare($warehouseQuery);
-$warehouseStmt->bind_param("s", $warehouseId);
-$warehouseStmt->execute();
-$warehouseResult = $warehouseStmt->get_result();
-$warehouse = $warehouseResult->fetch_assoc();
-$warehouseStmt->close();
-
 // Get crop types for dropdown
 $cropTypes = [
     'Fruit' => ['Apple', 'Orange', 'Banana', 'Strawberry', 'Grape', 'Watermelon', 'Mango'],
@@ -330,12 +331,13 @@ include('includes/header.php');
     <h1>Batch Management</h1>
     
     <div class="date">
-        <input type="date" value="">
+        <input type="date" value="<?php echo date('Y-m-d'); ?>">
     </div>
     
     <!-- Display Selected Warehouse -->
     <div class="selected-warehouse">
-        <h3>Current Warehouse: <?php echo "Warehouse-" . $warehouse['WarehouseID'] . " (" . $warehouse['City'] . ")"; ?></h3>
+        <h3>Current Warehouse: <?php echo isset($warehouse['WarehouseID']) ? "Warehouse-" . $warehouse['WarehouseID'] . " (" . $warehouse['City'] . ")" : "Not Selected"; ?></h3>
+        <?php if (isset($warehouse['StorageType'])): ?>
         <p>Storage Type: <?php 
             $storageTypes = [
                 1 => 'Dry Storage',
@@ -345,6 +347,7 @@ include('includes/header.php');
             ];
             echo isset($storageTypes[$warehouse['StorageType']]) ? $storageTypes[$warehouse['StorageType']] : 'Unknown'; 
         ?> | Capacity: <?php echo number_format($warehouse['Capacity'], 2); ?> tons</p>
+        <?php endif; ?>
     </div>
     
     <?php if (isset($_SESSION['success_message'])): ?>
@@ -422,7 +425,7 @@ include('includes/header.php');
                     <label for="cropName">Crop Name</label>
                     <select id="cropName" name="cropName" required>
                         <option value="">-- Select Name --</option>
-                        <?php if ($cropData): ?>
+                        <?php if ($cropData && isset($cropTypes[$cropData['CropType']])): ?>
                             <?php foreach ($cropTypes[$cropData['CropType']] as $name): ?>
                                 <option value="<?php echo $name; ?>" 
                                     <?php echo ($cropData && $cropData['CropName'] == $name) ? 'selected' : ''; ?>>
@@ -469,7 +472,7 @@ include('includes/header.php');
     <!-- Batches List -->
     <div class="data-table">
         <div class="table-header">
-            <h2>All Batches in <?php echo $warehouse['City']; ?> Warehouse</h2>
+            <h2>All Batches in <?php echo isset($warehouse['City']) ? $warehouse['City'] : 'Selected'; ?> Warehouse</h2>
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="Search batches...">
             </div>
@@ -605,6 +608,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+    
+    // Delete confirmation
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to delete this batch? This action cannot be undone.')) {
+                e.preventDefault();
+            }
+        });
+    });
 });
 </script>
 
