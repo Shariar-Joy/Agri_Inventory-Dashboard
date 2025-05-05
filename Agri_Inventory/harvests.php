@@ -230,13 +230,15 @@ include('includes/header.php');
     <!-- Harvests List -->
     <div class="data-table">
         <div class="table-header">
-            <h2>All Harvest Sessions</h2>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search harvests...">
+            <div class="header-flex">
+                <h2>All Harvest Sessions</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search harvests...">
+                </div>
             </div>
         </div>
         
-        <table>
+        <table id="harvestTable">
             <thead>
                 <tr>
                     <th>Harvest ID</th>
@@ -276,6 +278,29 @@ include('includes/header.php');
     </div>
 </main>
 
+<style>
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 250px;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Form validation
@@ -300,10 +325,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('harvestTable');
+    const tbody = table.querySelector('tbody');
+    const rows = tbody.querySelectorAll('tr');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        Array.from(rows).forEach(row => {
+            let found = false;
+            const cells = row.querySelectorAll('td');
+            
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    found = true;
+                }
+            });
+            
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Display "No results" message if no matches found
+        let visibleCount = 0;
+        Array.from(rows).forEach(row => {
+            if (row.style.display !== 'none') {
+                visibleCount++;
+            }
+        });
+        
+        // Check if there are already no results row
+        const noResultsRow = tbody.querySelector('.no-results');
+        if (visibleCount === 0) {
+            if (!noResultsRow) {
+                const newRow = document.createElement('tr');
+                newRow.className = 'no-results';
+                const newCell = document.createElement('td');
+                newCell.colSpan = 6;
+                newCell.textContent = 'No matching harvest sessions found.';
+                newCell.style.textAlign = 'center';
+                newRow.appendChild(newCell);
+                tbody.appendChild(newRow);
+            }
+        } else if (noResultsRow) {
+            noResultsRow.remove();
+        }
+    });
 });
 </script>
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

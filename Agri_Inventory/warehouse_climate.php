@@ -900,4 +900,6 @@ function checkClimateThresholds($temperature, $humidity, $thresholds) {
 }
 ?>
 
-<?php include('includes/footer.php'); ?>
+<?php 
+//include('includes/footer.php'); 
+?>

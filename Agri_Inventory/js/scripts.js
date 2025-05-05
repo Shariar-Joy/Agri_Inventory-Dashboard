@@ -68,6 +68,9 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }, 5000);
     }
+    
+    // Initialize search functionality for warehouse table
+    initializeWarehouseSearch();
 });
 
 // Form validation functions
@@ -91,32 +94,72 @@ function validateForm(formId) {
 }
 
 // Data table search functionality
-function searchTable() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toUpperCase();
-    const table = document.querySelector('.data-table table');
-    const tr = table.getElementsByTagName('tr');
+function searchTable(tableId, searchInputId) {
+    const input = document.getElementById(searchInputId);
+    if (!input) return;
     
-    for (let i = 1; i < tr.length; i++) {
+    const filter = input.value.toUpperCase();
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    
+    const rows = table.getElementsByTagName('tr');
+    
+    // Start from 1 to skip the header row
+    for (let i = 1; i < rows.length; i++) {
         let txtValue = "";
-        const td = tr[i].getElementsByTagName('td');
+        const cells = rows[i].getElementsByTagName('td');
         
-        for (let j = 0; j < td.length - 1; j++) { // Exclude action column
-            txtValue += td[j].textContent || td[j].innerText;
+        // Skip the last column (actions)
+        for (let j = 0; j < cells.length - 1; j++) {
+            txtValue += cells[j].textContent || cells[j].innerText;
         }
         
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
+            rows[i].style.display = "";
         } else {
-            tr[i].style.display = "none";
+            rows[i].style.display = "none";
         }
     }
 }
 
-// Initialize search functionality if search input exists
+// Initialize warehouse search functionality
+function initializeWarehouseSearch() {
+    const warehouseSearchInput = document.getElementById('warehouseSearchInput');
+    if (warehouseSearchInput) {
+        warehouseSearchInput.addEventListener('keyup', function() {
+            searchTable('warehouseTable', 'warehouseSearchInput');
+        });
+        
+        // Trigger search on page load if there's any input value
+        if (warehouseSearchInput.value) {
+            searchTable('warehouseTable', 'warehouseSearchInput');
+        }
+    }
+}
+
+// Backward compatibility for old search functionality
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
-        searchInput.addEventListener('keyup', searchTable);
+        searchInput.addEventListener('keyup', function() {
+            const table = searchInput.closest('.data-table').querySelector('table');
+            const filter = searchInput.value.toUpperCase();
+            const tr = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < tr.length; i++) {
+                let txtValue = "";
+                const td = tr[i].getElementsByTagName('td');
+                
+                for (let j = 0; j < td.length - 1; j++) { // Exclude action column
+                    txtValue += td[j].textContent || td[j].innerText;
+                }
+                
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        });
     }
 });

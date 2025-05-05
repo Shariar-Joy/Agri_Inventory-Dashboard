@@ -504,13 +504,15 @@ include('includes/header.php');
     <!-- Shipments List -->
     <div class="data-table">
         <div class="table-header">
-            <h2>All Shipments</h2>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search shipments...">
+            <div class="header-flex">
+                <h2>All Shipments</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search shipments...">
+                </div>
             </div>
         </div>
         
-        <table>
+        <table id="shipmentTable">
             <thead>
                 <tr>
                     <th>Shipment ID</th>
@@ -575,6 +577,27 @@ include('includes/header.php');
 .vehicle-row {
     margin-bottom: 15px;
 }
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 250px;
+}
 </style>
 
 <script>
@@ -638,10 +661,62 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.closest('.vehicle-row').remove();
         }
     });
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('shipmentTable');
+    const tbody = table.querySelector('tbody');
+    const rows = tbody.querySelectorAll('tr');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        Array.from(rows).forEach(row => {
+            let found = false;
+            const cells = row.querySelectorAll('td');
+            
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    found = true;
+                }
+            });
+            
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Display "No results" message if no matches found
+        let visibleCount = 0;
+        Array.from(rows).forEach(row => {
+            if (row.style.display !== 'none') {
+                visibleCount++;
+            }
+        });
+        
+        // Check if there are already no results row
+        const noResultsRow = tbody.querySelector('.no-results');
+        if (visibleCount === 0) {
+            if (!noResultsRow) {
+                const newRow = document.createElement('tr');
+                newRow.className = 'no-results';
+                const newCell = document.createElement('td');
+                newCell.colSpan = 8;
+                newCell.textContent = 'No matching shipments found.';
+                newCell.style.textAlign = 'center';
+                newRow.appendChild(newCell);
+                tbody.appendChild(newRow);
+            }
+        } else if (noResultsRow) {
+            noResultsRow.remove();
+        }
+    });
 });
 </script>
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

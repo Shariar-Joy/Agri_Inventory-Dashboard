@@ -206,13 +206,15 @@ include('includes/header.php');
     <!-- Markets List -->
     <div class="data-table">
         <div class="table-header">
-            <h2>All Markets</h2>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search markets...">
+            <div class="header-with-search">
+                <h2>All Markets</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search markets...">
+                </div>
             </div>
         </div>
         
-        <table>
+        <table id="marketsTable">
             <thead>
                 <tr>
                     <th>Market ID</th>
@@ -252,7 +254,114 @@ include('includes/header.php');
     </div>
 </main>
 
+<script>
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const marketsTable = document.getElementById('marketsTable');
+    const tableRows = marketsTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchText = searchInput.value.toLowerCase();
+        
+        for (let i = 0; i < tableRows.length; i++) {
+            const row = tableRows[i];
+            let found = false;
+            
+            // Skip the "No markets found" row
+            if (row.cells.length === 1 && row.cells[0].getAttribute('colspan')) {
+                continue;
+            }
+            
+            // Search through all cells except the last one (actions)
+            for (let j = 0; j < row.cells.length - 1; j++) {
+                const cellText = row.cells[j].textContent.toLowerCase();
+                if (cellText.includes(searchText)) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            row.style.display = found ? '' : 'none';
+        }
+        
+        // Show "No results" message if all rows are hidden
+        let visibleRows = 0;
+        for (let i = 0; i < tableRows.length; i++) {
+            if (tableRows[i].style.display !== 'none') {
+                visibleRows++;
+            }
+        }
+        
+        // Check if we need to add or remove the "no results" row
+        const noResultsRow = document.getElementById('noResultsRow');
+        if (visibleRows === 0 && !noResultsRow) {
+            const tbody = marketsTable.getElementsByTagName('tbody')[0];
+            const newRow = document.createElement('tr');
+            newRow.id = 'noResultsRow';
+            newRow.innerHTML = '<td colspan="6" style="text-align: center;">No markets found matching your search.</td>';
+            tbody.appendChild(newRow);
+        } else if (visibleRows > 0 && noResultsRow) {
+            noResultsRow.remove();
+        }
+    });
+});
+
+// Confirm delete
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to delete this market?')) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+
+<style>
+/* Additional CSS for the search box positioning */
+.header-with-search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.search-box {
+    flex: 0 0 auto;
+    margin-left: 20px;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* Ensure responsive design for smaller screens */
+@media (max-width: 768px) {
+    .header-with-search {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-box {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+}
+</style>
+
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

@@ -565,5 +565,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

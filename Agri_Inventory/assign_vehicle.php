@@ -370,4 +370,6 @@ function generateUniqueID($prefix, $length = 10) {
     }
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php 
+//include('includes/footer.php'); 
+?>

@@ -475,10 +475,17 @@ include('includes/header.php');
             <h2>All Batches in <?php echo isset($warehouse['City']) ? $warehouse['City'] : 'Selected'; ?> Warehouse</h2>
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="Search batches...">
+                <select id="searchCategory">
+                    <option value="all">All Fields</option>
+                    <option value="batchId">Batch ID</option>
+                    <option value="cropName">Crop Name</option>
+                    <option value="variety">Variety</option>
+                    <option value="farmer">Farmer</option>
+                </select>
             </div>
         </div>
         
-        <table>
+        <table id="batchesTable">
             <thead>
                 <tr>
                     <th>Batch ID</th>
@@ -565,6 +572,50 @@ include('includes/header.php');
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.search-container input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.search-container select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Responsive table header */
+@media screen and (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-container {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .search-container input {
+        flex-grow: 1;
+    }
+}
 </style>
 
 <!-- Script for dynamic crop name dropdown based on crop type -->
@@ -618,10 +669,62 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchCategory = document.getElementById('searchCategory');
+    const table = document.getElementById('batchesTable');
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+    function filterTable() {
+        const searchText = searchInput.value.toLowerCase();
+        const category = searchCategory.value;
+        
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            let shouldShow = false;
+            
+            // Skip the "No batches found" row
+            if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
+                continue;
+            }
+            
+            if (category === 'all') {
+                // Search all columns
+                for (let j = 0; j < row.cells.length - 1; j++) { // Skip the last column (Actions)
+                    let cell = row.cells[j];
+                    if (cell.textContent.toLowerCase().includes(searchText)) {
+                        shouldShow = true;
+                        break;
+                    }
+                }
+            } else {
+                // Search specific column
+                let columnIndex;
+                switch (category) {
+                    case 'batchId': columnIndex = 0; break;
+                    case 'cropName': columnIndex = 1; break;
+                    case 'variety': columnIndex = 2; break;
+                    case 'farmer': columnIndex = 3; break;
+                    default: columnIndex = 0;
+                }
+                
+                let cell = row.cells[columnIndex];
+                if (cell.textContent.toLowerCase().includes(searchText)) {
+                    shouldShow = true;
+                }
+            }
+            
+            row.style.display = shouldShow ? '' : 'none';
+        }
+    }
+    
+    searchInput.addEventListener('input', filterTable);
+    searchCategory.addEventListener('change', filterTable);
 });
 </script>
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

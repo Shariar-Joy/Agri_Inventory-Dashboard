@@ -310,13 +310,15 @@ include('includes/header.php');
     <!-- Farmers List -->
     <div class="data-table">
         <div class="table-header">
-            <h2>All Farmers</h2>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search farmers...">
+            <div class="header-content">
+                <h2>All Farmers</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search farmers...">
+                </div>
             </div>
         </div>
         
-        <table>
+        <table id="farmersTable">
             <thead>
                 <tr>
                     <th>Farmer ID</th>
@@ -375,7 +377,7 @@ include('includes/header.php');
     </div>
 </main>
 
-<!-- Script for dynamic contact number fields -->
+<!-- Script for dynamic contact number fields and search functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Add contact number field
@@ -397,6 +399,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.classList.contains('remove-contact')) {
             e.target.parentElement.remove();
         }
+    });
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const farmersTable = document.getElementById('farmersTable');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = farmersTable.querySelectorAll('tbody tr');
+        
+        rows.forEach(function(row) {
+            let found = false;
+            const cells = row.querySelectorAll('td');
+            
+            cells.forEach(function(cell) {
+                if (cell.textContent.toLowerCase().indexOf(searchTerm) > -1) {
+                    found = true;
+                }
+            });
+            
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     });
 });
 </script>
@@ -420,9 +448,31 @@ document.addEventListener('DOMContentLoaded', function() {
     justify-content: center;
     padding: 0;
 }
+
+/* New styles for the search box beside All Farmers heading */
+.table-header {
+    margin-bottom: 15px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-box {
+    flex: 0 0 250px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
 </style>
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

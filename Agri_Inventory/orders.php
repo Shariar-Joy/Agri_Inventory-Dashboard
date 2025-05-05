@@ -532,8 +532,8 @@ include('includes/header.php');
             <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Market</th>
+                    <th>Customer ID</th>
+                    <th>Market ID</th>
                     <th>Date</th>
                     <th>Items</th>
                     <th>Total Amount</th>
@@ -549,8 +549,8 @@ include('includes/header.php');
                     <?php foreach ($orders as $order): ?>
                         <tr>
                             <td><?php echo $order['OrderID']; ?></td>
-                            <td><?php echo $order['CustomerName'] ?? 'N/A'; ?></td>
-                            <td><?php echo $order['MarketName'] ?? 'N/A'; ?></td>
+                            <td><?php echo $order['CustomerID'] ?? 'N/A'; ?></td>
+                            <td><?php echo $order['MarketID']; ?></td>
                             <td><?php echo date('M d, Y', strtotime($order['OrderDate'])); ?></td>
                             <td>
                                 <?php
@@ -738,5 +738,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

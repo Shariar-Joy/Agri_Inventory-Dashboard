@@ -718,5 +718,5 @@ document.getElementById('spoilageForm').addEventListener('submit', function(e) {
 
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>

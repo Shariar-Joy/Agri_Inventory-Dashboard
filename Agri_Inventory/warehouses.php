@@ -381,7 +381,40 @@ include('includes/header.php');
     </div>
 </main>
 
+<!-- The search functionality JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('table tbody tr');
+            
+            tableRows.forEach(function(row) {
+                let found = false;
+                const cells = row.querySelectorAll('td');
+                
+                cells.forEach(function(cell) {
+                    // Skip the actions column
+                    if (!cell.classList.contains('action-buttons') && 
+                        cell.textContent.toLowerCase().includes(searchTerm)) {
+                        found = true;
+                    }
+                });
+                
+                if (found) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+</script>
+
 <?php
 // Include footer
-include('includes/footer.php');
+//include('includes/footer.php');
 ?>
