@@ -109,7 +109,7 @@ if (!isset($pageTitle)) {
             <small class="text-muted"><?php echo isset($_SESSION['role']) ? ucfirst(htmlspecialchars($_SESSION['role'])) : 'User'; ?></small>
           </div>
           <div class="profile-photo">
-            <img src="images/profile-1.gif" alt="Profile Photo">
+            <img src="images/logo.png" alt="Profile Photo">
           </div>
         </div>
       </div>

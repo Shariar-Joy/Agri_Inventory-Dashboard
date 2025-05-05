@@ -26,37 +26,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $warehouseId = isset($_POST['warehouse_id']) ? $_POST['warehouse_id'] : '';
     $quantity = isset($_POST['quantity']) ? floatval($_POST['quantity']) : 0;
     $expiryDate = isset($_POST['expiry_date']) ? $_POST['expiry_date'] : '';
-    $storageLocation = isset($_POST['storage_location']) ? trim($_POST['storage_location']) : '';
-    $status = isset($_POST['status']) ? $_POST['status'] : '';
+    // Remove Status as it doesn't exist in the database
 
     // Validate required fields
-    if (empty($warehouseId) || $quantity <= 0 || empty($expiryDate) || empty($status)) {
+    if (empty($warehouseId) || $quantity <= 0 || empty($expiryDate)) {
         $errorMessage = "Please fill in all required fields correctly.";
     } else {
-        // Update warehouse stock
+        // Update warehouse stock - REMOVE Status from the query
         $query = "UPDATE warehouse_stock 
                   SET WarehouseID = ?, 
                       Quantity = ?, 
-                      ExpiryDate = ?, 
-                      StorageLocation = ?, 
-                      Status = ?,
-                      LastUpdated = NOW()
+                      ExpiryDate = ?
                   WHERE WarehouseStockID = ?";
                   
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("sdssss", $warehouseId, $quantity, $expiryDate, $storageLocation, $status, $stockId);
+        $stmt->bind_param("sdss", $warehouseId, $quantity, $expiryDate, $stockId);
         
         if ($stmt->execute()) {
             $successMessage = "Stock updated successfully!";
             
-            // Log the activity
-            $activityQuery = "INSERT INTO activity_log (UserID, ActivityType, Description, EntityID, EntityType) 
-                             VALUES (?, 'UPDATE', ?, ?, 'WAREHOUSE_STOCK')";
-            $activityStmt = $conn->prepare($activityQuery);
-            $userId = $_SESSION['user_id'] ?? 1;
-            $description = "Updated warehouse stock (ID: $stockId)";
-            $activityStmt->bind_param("iss", $userId, $description, $stockId);
-            $activityStmt->execute();
+            // Check if activity_log table exists
+            $tableCheckQuery = "SHOW TABLES LIKE 'activity_log'";
+            $tableCheckResult = $conn->query($tableCheckQuery);
+            
+            if ($tableCheckResult->num_rows > 0) {
+                // Log the activity only if the table exists
+                $activityQuery = "INSERT INTO activity_log (UserID, ActivityType, Description, EntityID, EntityType) 
+                                VALUES (?, 'UPDATE', ?, ?, 'WAREHOUSE_STOCK')";
+                $activityStmt = $conn->prepare($activityQuery);
+                $userId = $_SESSION['user_id'] ?? 1;
+                $description = "Updated warehouse stock (ID: $stockId)";
+                $activityStmt->bind_param("iss", $userId, $description, $stockId);
+                $activityStmt->execute();
+            }
             
         } else {
             $errorMessage = "Error updating stock: " . $stmt->error;
@@ -85,6 +87,8 @@ if ($result->num_rows === 0) {
 
 $stock = $result->fetch_assoc();
 $stmt->close();
+
+// No need to set default Status since it doesn't exist
 
 // Get all warehouses for dropdown
 $warehouseQuery = "SELECT WarehouseID, City FROM warehouse ORDER BY City";
@@ -173,20 +177,7 @@ include('includes/header.php');
                         <input type="date" name="expiry_date" id="expiry_date" value="<?php echo htmlspecialchars($stock['ExpiryDate']); ?>" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="storage_location">Storage Location</label>
-                        <input type="text" name="storage_location" id="storage_location" value="<?php echo htmlspecialchars($stock['StorageLocation'] ?? ''); ?>" placeholder="e.g., Section A, Shelf 3">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status <span class="required">*</span></label>
-                        <select name="status" id="status" required>
-                            <option value="Available" <?php echo ($stock['Status'] == 'Available') ? 'selected' : ''; ?>>Available</option>
-                            <option value="Reserved" <?php echo ($stock['Status'] == 'Reserved') ? 'selected' : ''; ?>>Reserved</option>
-                            <option value="In Transit" <?php echo ($stock['Status'] == 'In Transit') ? 'selected' : ''; ?>>In Transit</option>
-                            <option value="Quarantined" <?php echo ($stock['Status'] == 'Quarantined') ? 'selected' : ''; ?>>Quarantined</option>
-                        </select>
-                    </div>
+                    <!-- Status field removed as it doesn't exist in the database -->
 
                     <div class="form-buttons">
                         <button type="submit" class="btn btn-primary">Update Stock</button>
@@ -205,49 +196,63 @@ include('includes/header.php');
             </div>
             <div class="card-body">
                 <?php
-                // Get stock history
-                $historyQuery = "SELECT al.*, u.Username 
-                              FROM activity_log al
-                              LEFT JOIN users u ON al.UserID = u.UserID
-                              WHERE al.EntityID = ? AND al.EntityType = 'WAREHOUSE_STOCK'
-                              ORDER BY al.Timestamp DESC
-                              LIMIT 10";
-                $historyStmt = $conn->prepare($historyQuery);
-                $historyStmt->bind_param("s", $stockId);
-                $historyStmt->execute();
-                $historyResult = $historyStmt->get_result();
-                ?>
-
-                <?php if ($historyResult->num_rows > 0): ?>
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Action</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($log = $historyResult->fetch_assoc()): ?>
+                // Check if activity_log table exists before querying
+                $tableCheckQuery = "SHOW TABLES LIKE 'activity_log'";
+                $tableCheckResult = $conn->query($tableCheckQuery);
+                
+                if ($tableCheckResult->num_rows > 0) {
+                    // Get stock history only if table exists
+                    $historyQuery = "SELECT al.*, u.Username 
+                                  FROM activity_log al
+                                  LEFT JOIN users u ON al.UserID = u.UserID
+                                  WHERE al.EntityID = ? AND al.EntityType = 'WAREHOUSE_STOCK'
+                                  ORDER BY al.Timestamp DESC
+                                  LIMIT 10";
+                    $historyStmt = $conn->prepare($historyQuery);
+                    $historyStmt->bind_param("s", $stockId);
+                    $historyStmt->execute();
+                    $historyResult = $historyStmt->get_result();
+                    
+                    if ($historyResult->num_rows > 0) {
+                        ?>
+                        <table class="history-table">
+                            <thead>
                                 <tr>
-                                    <td><?php echo date('M d, Y H:i', strtotime($log['Timestamp'])); ?></td>
-                                    <td><?php echo htmlspecialchars($log['Username'] ?? 'System'); ?></td>
-                                    <td><?php echo htmlspecialchars($log['ActivityType']); ?></td>
-                                    <td><?php echo htmlspecialchars($log['Description']); ?></td>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Description</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p class="no-data">No history available for this stock item.</p>
-                <?php endif; ?>
-                <?php $historyStmt->close(); ?>
+                            </thead>
+                            <tbody>
+                                <?php while ($log = $historyResult->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?php echo date('M d, Y H:i', strtotime($log['Timestamp'])); ?></td>
+                                        <td><?php echo htmlspecialchars($log['Username'] ?? 'System'); ?></td>
+                                        <td><?php echo htmlspecialchars($log['ActivityType']); ?></td>
+                                        <td><?php echo htmlspecialchars($log['Description']); ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                        <?php
+                        $historyStmt->close();
+                    } else {
+                        echo '<p class="no-data">No history available for this stock item.</p>';
+                    }
+                } else {
+                    // If the table doesn't exist, show message
+                    echo '<div class="alert info">
+                            <span class="material-symbols-sharp">info</span>
+                            <p>Stock history tracking is not configured. Please set up the activity log database.</p>
+                          </div>';
+                }
+                ?>
             </div>
         </div>
     </div>
 
-    <?php if (strtotime($stock['ExpiryDate']) < strtotime('+30 days')): ?>
+    <?php if (isset($stock['ExpiryDate']) && strtotime($stock['ExpiryDate']) < strtotime('+30 days')): ?>
     <div class="alert warning expiry-alert">
         <span class="material-symbols-sharp">warning</span>
         <div>
@@ -323,6 +328,12 @@ include('includes/header.php');
 </main>
 
 <style>
+.alert.info {
+    background: rgba(0, 123, 255, 0.1);
+    color: #0056b3;
+}
+
+/* Rest of the CSS remains the same */
 .form-container {
     display: grid;
     grid-template-columns: 1fr;

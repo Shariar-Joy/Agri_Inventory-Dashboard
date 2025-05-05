@@ -551,6 +551,97 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <style>
+    /* Enhanced Table Styling */
+.recent-logs {
+    background: var(--color-white);
+    padding: 1.5rem;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+    overflow-x: auto; /* For horizontal scrolling on small screens */
+}
+
+.recent-logs h2 {
+    margin-bottom: 1.5rem;
+    color: var(--color-dark);
+    font-size: 1.2rem;
+}
+
+.recent-logs table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.recent-logs table thead tr {
+    background: var(--color-light);
+    text-align: left;
+}
+
+.recent-logs table th {
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    border-bottom: 2px solid var(--color-primary-variant);
+}
+
+.recent-logs table tbody tr {
+    border-bottom: 1px solid var(--color-light);
+    transition: all 0.3s ease;
+}
+
+.recent-logs table tbody tr:hover {
+    background: var(--color-light);
+}
+
+.recent-logs table td {
+    padding: 1.2rem 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.recent-logs table tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.recent-logs td.warning {
+    color: #c62828;
+    font-weight: 600;
+    position: relative;
+}
+
+.recent-logs td.warning::after {
+    content: '⚠️';
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .recent-logs table th,
+    .recent-logs table td {
+        padding: 0.8rem 1rem;
+    }
+}
+
+/* Button styling within table */
+.recent-logs .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--color-light);
+    transition: all 0.3s ease;
+}
+
+.recent-logs .btn-icon:hover {
+    background: var(--color-danger-light);
+    transform: scale(1.1);
+}
 /* Climate Control specific styles */
 .climate-dashboard {
     margin-top: 2rem;

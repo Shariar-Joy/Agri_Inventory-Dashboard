@@ -99,15 +99,7 @@ $stmt->close();
 // Include header
 include('includes/header.php');
 
-// Helper function to generate a unique ID
-function generateUniqueID($prefix, $length = 10) {
-    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $id = $prefix;
-    for ($i = 0; $i < $length - strlen($prefix); $i++) {
-        $id .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $id;
-}
+// REMOVED: The generateUniqueID function has been removed as it's already defined in config.php
 ?>
 
 <main>
